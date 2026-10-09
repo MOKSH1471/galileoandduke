@@ -27,7 +27,7 @@ export const portfolioData: PortfolioData = {
             },
             {
                 "platform": "LinkedIn",
-                "url": "https://linkedin.com/company/galileoduke",
+                "url": "https://linkedin.com/company/galileo-duke",
                 "icon": "linkedin",
                 "username": "Galileo & Duke"
             },
@@ -60,7 +60,7 @@ export const portfolioData: PortfolioData = {
                 "github": "https://github.com/MOKSH1471",
                 "instagram": "https://www.instagram.com/galileoandduke/",
                 "twitter": "https://twitter.com/galileoduke",
-                "linkedin": "https://linkedin.com/company/galileoduke"
+                "linkedin": "https://linkedin.com/company/galileo-duke"
             }
         },
         {
@@ -77,7 +77,7 @@ export const portfolioData: PortfolioData = {
                 "github": "https://github.com/MOKSH1471",
                 "instagram": "https://www.instagram.com/galileoandduke/",
                 "twitter": "https://twitter.com/galileoduke",
-                "linkedin": "https://linkedin.com/company/galileoduke"
+                "linkedin": "https://linkedin.com/company/galileo-duke"
             }
         }
     ],

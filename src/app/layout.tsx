@@ -130,6 +130,7 @@ export default async function RootLayout({
                 sameAs: [
                     'https://github.com/MOKSH1471',
                     'https://www.instagram.com/galileoandduke/',
+                    'https://linkedin.com/company/galileo-duke',
                 ],
             },
             {

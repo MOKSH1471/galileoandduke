@@ -57,7 +57,7 @@ const showcaseMembers = [
         description: "Directs studio strategy, client vision, and technical execution. Ensures every digital flagship pairs striking visual ambition with rock-solid commercial outcomes.",
         period: "Co-Founder",
         image: "/about/duke.jpg",
-        social: { website: "https://linkedin.com/company/galileoduke" }
+        social: { website: "https://linkedin.com/company/galileo-duke" }
     },
     {
         id: 'view-more',
