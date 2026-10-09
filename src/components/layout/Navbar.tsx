@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { Menu, X, Moon, Sun, Globe, ChevronDown, Focus } from 'lucide-react';
+import { Menu, X, Moon, Sun, Globe, ChevronDown } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useLenis } from 'lenis/react';
 import { cn } from '@/lib/utils';
 
 import CardNav from '@/components/ui/CardNav';
@@ -42,18 +43,17 @@ function Clock() {
 }
 
 // Sub-links for the "About" dropdown
-// Sub-links for the "About" dropdown
+// Sub-links for the "Explore" dropdown
 const useNavItems = () => {
-    const t = useTranslations('navigation.menu');
     return [
         {
-            label: "About",
+            label: "Explore",
             links: [
-                { label: t('achievements'), href: "/achievements", description: t('achievementsDesc') },
-                { label: t('skills'), href: "/skills", description: t('skillsDesc') },
-                { label: t('experience'), href: "/experience", description: t('experienceDesc') },
-                { label: t('projects'), href: "/projects", description: t('projectsDesc') },
-                { label: t('blog'), href: "/blog", description: t('blogDesc') },
+                { label: "Work", href: "/projects", description: "Selected flagship builds & case studies" },
+                { label: "Capabilities", href: "/skills", description: "Interactive design, creative code & systems" },
+                { label: "Approach", href: "/experience", description: "Our 4-phase engagement process" },
+                { label: "Studio", href: "/about", description: "Dual heritage, atelier ethos & leadership" },
+                { label: "Gallery", href: "/gallery", description: "Curated visual archive & motion studies" },
             ]
         }
     ];
@@ -66,34 +66,50 @@ export function Navbar() {
     const pathname = usePathname();
     const { scrollY } = useScroll();
 
+    const lenis = useLenis();
     const [isVisible, setIsVisible] = useState(true);
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [lastScrollY, setLastScrollY] = useState(0);
+    const lastScrollYRef = useRef(0);
     const [mounted, setMounted] = useState(false);
-    const [currentLocale, setCurrentLocale] = useState('en');
     
     // Consume preload state directly from context
     const { isPreloading: isPreloadActive } = usePreloadState();
 
-    const isDark = resolvedTheme === 'dark';
+    const isDark = mounted ? resolvedTheme === 'dark' : true;
 
     useEffect(() => {
         setMounted(true);
-        const locale = document.cookie.split('; ').find(row => row.startsWith('locale='))?.split('=')[1] || 'en';
-        setCurrentLocale(locale);
     }, []);
 
-    // Lock body scroll when menu is open
+    const closeMenu = useCallback(() => {
+        setIsMenuOpen(false);
+    }, []);
+
+    // Lock body scroll and Lenis when menu is open
     useEffect(() => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden';
+            lenis?.stop();
         } else {
             document.body.style.overflow = '';
+            lenis?.start();
         }
         return () => {
             document.body.style.overflow = '';
+            lenis?.start();
         };
+    }, [isMenuOpen, lenis]);
+
+    // Close menu on Escape key
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+                setIsMenuOpen(false);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isMenuOpen]);
 
     // Close menu on route change
@@ -101,34 +117,28 @@ export function Navbar() {
         setIsMenuOpen(false);
     }, [pathname]);
 
-    useMotionValueEvent(scrollY, 'change', (latest) => {
-        if (isMenuOpen) return; // Don't hide navbar when menu is open
+    // Track scroll for sticky/floating behavior with hysteresis
+    useEffect(() => {
+        return scrollY.on('change', (latest) => {
+            const currentScrollY = latest;
+            setIsScrolled(currentScrollY > 50);
 
-        const direction = latest > lastScrollY ? 'down' : 'up';
-        setIsScrolled(latest > 50);
-
-        if (direction === 'down' && latest > 100) {
-            setIsVisible(false);
-        } else {
-            setIsVisible(true);
-        }
-
-        setLastScrollY(latest);
-    });
+            const diff = currentScrollY - lastScrollYRef.current;
+            if (currentScrollY < 10) {
+                setIsVisible(true);
+            } else if (diff > 8 && currentScrollY > 100) {
+                if (!isMenuOpen) {
+                    setIsVisible(false);
+                }
+            } else if (diff < -8) {
+                setIsVisible(true);
+            }
+            lastScrollYRef.current = currentScrollY;
+        });
+    }, [scrollY, isMenuOpen]);
 
     const toggleMenu = useCallback(() => {
-        setIsMenuOpen((prev) => !prev);
-    }, []);
-
-    const toggleLocale = useCallback(() => {
-        const newLocale = currentLocale === 'en' ? 'id' : 'en';
-        document.cookie = `locale=${newLocale};path=/;max-age=31536000`;
-        setCurrentLocale(newLocale);
-        window.location.reload();
-    }, [currentLocale]);
-
-    const closeMenu = useCallback(() => {
-        setIsMenuOpen(false);
+        setIsMenuOpen(prev => !prev);
     }, []);
 
     const handleHomeClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -136,8 +146,8 @@ export function Navbar() {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        closeMenu();
-    }, [pathname, closeMenu]);
+        setIsMenuOpen(false);
+    }, [pathname]);
 
     // Animation variants
     const navVariants = {
@@ -155,7 +165,7 @@ export function Navbar() {
             <motion.nav
                 variants={navVariants}
                 initial="hidden"
-                animate={!isPreloadActive && (isVisible || isMenuOpen) ? 'visible' : 'hidden'}
+                animate={isVisible || isMenuOpen ? 'visible' : 'hidden'}
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
                 className="fixed top-0 left-0 right-0 z-[100]"
             >
@@ -167,25 +177,39 @@ export function Navbar() {
                         )}
                         layout
                     >
-                        {/* Make the Clock a Link to Home */}
-                        <Link href="/" className="relative group min-w-[120px]" onClick={handleHomeClick}>
-                            <Clock />
+                        {/* Wordmark linking to Home */}
+                        <Link href="/" className="relative group flex items-center gap-2 pl-3" onClick={handleHomeClick}>
+                            <span className="font-mono text-xs font-black tracking-[0.25em] uppercase text-foreground group-hover:text-primary transition-colors">
+                                GALILEO &amp; DUKE
+                            </span>
                         </Link>
 
                         {/* Desktop Navigation with CardNav */}
-                        <div className="hidden lg:flex items-center gap-6">
+                        <div className="hidden lg:flex items-center gap-4">
                             {/* HOME */}
                             <Link
                                 href="/"
                                 onClick={handleHomeClick}
                                 className={cn(
-                                    'relative px-5 py-2 text-sm font-bold transition-all duration-300 rounded-full group',
+                                    'relative px-4 py-2 text-sm font-bold transition-all duration-300 rounded-full group',
                                     pathname === '/' ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground'
                                 )}
                             >
                                 <span className="relative z-10">{t('home')}</span>
                             </Link>
 
+                            {/* WORK */}
+                            <Link
+                                href="/projects"
+                                className={cn(
+                                    'relative px-4 py-2 text-sm font-bold transition-all duration-300 rounded-full group',
+                                    pathname.startsWith('/projects') ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground'
+                                )}
+                            >
+                                <span className="relative z-10">Work</span>
+                            </Link>
+
+                            {/* EXPLORE MEGAMENU */}
                             <CardNav
                                 items={navItems}
                                 theme={isDark ? 'dark' : 'light'}
@@ -196,7 +220,7 @@ export function Navbar() {
                             <Link
                                 href="/contact"
                                 className={cn(
-                                    'relative px-5 py-2 text-sm font-bold transition-all duration-300 rounded-full group',
+                                    'relative px-4 py-2 text-sm font-bold transition-all duration-300 rounded-full group',
                                     pathname === '/contact' ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground'
                                 )}
                             >
@@ -206,26 +230,18 @@ export function Navbar() {
 
                         {/* Controls */}
                         <div className="flex items-center gap-2 md:gap-3">
-                            <motion.button
+                            <motion.a
+                                href="https://loopanishad.vercel.app"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="p-2 md:p-2.5 rounded-full bg-muted/80 hover:bg-muted transition-colors"
-                                aria-label="Focus mode"
-                            >
-                                <Link href="https://arfazrllworkspace.vercel.app/" target="_blank" rel="noopener noreferrer">
-                                    <Focus className="w-4 h-4" />
-                                </Link>
-                            </motion.button>
-
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={toggleLocale}
-                                className="p-2 md:p-2.5 rounded-full bg-muted/80 hover:bg-muted transition-colors"
-                                aria-label="Toggle language"
+                                className="p-2 md:p-2.5 rounded-full bg-muted/80 hover:bg-muted transition-colors inline-flex items-center justify-center text-foreground"
+                                aria-label="Loopanishad"
+                                title="Loopanishad"
                             >
                                 <Globe className="w-4 h-4" />
-                            </motion.button>
+                            </motion.a>
 
                             {mounted && (
                                 <AnimatedThemeToggler />
@@ -236,7 +252,9 @@ export function Navbar() {
                                 whileTap={{ scale: 0.95 }}
                                 onClick={toggleMenu}
                                 className="p-2 md:p-2.5 rounded-full bg-muted/80 hover:bg-muted transition-colors lg:hidden"
-                                aria-label="Toggle menu"
+                                aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                                aria-expanded={isMenuOpen}
+                                aria-controls="mobile-navigation-menu"
                             >
                                 <AnimatePresence mode="wait" initial={false}>
                                     <motion.div
@@ -260,6 +278,10 @@ export function Navbar() {
                 {
                     isMenuOpen && (
                         <motion.div
+                            id="mobile-navigation-menu"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label="Mobile navigation"
                             variants={menuVariants}
                             initial="closed"
                             animate="open"
@@ -323,12 +345,15 @@ export function Navbar() {
                                     transition={{ delay: 0.5 }}
                                     className="flex items-center gap-4 mt-12"
                                 >
-                                    <button
-                                        onClick={toggleLocale}
-                                        className="px-6 py-3 rounded-full glass-card text-sm font-medium hover:bg-muted/50 transition-colors"
+                                    <a
+                                        href="https://loopanishad.vercel.app"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="px-6 py-3 rounded-full glass-card text-sm font-medium hover:bg-muted/50 transition-colors flex items-center gap-2"
                                     >
-                                        {currentLocale === 'en' ? 'English' : 'Indonesia'}
-                                    </button>
+                                        <Globe className="w-4 h-4" />
+                                        <span>Loopanishad</span>
+                                    </a>
                                     {mounted && (
                                         <AnimatedThemeToggler
                                             className="px-6 py-6 glass-card text-sm font-medium hover:bg-muted/50 flex items-center gap-2"

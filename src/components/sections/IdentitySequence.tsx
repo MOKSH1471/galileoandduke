@@ -18,31 +18,24 @@ const BlurInUpText = ({ text, animate }: { text: string; animate: boolean }) => 
         <motion.span
             initial="hidden"
             animate={animate ? "visible" : "hidden"}
-            transition={{ staggerChildren: 0.01 }}
+            transition={{ staggerChildren: 0.02 }}
             aria-label={text}
         >
             {words.map((word, wordIndex) => (
-                <span key={wordIndex} className="inline-block whitespace-pre">
-                    {word.split("").map((char, charIndex) => (
-                        <motion.span
-                            key={charIndex}
-                            variants={{
-                                hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
-                                visible: { 
-                                    opacity: 1, 
-                                    y: 0, 
-                                    filter: "blur(0px)", 
-                                    transition: { type: "spring", bounce: 0, duration: 0.5 } 
-                                }
-                            }}
-                            className="inline-block"
-                            style={{ willChange: "filter, opacity, transform" }}
-                        >
-                            {char}
-                        </motion.span>
-                    ))}
-                    {wordIndex < words.length - 1 && <span className="inline-block">&nbsp;</span>}
-                </span>
+                <motion.span
+                    key={wordIndex}
+                    variants={{
+                        hidden: { opacity: 0, y: 8 },
+                        visible: { 
+                            opacity: 1, 
+                            y: 0, 
+                            transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } 
+                        }
+                    }}
+                    className="inline-block whitespace-pre"
+                >
+                    {word}{wordIndex < words.length - 1 ? "\u00A0" : ""}
+                </motion.span>
             ))}
         </motion.span>
     );
@@ -58,30 +51,38 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
     const [isHovered, setIsHovered] = React.useState(false);
     const [isTextAnimated, setIsTextAnimated] = React.useState(false);
 
-    // Map the parent's scroll progress (0.4 to 0.85) to local progress (0 to 1).
-    // This leaves 0.85 to 1.0 (approx 90vh) as a "pause" where the user can just read the Tech Stack before it scrolls away.
-    const localProgress = useTransform(scrollYProgress, [0.4, 0.85], [0, 1]);
+    // Map the parent's scroll progress (0.32 to 0.95) to local progress (0 to 1).
+    // With 350vh total section height, this provides generous, cinematic scroll travel.
+    const localProgress = useTransform(scrollYProgress, [0.32, 0.95], [0, 1]);
 
     // 1. Card Transformation (Entrance & Scaling)
-    const cardScale = useTransform(localProgress, [0, 0.4], [0.8, 1], { ease: easeInOut });
-    const cardY = useTransform(localProgress, [0, 0.4], ["60vh", "0vh"], { ease: easeInOut });
-    const cardBorderRadius = useTransform(localProgress, [0.1, 0.4], ["60px", "0px"], { ease: easeInOut });
+    const cardScale = useTransform(localProgress, [0, 0.22], [0.85, 1], { ease: easeInOut });
+    const cardY = useTransform(localProgress, [0, 0.22], ["40vh", "0vh"], { ease: easeInOut });
+    const cardBorderRadius = useTransform(localProgress, [0.05, 0.22], ["40px", "0px"], { ease: easeInOut });
 
-    // 2. Internal Content Scroll
-    const contentY = useTransform(localProgress, [0.35, 1], ["0%", "-70%"], { ease: easeInOut });
-    const imageParallaxY = useTransform(localProgress, [0.35, 1], ["-10%", "10%"], { ease: easeInOut });
+    // 2. Internal Content Scroll - Marquee holds clearly before transitioning to the portrait
+    // From 0.22 to 0.32: Marquee header is clearly visible and readable
+    // From 0.32 to 0.72: Smooth vertical transition from Marquee to Galileo/Duke Portrait (centers at -100vh)
+    // From 0.72 to 1.0: Portrait transitions gracefully to narrative and tech stack
+    const contentY = useTransform(localProgress, [0.32, 0.72, 1], ["0vh", "-100vh", "-170vh"], { ease: easeInOut });
+    const imageParallaxY = useTransform(localProgress, [0.32, 0.72], ["-3%", "3%"], { ease: easeInOut });
 
     // 3. Elements specific animations
-    const phase0Opacity = useTransform(localProgress, [0, 0.15], [1, 0]);
-    const cardContentOpacity = useTransform(localProgress, [0.1, 0.3], [0, 1]);
-    const photoScale = useTransform(localProgress, [0.3, 0.8], [1.15, 1], { ease: easeInOut });
-    const textOpacity = useTransform(localProgress, [0.85, 1], [0, 1]);
+    const phase0Opacity = useTransform(localProgress, [0, 0.1], [1, 0]);
+    const cardContentOpacity = useTransform(localProgress, [0.08, 0.22], [0, 1]);
+    const photoScale = useTransform(localProgress, [0.32, 0.72], [1.05, 1], { ease: easeInOut });
+    const textOpacity = useTransform(localProgress, [0.75, 0.98], [0, 1]);
 
     useMotionValueEvent(localProgress, "change", (latest) => {
-        if (latest > 0.85 && !isTextAnimated) {
+        if (latest > 0.82 && !isTextAnimated) {
             setIsTextAnimated(true);
         }
     });
+
+    const [mounted, setMounted] = React.useState(false);
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // 4. Background Color Transition (Smoothing the exit)
     const cardBg = useTransform(
@@ -96,17 +97,30 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
     );
 
     const { resolvedTheme } = useTheme();
-    const cardBgValue = resolvedTheme === 'dark' ? cardBgDark : cardBg;
+    const isDark = mounted ? resolvedTheme === 'dark' : true;
+    const cardBgValue = isDark ? cardBgDark : cardBg;
 
     // Dynamic vault frame gradients that always match the card's transitioning background
-    const vaultGradientDown = useTransform(cardBgValue, (color: string) => {
-        const hex = color.replace('#', '');
-        return `linear-gradient(to bottom, #${hex}, #${hex}00)`;
-    });
-    const vaultGradientUp = useTransform(cardBgValue, (color: string) => {
-        const hex = color.replace('#', '');
-        return `linear-gradient(to top, #${hex}, #${hex}00)`;
-    });
+    const getGradient = (color: string, direction: 'to bottom' | 'to top') => {
+        if (!color) return `linear-gradient(${direction}, #18181b, transparent)`;
+        if (color.startsWith('#')) {
+            const hex = color.replace('#', '');
+            if (hex.length === 6) {
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                return `linear-gradient(${direction}, rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, 0))`;
+            }
+        }
+        const match = color.match(/\d+,\s*\d+,\s*\d+/);
+        if (match) {
+            return `linear-gradient(${direction}, rgba(${match[0]}, 1), rgba(${match[0]}, 0))`;
+        }
+        return `linear-gradient(${direction}, ${color}, transparent)`;
+    };
+
+    const vaultGradientDown = useTransform(cardBgValue, (color: string) => getGradient(color, 'to bottom'));
+    const vaultGradientUp = useTransform(cardBgValue, (color: string) => getGradient(color, 'to top'));
 
     const marqueeItems = [
         <span key="1" className="text-[10rem] md:text-[16rem] font-black uppercase tracking-tighter mx-12 text-black dark:text-white leading-none">
@@ -176,6 +190,7 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
 
             {/* The Main Card Container */}
             <motion.div
+                suppressHydrationWarning
                 style={{
                     scale: cardScale,
                     y: cardY,
@@ -223,20 +238,23 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
                                     className="relative w-full h-full"
                                 >
                                     <div className="absolute inset-0">
-                                        {/* Parallax wrapper */}
-                                        <div className="absolute w-[calc(100%+100px)] h-[130vh] -top-[15vh] -left-[50px]">
+                                        {/* Parallax wrapper centered so head and face are always fully visible */}
+                                        <div className="absolute inset-x-0 w-full h-[112%] -top-[6%]">
                                             <motion.div 
                                                 className="relative h-full w-full" 
                                                 style={{ y: imageParallaxY }}
                                             >
                                                 <Image
-                                                    src={portfolioData.personal.avatar}
-                                                    alt="Profile"
+                                                    src={isHovered ? "/about/duke.jpg" : portfolioData.personal.avatar}
+                                                    alt={isHovered ? "Duke — Classical Pedigree" : "Galileo — Visionary Exploration"}
                                                     fill
-                                                    className="object-cover object-bottom grayscale-0"
+                                                    className="object-cover object-[center_15%] grayscale-0 transition-opacity duration-700"
                                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                                                     priority
                                                 />
+                                                <div className="absolute bottom-6 left-6 z-30 px-4 py-2 rounded-full glass-strong text-xs font-bold tracking-wider uppercase text-white shadow-lg pointer-events-none">
+                                                    {isHovered ? "Duke — Classical Craft & Pedigree" : "Galileo — Visionary Wonder & Motion"}
+                                                </div>
                                             </motion.div>
                                         </div>
                                     </div>
@@ -245,13 +263,13 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
 
                             {/* Vault frame - OUTSIDE overflow-hidden, extends 1px beyond clip edge to cover it */}
                             <div className="absolute inset-0 pointer-events-none z-20">
-                                {/* Top bar: -top-px + h-[52px] covers the clip edge by 1px */}
-                                <motion.div style={{ backgroundColor: cardBgValue }} className="absolute -top-px left-0 w-full h-[52px]" />
-                                <motion.div style={{ background: vaultGradientDown }} className="absolute top-[50px] left-0 w-full h-32" />
+                                {/* Top bar: subtle frame that preserves head room */}
+                                <motion.div suppressHydrationWarning style={{ backgroundColor: cardBgValue }} className="absolute -top-px left-0 w-full h-[24px]" />
+                                <motion.div suppressHydrationWarning style={{ background: vaultGradientDown }} className="absolute top-[23px] left-0 w-full h-16" />
                                 
-                                {/* Bottom bar: -bottom-px + h-[52px] covers the clip edge by 1px */}
-                                <motion.div style={{ backgroundColor: cardBgValue }} className="absolute -bottom-px left-0 w-full h-[52px]" />
-                                <motion.div style={{ background: vaultGradientUp }} className="absolute bottom-[50px] left-0 w-full h-32" />
+                                {/* Bottom bar */}
+                                <motion.div suppressHydrationWarning style={{ backgroundColor: cardBgValue }} className="absolute -bottom-px left-0 w-full h-[24px]" />
+                                <motion.div suppressHydrationWarning style={{ background: vaultGradientUp }} className="absolute bottom-[23px] left-0 w-full h-16" />
                             </div>
                         </div>
                     </div>

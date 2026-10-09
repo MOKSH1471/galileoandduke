@@ -3,100 +3,18 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Send, CheckCircle, AlertCircle, Loader2, Disc, Music, ArrowUpRight, Sparkles, HelpCircle, MessageSquare, ExternalLink, Github, Linkedin, Twitter, Instagram, ChevronDown } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Loader2, ArrowUpRight, Sparkles, HelpCircle, MessageSquare, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { portfolioData } from '@/data/portfolio';
-import dynamic from 'next/dynamic';
-
-const Lanyard = dynamic<{ position?: [number, number, number], gravity?: [number, number, number], isLowPowerMode?: boolean }>(() => import('@/components/three/Lanyard').then(mod => mod.Lanyard), {
-    ssr: false,
-    loading: () => <div className="w-full h-full flex items-center justify-center bg-transparent"><Loader2 className="w-10 h-10 animate-spin text-primary" /></div>
-});
-
-const DynamicScrollVelocity = dynamic(() => import('@/components/ui/ScrollVelocity'), { ssr: false });
-const Meteors = dynamic(() => import('@/components/ui/meteors').then(mod => mod.Meteors), { ssr: false });
-
-import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
-import { DeferredMount } from '@/components/ui/DeferredMount';
-
-function SocialTicker({ items, direction = 'left', speed = 30, isLowPowerMode = false }: { items: any[], direction?: 'left' | 'right', speed?: number, isLowPowerMode?: boolean }) {
-    // 8x duplication ensures enough width to cover large screens twice over, allowing -50% translation without empty gaps on the right edge.
-    const multipliedItems = [...items, ...items, ...items, ...items, ...items, ...items, ...items, ...items];
-
-    return (
-        <div className="flex overflow-hidden relative w-full group/ticker py-4 select-none">
-            <motion.div
-                className="flex flex-nowrap hover:[animation-play-state:paused]"
-                initial={{ x: direction === 'left' ? 0 : '-50%' }}
-                animate={isLowPowerMode ? { x: direction === 'left' ? 0 : '-50%' } : { x: direction === 'left' ? '-50%' : 0 }}
-                transition={{
-                    ease: "linear",
-                    duration: speed * 4, // 4x duration because 8x duplication travels 4x further than 2x duplication
-                    repeat: Infinity,
-                }}
-                style={{ width: "max-content" }}
-            >
-                {multipliedItems.map((item, idx) => (
-                    <div key={`${item.name}-${idx}`} className="pr-4">
-                        <SocialCard item={item} />
-                    </div>
-                ))}
-            </motion.div>
-
-            {/* Gradient Masks */}
-            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-        </div>
-    );
-}
-
-const socialIconsMap: Record<string, React.ElementType> = {
-    github: Github,
-    linkedin: Linkedin,
-    twitter: Twitter,
-    instagram: Instagram,
-    discord: Disc,
-    spotify: Music
-};
-
-function SocialCard({ item }: { item: any }) {
-    const Icon = item.image || ArrowUpRight;
-    return (
-        <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative flex h-[140px] w-[280px] flex-col justify-between rounded-3xl border border-neutral-200 dark:border-white/5 bg-white dark:bg-white/[0.02] p-6 shadow-sm dark:shadow-2xl transition-all hover:bg-neutral-50 dark:hover:bg-white/5 hover:border-neutral-300 hover:scale-[1.02] hover:-translate-y-1 backdrop-blur-md overflow-hidden flex-shrink-0"
-        >
-            <div className="absolute -top-6 -right-6 p-6 opacity-[0.03] group-hover:opacity-10 transition-opacity transform group-hover:scale-125 duration-700">
-                <Icon className="w-40 h-40" />
-            </div>
-
-            <div className="relative z-10 flex items-center gap-4">
-                <div className="relative h-12 w-12 flex items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shadow-inner ring-1 ring-white/5">
-                    <Icon className="w-6 h-6" />
-                </div>
-                <div className="flex flex-col">
-                    <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors tracking-tight">{item.name}</span>
-                    <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground/80">@{item.username}</span>
-                </div>
-            </div>
-
-            <div className="relative z-10 flex items-center justify-between mt-auto pt-4 border-t border-border">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 group-hover:text-foreground/70 transition-colors">
-                    Connect
-                </span>
-                <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-primary opacity-50 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
-            </div>
-        </a>
-    );
-}
+import { usePerformance } from '@/hooks/usePerformance';
+import SovereignBondSection from '@/components/sections/SovereignBondSection';
 
 const InputGroup = ({ label, name, type = "text", value, onChange, required = false }: any) => {
     return (
         <div className="group relative z-0 w-full mb-10">
             {type === 'textarea' ? (
                 <textarea
+                    id={`contact-${name}`}
+                    maxLength={5000}
                     name={name}
                     value={value}
                     onChange={onChange}
@@ -107,6 +25,8 @@ const InputGroup = ({ label, name, type = "text", value, onChange, required = fa
                 />
             ) : (
                 <input
+                    id={`contact-${name}`}
+                    maxLength={name === 'email' ? 254 : name === 'name' ? 100 : 200}
                     type={type}
                     name={name}
                     value={value}
@@ -116,7 +36,7 @@ const InputGroup = ({ label, name, type = "text", value, onChange, required = fa
                     placeholder=" "
                 />
             )}
-            <label className="absolute top-3 -z-10 origin-[0] -translate-y-8 scale-75 transform text-sm font-bold tracking-widest text-muted-foreground duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-foreground">
+            <label htmlFor={`contact-${name}`} className="absolute top-3 -z-10 origin-[0] -translate-y-8 scale-75 transform text-sm font-bold tracking-widest text-muted-foreground duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-foreground">
                 {label.toUpperCase()}
             </label>
         </div>
@@ -127,10 +47,15 @@ function ContactForm() {
     const t = useTranslations('contact');
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('loading');
+        setErrorMessage(null);
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
 
         try {
             const response = await fetch('/api/contact', {
@@ -139,19 +64,29 @@ function ContactForm() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
+                signal: controller.signal,
             });
+
+            clearTimeout(timeoutId);
 
             if (response.ok) {
                 setStatus('success');
                 setFormData({ name: '', email: '', subject: '', message: '' });
+                setTimeout(() => setStatus('idle'), 6000);
             } else {
+                const data = await response.json().catch(() => ({}));
                 setStatus('error');
+                setErrorMessage(data?.error || 'Unable to deliver message right now.');
             }
-        } catch (error) {
+        } catch (error: any) {
+            clearTimeout(timeoutId);
             console.error('Error submitting form:', error);
             setStatus('error');
-        } finally {
-            setTimeout(() => setStatus('idle'), 3000);
+            if (error?.name === 'AbortError') {
+                setErrorMessage('Request timed out after 10 seconds. Please check your connection.');
+            } else {
+                setErrorMessage('Network or server error encountered.');
+            }
         }
     };
 
@@ -160,8 +95,8 @@ function ContactForm() {
     };
 
     return (
-        <div className="w-full relative z-20">
-            {/* Typography Header - Creative & Big */}
+        <div id="contact-form" className="w-full relative z-20 scroll-mt-28">
+            {/* Typography Header */}
             <div className="mb-16">
                 <h2 className="text-5xl md:text-7xl font-black tracking-tight text-foreground relative z-10">
                     {t('hero.title')}
@@ -176,7 +111,7 @@ function ContactForm() {
                 <InputGroup label={t('form.email')} name="email" type="email" value={formData.email} onChange={handleChange} required />
                 <InputGroup label={t('form.subject')} name="subject" value={formData.subject} onChange={handleChange} required />
                 <InputGroup
-                    label={t('form.messagePlaceholder')} // Using placeholder label style
+                    label={t('form.messagePlaceholder')}
                     name="message"
                     type="textarea"
                     value={formData.message}
@@ -202,6 +137,30 @@ function ContactForm() {
                         }
                     </div>
                 </motion.button>
+
+                {/* Accessible Status Message Banner */}
+                <div aria-live="polite" className="mt-6 min-h-[24px]">
+                    {status === 'success' && (
+                        <div className="flex items-center gap-3 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+                            <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                            <span>Your message was sent successfully. We will reply shortly.</span>
+                        </div>
+                    )}
+                    {status === 'error' && (
+                        <div className="flex items-start gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium">
+                            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                            <div className="flex-1">
+                                <p className="font-semibold">Unable to deliver your message.</p>
+                                <p className="mt-1 text-xs opacity-90">
+                                    {errorMessage || 'Something went wrong.'} Your form inputs have been saved. You can try again, or write directly to{' '}
+                                    <a href="mailto:hello@galileoduke.com" className="underline font-bold hover:opacity-100">
+                                        hello@galileoduke.com
+                                    </a>.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </form>
         </div>
     );
@@ -237,7 +196,6 @@ function FAQSection() {
     return (
         <div className="w-full max-w-6xl mx-auto py-20 px-4 md:px-8">
             <div className="flex flex-col items-center mb-16 relative z-10 text-center">
-
                 <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">Frequently Asked Questions</h2>
                 <div className="h-1 w-20 bg-primary/20 rounded-full" />
             </div>
@@ -287,34 +245,9 @@ function FAQSection() {
     );
 }
 
-const socialDescriptions: Record<string, string> = {
-    GitHub: "Open Source",
-    LinkedIn: "Professional",
-    Twitter: "Thoughts",
-    Instagram: "Lifestyle",
-    Discord: "Community",
-    Spotify: "Music"
-};
-
-import { usePerformance } from '@/hooks/usePerformance';
-
 export default function ContactPage() {
     const t = useTranslations('contact');
     const { isLowPowerMode } = usePerformance();
-
-    const getSocialItem = (platform: string) => {
-        const link = portfolioData.personal.socialLinks.find(l => l.platform.toLowerCase() === platform);
-        return {
-            name: (link?.platform || platform).charAt(0).toUpperCase() + (link?.platform || platform).slice(1),
-            username: link?.username || '@user',
-            body: socialDescriptions[link?.platform || platform] || "Connect",
-            image: socialIconsMap[platform.toLowerCase()] || ArrowUpRight,
-            url: link?.url || '#'
-        };
-    };
-
-    const row1Real = ['linkedin', 'github', 'instagram'].map(getSocialItem);
-    const row2Real = ['twitter', 'discord', 'spotify'].map(getSocialItem);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -332,19 +265,13 @@ export default function ContactPage() {
     const headerScale = useTransform(showFAQ, [0, 0.4], [1, 0.98]);
     const headerFilter = useTransform(showFAQ, [0, 0.4], ["blur(0px)", "blur(2px)"]);
 
-
     return (
         <div ref={containerRef} className="relative bg-background selection:bg-primary/20">
-            {/* 2. HEADER & BACKGROUNDS */}
+            {/* Background Grid & Backdrop */}
             <div className="fixed inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] pointer-events-none z-0" />
             <div className="fixed inset-0 bg-background/60 backdrop-blur-[2px] pointer-events-none z-0" />
-            <DeferredMount>
-                <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden">
-                    {!isLowPowerMode && <Meteors number={50} />}
-                </div>
-            </DeferredMount>
 
-            {/* 3. MAIN CONTENT: (Header + Form + Lanyard) */}
+            {/* Main Content: (Header + Form + Lanyard) */}
             <motion.div
                 className="relative z-10"
                 style={{
@@ -353,106 +280,53 @@ export default function ContactPage() {
                     filter: isLowPowerMode ? "none" : headerFilter,
                 }}
             >
+                {/* Interaction Section (Bond + Form) */}
+                <div className="container-creative px-4 md:px-8 max-w-[1200px] mx-auto pt-28 md:pt-36 pb-40">
+                    <div className="flex flex-col gap-16 relative z-10">
+                        {/* Sovereign Treasury Bond Underwriting */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="w-full"
+                        >
+                            <SovereignBondSection />
+                        </motion.div>
 
-                {/* Header Section (Flows normally) */}
-                <div className="relative w-full pt-48 pb-20">
-                    <div className="w-full flex items-center justify-center opacity-20 select-none pointer-events-none">
-                        <DynamicScrollVelocity
-                            texts={[t('hero.ticker.build'), t('hero.ticker.freelance')]}
-                            velocity={20}
-                            className="text-7xl md:text-[9rem] font-black tracking-tight uppercase whitespace-nowrap"
-                            isLowPowerMode={isLowPowerMode}
-                        />
+                        {/* Contact Form */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <ContactForm />
+                        </motion.div>
                     </div>
                 </div>
 
-                {/* Interaction Section (Lanyard + Social + Form) */}
-                {/* We keep this relative and stable. No shrinking or fading here. */}
-                <div className="container-creative px-4 md:px-8 max-w-[1800px] mx-auto pb-40">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-
-                        {/* LEFT COLUMN: Lanyard */}
-                        <div className="col-span-1 lg:col-span-4 relative lg:sticky top-0 h-[400px] md:h-[500px] lg:h-[90vh] pointer-events-none z-20">
-                            {/* Anchor Slot/Bar for Lanyard */}
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 md:w-64 lg:w-96 h-2 bg-gradient-to-r from-transparent via-foreground/20 to-transparent blur-[2px] rounded-full z-30 mt-[-1px]" />
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 md:w-32 lg:w-48 h-[3px] bg-gradient-to-r from-transparent via-foreground/40 to-transparent rounded-full z-30" />
-
-                            <DeferredMount fallback={<div className="w-full h-full flex items-center justify-center opacity-50"><Loader2 className="w-8 h-8 animate-spin" /></div>}>
-                                <div className="w-full h-full pointer-events-auto overflow-visible">
-                                    {!isLowPowerMode ? (
-                                        <ErrorBoundary fallback={<div className="w-full h-full flex items-center justify-center opacity-50">Interactive Card Unavailable</div>}>
-                                            <Lanyard position={[0, 0, 15]} gravity={[0, -40, 0]} isLowPowerMode={isLowPowerMode} />
-                                        </ErrorBoundary>
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center p-8">
-                                            <div className="relative w-full max-w-sm aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 bg-primary/5">
-                                                <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/20 italic font-serif">
-                                                    Archive ID // Static
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </DeferredMount>
-                        </div>
-
-                        {/* RIGHT COLUMN: Content Stack */}
-                        <div className="col-span-1 lg:col-span-8 flex flex-col gap-16 relative z-10 pt-10 lg:pt-0">
-
-                            {/* Social Connect */}
-                            <motion.div
-                                className="w-full"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                            >
-                                <div className="flex flex-col gap-1">
-                                    <SocialTicker items={row1Real} direction="right" speed={50} isLowPowerMode={isLowPowerMode} />
-                                    <SocialTicker items={row2Real} direction="left" speed={50} isLowPowerMode={isLowPowerMode} />
-                                </div>
-                            </motion.div>
-
-                            {/* Contact Form */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                            >
-                                <ContactForm />
-                            </motion.div>
-
-
-                        </div>
-                    </div>
-                </div>
-
-                {/* FAQ TRIGGER ZONE: Positioned after the form to initiate the cover */}
-                {/* Massive 100vh runway for the most natural transition trip possible */}
+                {/* FAQ TRIGGER ZONE */}
                 <div ref={faqTriggerRef} className="h-[100vh] w-full pointer-events-none" />
-            </motion.div >
+            </motion.div>
 
-            {/* 4. FAQ SECTION: The "Full Viewport Cover" Layer */}
-            < motion.section
+            {/* FAQ SECTION */}
+            <motion.section
                 className="relative z-50 bg-background overflow-hidden"
                 style={{
                     y: useTransform(showFAQ, [0, 1], ["100vh", "0vh"]),
                     marginTop: "-100vh",
-                }
-                }
+                }}
             >
-                {/* Dedicated Meteors for FAQ Section - Reduced count */}
-                <div className="absolute inset-0 pointer-events-none z-0 opacity-40">
-                    {!isLowPowerMode && <Meteors number={30} />}
-                </div>
+                {/* Ambient glow */}
+                <div className="absolute inset-0 pointer-events-none z-0 opacity-40 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
 
-                {/* Ultra-Smooth Sheet Edge: Tallest gradient for deep cinematic transition */}
-                < div className="absolute top-0 left-0 right-0 h-[40rem] bg-gradient-to-t from-background via-background/95 to-transparent -translate-y-full pointer-events-none" />
+                {/* Ultra-Smooth Sheet Edge */}
+                <div className="absolute top-0 left-0 right-0 h-[40rem] bg-gradient-to-t from-background via-background/95 to-transparent -translate-y-full pointer-events-none" />
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
                 <div className="container-creative px-4 md:px-8 max-w-[1700px] mx-auto py-32 pb-32 relative z-10">
                     <FAQSection />
                 </div>
-            </motion.section >
-        </div >
+            </motion.section>
+        </div>
     );
 }

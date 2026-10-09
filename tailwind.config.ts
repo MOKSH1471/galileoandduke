@@ -89,6 +89,15 @@ const config: Config = {
 				mono: [
 					'var(--font-jetbrains)',
 					'monospace'
+				],
+				serif: [
+					'var(--font-playfair)',
+					'Georgia',
+					'serif'
+				],
+				signature: [
+					'var(--font-signature)',
+					'cursive'
 				]
 			},
 			animation: {

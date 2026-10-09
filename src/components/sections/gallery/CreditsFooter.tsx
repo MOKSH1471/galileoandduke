@@ -11,7 +11,11 @@ export default function CreditsFooter() {
     const credits = [
         {
             role: "Directed By",
-            name: "Arfazrll"
+            name: "Moksh & Varul"
+        },
+        {
+            role: "Design & Development Studio",
+            name: "Galileo & Duke"
         },
         {
             role: "Visual Engineering",
@@ -61,7 +65,7 @@ export default function CreditsFooter() {
                     className="pt-24"
                 >
                     <p className="text-[10px] font-mono uppercase tracking-widest text-white/20 mb-8">
-                        Production © 2024
+                        Galileo & Duke Studio © 2026
                     </p>
 
                     <button

@@ -6,14 +6,15 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 function Counter({ value, decimals = 0 }: { value: number; decimals?: number }) {
-  const count = useMotionValue(1);
+  const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => latest.toFixed(decimals));
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "50px" });
 
   useEffect(() => {
+    // Start animation if in view or as fallback after mount
     if (isInView) {
-      const controls = animate(count, value, { duration: 2, ease: "easeOut" });
+      const controls = animate(count, value, { duration: 1.8, ease: [0.16, 1, 0.3, 1] });
       return () => controls.stop();
     }
   }, [count, value, isInView]);
@@ -35,36 +36,36 @@ export default function Testimonial1() {
 
   const stats: StatItem[] = [
     {
-      value: 3.62,
-      decimals: 2,
-      suffix: "/4.0",
-      label: "Current GPA",
-      href: "/resume",
-      cta: "View Resume",
+      value: 0,
+      decimals: 0,
+      suffix: " Shortcuts",
+      label: "Bespoke Architecture",
+      href: "/about",
+      cta: "Our Philosophy",
     },
     {
-      value: 20,
+      value: 3,
       decimals: 0,
-      suffix: "+",
-      label: "Projects Completed",
+      suffix: " Flagships",
+      label: "Featured Case Studies",
       href: "/projects",
-      cta: "View Projects",
+      cta: "Explore Portfolio",
     },
     {
-      value: 2,
+      value: 4,
       decimals: 0,
-      suffix: " Years",
-      label: "Professional Exp",
+      suffix: " Milestones",
+      label: "Disciplined Delivery",
       href: "/experience",
-      cta: "Explore Career",
+      cta: "Our Approach",
     },
     {
-      value: 34,
+      value: 24,
       decimals: 0,
-      suffix: "+",
-      label: "Tech & Tools",
-      href: "/skills",
-      cta: "See Skills",
+      suffix: "h Response",
+      label: "Direct Collaboration",
+      href: "/contact",
+      cta: "Start A Project",
     },
   ];
 
@@ -85,21 +86,21 @@ export default function Testimonial1() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute inline-flex h-full w-full rounded-full bg-green-400/60"
+                className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/60"
               />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
             </span>
-            Professional Statistics
+            The Atelier Standard
           </div>
         </div>
 
         {/* Main Heading with Refined Block Reveal Animation */}
         <div className="text-center max-w-5xl mx-auto relative text-neutral-900 dark:text-white px-4 space-y-1 md:space-y-2">
           {[
-            { text: "Data that speaks. AI that reasons.", color: "#6366f1", delay: 0 },
-            { text: "Software that ships.", color: "#10b981", delay: 0.15 },
-            { text: "Three disciplines, one engineer", color: "#f59e0b", delay: 0.3 },
-            { text: "and the numbers behind the work.", color: "#ef4444", delay: 0.45 }
+            { text: "Taste you cannot automate.", color: "#6366f1", delay: 0 },
+            { text: "Distinction you cannot duplicate.", color: "#10b981", delay: 0.15 },
+            { text: "We engineer category-defining flagships", color: "#f59e0b", delay: 0.3 },
+            { text: "for brands with something real to say.", color: "#06b6d4", delay: 0.45 }
           ].map((line, i) => (
             <div key={i} className="relative block overflow-hidden py-1.5">
               <motion.h1

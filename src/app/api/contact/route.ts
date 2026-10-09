@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { readJson, RequestError, validateContact } from '@/lib/api-validation';
+import { limitRequest } from '@/lib/rate-limit';
 
 function escapeHtml(str: string) {
     if (!str) return '';
@@ -12,18 +14,21 @@ function escapeHtml(str: string) {
 }
 
 export async function POST(req: Request) {
+    const limited = limitRequest(req, 'contact');
+    if (limited) return limited;
     try {
-        const { name, email, subject, message } = await req.json();
-
-        // Basic validation
-        if (!name || !email || !message) {
-            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        const { name, email, subject, message } = validateContact(await readJson(req, 24_000));
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
+            return NextResponse.json({ error: 'Contact delivery is temporarily unavailable.' }, { status: 503 });
         }
 
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
             secure: true,
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 15000,
             auth: {
                 user: process.env.EMAIL_USER || '',
                 pass: process.env.EMAIL_APP_PASSWORD || ''
@@ -38,8 +43,10 @@ export async function POST(req: Request) {
         // Email options
         const mailOptions = {
             from: process.env.EMAIL_USER || '',
-            to: process.env.EMAIL_USER || '', // Where you want to receive the messages
-            subject: `New Message: ${safeSubject}`,
+            to: process.env.CONTACT_EMAIL || process.env.EMAIL_USER,
+            replyTo: email,
+            subject: `New Message: ${subject}`,
+            text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
             html: `
                 <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
                     <h3 style="color: #333;">You have a new message from your website!</h3>
@@ -57,7 +64,10 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ message: 'Email sent successfully!' }, { status: 200 });
     } catch (error) {
+        if (error instanceof RequestError) {
+            return NextResponse.json({ error: error.message }, { status: error.status });
+        }
         console.error('Error sending email:', error);
-        return NextResponse.json({ error: 'Failed to send email. Ensure Gmail App Password is set.' }, { status: 500 });
+        return NextResponse.json({ error: 'Unable to send your message. Please try again later.' }, { status: 500 });
     }
 }

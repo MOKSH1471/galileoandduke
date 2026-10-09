@@ -4,7 +4,7 @@
         "about": "About",
         "projects": "Projects",
         "experience": "Experience",
-        "skills": "Skills",
+        "skills": "Capabilities",
         "achievements": "Achievements",
         "blog": "Blog",
         "gallery": "Gallery",
@@ -14,8 +14,8 @@
         "menu": {
             "achievements": "Achievements",
             "achievementsDesc": "Certifications, awards, and milestones",
-            "skills": "Skills",
-            "skillsDesc": "Technologies and tools I work with",
+            "skills": "Capabilities",
+            "skillsDesc": "Services, deliverables, and production stack",
             "experience": "Experience",
             "experienceDesc": "My professional journey and growth",
             "projects": "Projects",
@@ -35,90 +35,90 @@
         }
     },
     "hero": {
-        "greeting": "Welcome to my digital space",
-        "subtitle": "Full Stack Developer • AI Engineer • Data Scientist",
+        "greeting": "Galileo & Duke Studio",
+        "subtitle": "Web experiences beyond the template — cinematic motion, scroll-driven storytelling, and bespoke engineering.",
         "cta": {
-            "primary": "Explore Projects",
-            "secondary": "Get in Touch",
-            "exploreMore": "Explore More"
+            "primary": "Explore Flagships",
+            "secondary": "Initiate Project",
+            "exploreMore": "Our Capabilities"
         },
-        "badge": "Available for opportunities",
-        "scroll": "Scroll Down",
-        "role": "Software Engineer",
-        "description": "Building intelligent systems at the intersection of <span class='text-primary font-semibold'>AI</span>, <span class='text-secondary font-semibold'>Engineering</span>, and <span class='text-accent font-semibold'>Scalable Architecture</span>."
+        "badge": "Open for Commissions",
+        "scroll": "Scroll to Discover",
+        "role": "Design & Development Studio",
+        "description": "Crafting flagship web experiences at the intersection of <span class='text-primary font-semibold'>Cinematic Motion</span>, <span class='text-secondary font-semibold'>Spatial 3D</span>, and <span class='text-accent font-semibold'>Bespoke Engineering</span>."
     },
     "about": {
-        "title": "About Me",
-        "subtitle": "Tech Explorer & Problem Solver",
-        "description": "A passionate tech explorer specializing in Full Stack Development, Artificial Intelligence, and Data Science. Currently diving deep into AI Agents and Blockchain technology.",
+        "title": "About Galileo & Duke",
+        "subtitle": "Founded by Moksh & Varul",
+        "description": "Galileo & Duke is an independent design and development studio founded by Moksh and Varul. We build web experiences that transcend templates — scroll-driven storytelling, cinematic motion, and interfaces engineered with as much care as the brands they represent.",
         "stats": {
-            "experience": "Years Learning",
-            "projects": "Projects Done",
-            "certifications": "Certifications",
-            "competitions": "Competitions"
+            "experience": "Years of Craft",
+            "projects": "Flagships Shipped",
+            "certifications": "Motion Systems",
+            "competitions": "Design Accolades"
         },
-        "identity": "Identity Link Established",
-        "architecting": "Architecting",
-        "digitalReality": "Digital Reality",
+        "identity": "Galileo & Duke Heritage",
+        "architecting": "Engineering",
+        "digitalReality": "Digital Wonder",
         "leadIn": {
-            "label": "WHAT I DO",
-            "tagline": "CORE FOCUS",
-            "headlineAI": "Applied AI.",
-            "headlineData": "Scalable Data.",
-            "headlineSoftware": "Robust software engineering",
-            "thesis": "I build intelligent systems and the <span class='text-primary italic font-serif-elegant font-normal'>data infrastructure</span> that makes them reliable at scale.",
-            "scope": "Focusing on predictive models, optimized data processing, and RAG pipelines designed for production environments and measurable performance.",
-            "bridging": "Bridging labs and live systems.",
-            "integration": "Beyond models, I architect full-stack ecosystems: secure backends, robust data architectures, and scalable pipelines.",
-            "signature": "Azril",
-            "role": "AI, Data & Software Engineer",
-            "aboutMe": "About Me",
+            "label": "STUDIO ETHOS",
+            "tagline": "DUAL HERITAGE",
+            "headlineAI": "Visionary Motion.",
+            "headlineData": "Spatial Depth.",
+            "headlineSoftware": "Classical craft & precision",
+            "thesis": "We build digital flagships where <span class='text-primary italic font-serif-elegant font-normal'>celestial ambition</span> meets obsessive architectural craft.",
+            "scope": "We partner with brands who want their website to feel like a piece of craft, not a checkbox — from scroll-scrubbed video sequences to fully custom motion systems built with GSAP, React Three Fiber, and physics-based interaction.",
+            "bridging": "Galileo's telescope meets the Duke's pedigree.",
+            "integration": "Moksh and Varul unite creative direction, spatial 3D WebGL, and robust architecture to deliver web experiences engineered to endure.",
+            "signature": "Galileo & Duke",
+            "role": "Moksh & Varul — Founders",
+            "aboutMe": "Our Story",
             "scroll": "Scroll to Explore",
-            "shortStory": "My Short Story"
+            "shortStory": "Our Heritage"
         },
         "coreEngineering": {
-            "label": "Core Engineering",
-            "title": "Proven <span class='text-primary italic font-serif font-light lowercase'>stack.</span> <br /> Measurable <span class='italic font-serif font-light text-foreground'>results.</span>",
-            "p1": "I develop applied AI systems using TensorFlow, Scikit-learn, and LangChain, structuring workflows and exposing models as services through Flask and FastAPI.",
-            "p2": "Integrated into full-stack apps with Next.js, Express.js, and Spring Boot, backed by PostgreSQL and Prisma ORM.",
-            "p3": "All projects use disciplined version control, Docker containerization, and are built for stable production deployment.",
-            "gpa": "Academic GPA",
-            "projects": "Projects Built",
-            "years": "Years Exp."
+            "label": "Craft & Engineering",
+            "title": "Bespoke <span class='text-primary italic font-serif font-light lowercase'>motion.</span> <br /> Architectural <span class='italic font-serif font-light text-foreground'>rigor.</span>",
+            "p1": "We engineer custom motion systems with GSAP ScrollTrigger, React Three Fiber, Three.js, and GLSL shaders to craft tactile, physics-based digital experiences.",
+            "p2": "Built on Next.js App Router, TypeScript, and modern CSS architecture, backed by smooth Lenis scrolling and uncompromising responsive design.",
+            "p3": "Every interaction is optimized for 60fps performance, seamless touch fidelity, and internationalized accessibility across all screen form-factors.",
+            "gpa": "Motion Standards",
+            "projects": "Flagships Built",
+            "years": "Studio Legacy"
         },
         "emergingResearch": {
-            "label": "Exploration Phase",
-            "title": "EMERGING RESEARCH <span class='italic font-serif font-light text-primary lowercase'>&</span> EXPANSION",
+            "label": "Dual Philosophy",
+            "title": "GALILEO <span class='italic font-serif font-light text-primary lowercase'>&</span> DUKE",
             "agentic": {
-                "title": "AGENTIC AI SYSTEMS",
-                "desc": "Exploring autonomous agents, multi-agent orchestration, and reasoning frameworks — extending my applied AI foundation into self-directed decision-making systems."
+                "title": "GALILEO — WONDER & EXPLORATION",
+                "desc": "Embodying the astronomer gazing into uncharted skies: unconstrained curiosity, 3D spatial WebGL, kinetic typography, and boundary-pushing creative technology led by Moksh."
             },
             "web3": {
-                "title": "WEB3 & BLOCKCHAIN",
-                "desc": "Building decentralized applications with Solidity and Hardhat. Currently hands-on with smart contract development through projects like the Web3 Guestbook DApp on Ethereum."
+                "title": "DUKE — PEDIGREE & CRAFT",
+                "desc": "Embodying the master craftsman and statesman: dignified restraint, structural integrity, high-performance architecture, and brand stewardship led by Varul."
             }
         },
         "profile": {
-            "title": "Architecting Scalable Systems <br /> Where Intelligence Meets Engineering.",
-            "narrativeLabel": "Core Narrative",
-            "narrative": "As an Information Technology student specializing in Artificial Intelligence and Software Engineering, I focus on building systems that bridge research foundations with production-ready implementation.",
-            "narrative2": "My work combines algorithmic thinking, backend engineering, and scalable architecture to deliver solutions that are intelligent, reliable, and built for real-world impact.",
+            "title": "Beyond the Template: <br /> Where Cinema Meets Code.",
+            "narrativeLabel": "Studio Manifesto",
+            "narrative": "Galileo & Duke was founded by Moksh and Varul on a single conviction: the modern web has traded wonder for predictability. Most websites feel like filled-in forms; we believe a brand's digital flagship should feel like bespoke architecture.",
+            "narrative2": "We combine cinematic storytelling, scroll-scrubbed video sequences, and tactile physics to create digital landmarks that leave an indelible mark on every visitor.",
             "pillars": {
                 "reliable": {
-                    "title": "Robust by Design",
-                    "desc": "Engineered for reliability under scale and operational pressure."
+                    "title": "Artisanal Precision",
+                    "desc": "Engineered with the meticulous attention of bespoke tailoring and fine typography."
                 },
                 "optimized": {
-                    "title": "Production-Ready",
-                    "desc": "From prototype to deployment with engineering discipline."
+                    "title": "Cinematic Motion",
+                    "desc": "Scroll-choreographed narratives and 3D scenes that immerse without stutter."
                 },
                 "maintainable": {
-                    "title": "Architected for Evolution",
-                    "desc": "Designed to grow, adapt, and sustain long-term system development."
+                    "title": "Engineered to Endure",
+                    "desc": "Scalable Next.js and TypeScript architectures designed for stability and longevity."
                 },
                 "evolvable": {
-                    "title": "Data-Driven Intelligence",
-                    "desc": "Decisions powered by models, metrics, and measurable performance."
+                    "title": "Brand Elevation",
+                    "desc": "Digital flagships engineered to command authority and convert discerning audiences."
                 }
             }
         },
@@ -168,8 +168,8 @@
                     "desc": "Modern, animated portfolio with 3D elements, physics-simulated interactions, and shader-based warp effects. Engineered for high performance & optimization."
                 },
                 {
-                    "title": "SNBTIn - Platform Persiapan SNBT 2025",
-                    "desc": "Leading EdTech platform in Indonesia for exam preparation. Featuring a comprehensive learning ecosystem with interactive and real-time analytics."
+                    "title": "SNBTIn - EdTech Platform",
+                    "desc": "Leading EdTech platform for exam preparation. Featuring a comprehensive learning ecosystem with interactive and real-time analytics."
                 },
                 {
                     "title": "TerraFlow Platform",
@@ -177,7 +177,7 @@
                 },
                 {
                     "title": "DocsInsight Engine",
-                    "desc": "Private RAG platform for intelligent document analysis. Powered by local LLMs through Ollama, with LangChain orchestration and ChromaDB vector search."
+                    "desc": "Private RAG platform for intelligent document analysis. Powered by local LLMs through Ollama, with automated pipeline orchestration and ChromaDB vector search."
                 },
                 {
                     "title": "POLABDC Dental Management",
@@ -344,49 +344,49 @@
             "title": "LET'S TALK",
             "subtitle": "Have an idea? Let's build something extraordinary together.",
             "ticker": {
-                "build": "Let's Build Something Amazing · ",
-                "freelance": "Available for Freelance · "
+                "build": "Galileo & Duke Studio · ",
+                "freelance": "Accepting Select Commissions · "
             }
         },
         "faqData": [
             {
-                "q": "What is your main area of expertise?",
-                "a": "As an Information Technology student at Telkom University and a Research Assistant at the Cyber Physical System Laboratory, I specialize in the intersection of Artificial Intelligence (Computer Vision & Deep Learning), Full-stack Development (Next.js & Node.js), and emerging Blockchain/Web3 technologies."
+                "q": "What is Galileo & Duke's core focus and expertise?",
+                "a": "Galileo & Duke is a design and development studio founded by Moksh and Varul. We build web experiences that go beyond the template — cinematic motion, scroll-driven storytelling, and bespoke engineering. We specialize in React Three Fiber, WebGL spatial interfaces, GSAP animation systems, and performance-optimized modern web architecture."
             },
             {
-                "q": "Are you available for research or freelance collaborations?",
-                "a": "Absolutely. I am currently active in AI research at the CPS Lab and HUMIC Research Center, but I'm always open to innovative freelance projects, internships, or technical collaborations that bridge innovation with strategic execution."
+                "q": "What types of projects do you partner on?",
+                "a": "We partner with ambitious brands, forward-thinking startups, and creative agencies seeking flagship web experiences — ranging from interactive 3D product launches, scroll-scrubbed video narratives, and custom design systems to complete digital brand transformations."
             },
             {
-                "q": "What is your typical tech stack for production?",
-                "a": "For AI projects, I primarily use Python with TensorFlow, PyTorch, and YOLO. For web applications, my go-to is the T3-style stack: Next.js, TypeScript, and Tailwind CSS, often integrated with AI Agents or Smart Contracts where appropriate."
+                "q": "What is your typical production tech stack?",
+                "a": "Our production stack pairs Next.js, React, and TypeScript with cutting-edge visual libraries including React Three Fiber, Three.js, GSAP, and Tailwind CSS. We engineer with physics-based interaction models while ensuring ultra-fast load speeds, robust SEO, and fluid 60fps performance across all devices."
             },
             {
-                "q": "Do you have experience with enterprise or lab projects?",
-                "a": "Yes, I've served as a System Analyst and AI Developer in various research-driven environments. I've architected everything from AIoT platforms and attack detection systems to student practicum modules for global audiences."
+                "q": "How do Moksh and Varul collaborate with clients?",
+                "a": "Every project is led directly by our co-founders. Moksh spearheads creative direction, visual prototyping, and frontend motion engineering. Varul directs brand strategy, client alignment, and technical architecture. This direct access ensures high agility, zero translation loss, and uncompromising craft."
             },
             {
                 "q": "How can we start a partnership or project?",
-                "a": "The most efficient way is to use the contact form above or reach out directly via email at azril4974@gmail.com. I'm usually able to respond within 24 hours to discuss how my technical skill set can add value to your initiatives."
+                "a": "The most efficient way is to use the contact form above or reach out directly via email at hello@galileoduke.com. Moksh and Varul review all project inquiries personally within 24 hours to explore collaboration fit."
             }
         ]
     },
     "footer": {
         "copyright": "All rights reserved.",
-        "madeWith": "Made with",
+        "madeWith": "Engineered with",
         "more": "More",
         "marquee": [
-            "Open to Opportunities",
-            "Frontend Development",
-            "Backend Architecture",
-            "UI/UX Design",
-            "Creative Coding",
-            "System Optimization"
+            "Independent Digital Atelier",
+            "Art Direction & Identity",
+            "High-Precision Frontend",
+            "Spatial & Kinetic Interaction",
+            "Bespoke Digital Flagships",
+            "Engineered in Kolkata • Operating Globally"
         ],
         "cta": {
-            "title": "Let's Work",
-            "titleHighlight": "Together",
-            "subtitle": "Have a project in mind? Let's build something extraordinary that solves real problems."
+            "title": "Let's Build Something",
+            "titleHighlight": "Extraordinary",
+            "subtitle": "Have a flagship in mind? Let's engineer a web experience that commands attention and leaves an impression."
         },
         "links": "LINKS",
         "socials": "SOCIALS",
@@ -396,18 +396,18 @@
     },
     "ctaSection": {
         "title": "Let's Build Something",
-        "together": "Together",
-        "subtitle": "Open to strategic collaborations in AI driven systems and scalable full Stack Engineering. Let’s transform ambitious ideas into production ready solutions.",
-        "start": "Hire Me",
-        "work": "View My Resume",
+        "together": "Extraordinary",
+        "subtitle": "Partner with Galileo & Duke to create digital experiences that transcend the template. Bespoke art direction, kinetic interaction, and interfaces engineered for discerning brands.",
+        "start": "Initiate Project",
+        "work": "Explore Flagships",
         "words": {
-            "amazing": "Amazing",
-            "innovative": "Innovative",
-            "intelligent": "Intelligent",
-            "creative": "Creative"
+            "amazing": "Cinematic",
+            "innovative": "Bespoke",
+            "intelligent": "Spatial",
+            "creative": "Timeless"
         },
-        "ribbon1": "Next.js • React • Python • PyTorch • Pandas • TypeScript • Node.js • Scikit-Learn • TensorFlow • SQL",
-        "ribbon2": "Software Engineer • AI Engineer • Data Scientist • Data Analyst • Machine Learning Engineer • Backend Developer • Full Stack Engineer • NLP Engineer • Data Engineer • Web Developer"
+        "ribbon1": "Creative Direction • Systematic Brand Architecture • Tactile UI • Micro-Choreography • Resilient Performance • Zero Templates",
+        "ribbon2": "Galileo & Duke • Science of Wonder & Rigor of Craft • Flagships for Discerning Brands • Global Delivery • Direct Collaboration"
     },
     "stats": {
         "systemStatus": "System Status: Analytics Active",
@@ -430,8 +430,8 @@
         "loadStable": "SYSTEM_LOAD: STABLE"
     },
     "projectHeader": {
-        "title": "Architecting Digital Reality",
-        "subtitle": "A curated showcase of technical innovation and creative engineering. Exploring the frontiers of <span class='font-bold text-foreground'>Artificial Intelligence</span>, Blockchain, Data, and Immersive Web experiences."
+        "title": "Selected Studio Flagships",
+        "subtitle": "Websites, digital storefronts, and automated workflows engineered with purpose. Exploring the intersection of <span class='font-bold text-foreground'>Cinematic Motion</span>, bespoke design, and intelligent automation."
     },
     "common": {
         "loading": "Loading...",
@@ -494,23 +494,5 @@
             "video": "Videos"
         },
         "viewMedia": "View Media"
-    },
-    "chatbot": {
-        "title": "AI Assistant",
-        "subtitle": "Ask me about Azril",
-        "placeholder": "Type a message...",
-        "greeting": "Hi! I'm an AI assistant for **{name}**. 👋\n\nI can answer questions about:\n- Skills & technical expertise\n- Projects and work\n- Experience\n- Education\n- And more!\n\nAnything you'd like to ask?",
-        "suggestions": [
-            "What are your main skills?",
-            "Tell me about your best project",
-            "What is your work experience?",
-            "What AI skills do you have?"
-        ],
-        "error": "An error occurred. Please try again.",
-        "invalidResponse": "Invalid response from server.",
-        "unknownError": "An unknown error occurred.",
-        "retry": "Try again",
-        "inputHint": "Enter to send, Shift+Enter for newline",
-        "close": "Close chat"
     }
 }

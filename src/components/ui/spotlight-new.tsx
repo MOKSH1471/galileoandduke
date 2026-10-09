@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 
 type SpotlightProps = {
     gradientFirst?: string;
@@ -25,8 +25,23 @@ export const Spotlight = ({
     duration = 7,
     xOffset = 100,
 }: SpotlightProps = {}) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(containerRef, { margin: "100px" });
+    const [reducedMotion, setReducedMotion] = useState(false);
+
+    useEffect(() => {
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+        setReducedMotion(mq.matches);
+        const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+        mq.addEventListener('change', handler);
+        return () => mq.removeEventListener('change', handler);
+    }, []);
+
+    const shouldAnimate = isInView && !reducedMotion;
+
     return (
         <motion.div
+            ref={containerRef}
             initial={{
                 opacity: 0,
             }}
@@ -39,12 +54,12 @@ export const Spotlight = ({
             className="pointer-events-none absolute inset-0 h-full w-full"
         >
             <motion.div
-                animate={{
+                animate={shouldAnimate ? {
                     x: [0, xOffset, 0],
-                }}
+                } : { x: 0 }}
                 transition={{
                     duration,
-                    repeat: Infinity,
+                    repeat: shouldAnimate ? Infinity : 0,
                     repeatType: "reverse",
                     ease: "easeInOut",
                 }}
@@ -82,12 +97,12 @@ export const Spotlight = ({
             </motion.div>
 
             <motion.div
-                animate={{
+                animate={shouldAnimate ? {
                     x: [0, -xOffset, 0],
-                }}
+                } : { x: 0 }}
                 transition={{
                     duration,
-                    repeat: Infinity,
+                    repeat: shouldAnimate ? Infinity : 0,
                     repeatType: "reverse",
                     ease: "easeInOut",
                 }}

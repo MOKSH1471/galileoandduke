@@ -1,36 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { Separator } from "@/components/ui/separator";
-import { Github, Linkedin, Instagram, ArrowDown, ArrowDownRight, Bot, Zap, ExternalLink, MessageSquare } from 'lucide-react';
+import { Github, Linkedin, Instagram, ArrowDownRight } from 'lucide-react';
 import { portfolioData } from "@/data/portfolio";
-import { cn } from "@/lib/utils";
 import Link from 'next/link';
 import gsap from "gsap";
-import { ProfileCard } from "@/components/ui/profile-card";
 import { Spotlight } from "@/components/ui/spotlight-new";
 
 export function HeroVisual({ isExiting = false }: { isExiting?: boolean }) {
   const { personal } = portfolioData;
-  const [showProfile, setShowProfile] = useState(false);
-  const [tooltip, setTooltip] = useState<{ show: boolean; text: string; x: number; y: number; icon: 'zap' | 'bot' | null }>({
-    show: false,
-    text: '',
-    x: 0,
-    y: 0,
-    icon: null
-  });
 
   const githubRef = useRef(null);
   const linkedinRef = useRef(null);
   const instagramRef = useRef(null);
-  const zapRef = useRef(null);
-  const zapSmallRef = useRef(null);
-  const botRef = useRef(null);
+  const heroSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isExiting) return;
 
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        gsap.set([githubRef.current, linkedinRef.current, instagramRef.current], { opacity: 1, y: 0 });
+        return;
+      }
+
       // Reveal + Loop for GitHub
       gsap.fromTo(githubRef.current,
         { opacity: 0, y: 40 },
@@ -59,12 +54,12 @@ export function HeroVisual({ isExiting = false }: { isExiting?: boolean }) {
           opacity: 1,
           y: 0,
           duration: 1,
-          delay: 0.1,
+          delay: 0.2,
           ease: "power3.out",
           onComplete: () => {
             gsap.to(linkedinRef.current, {
-              y: 10,
-              duration: 2.5,
+              y: -10,
+              duration: 2.2,
               repeat: -1,
               yoyo: true,
               ease: "sine.inOut",
@@ -81,12 +76,12 @@ export function HeroVisual({ isExiting = false }: { isExiting?: boolean }) {
           opacity: 1,
           y: 0,
           duration: 1,
-          delay: 0.2,
+          delay: 0.4,
           ease: "power3.out",
           onComplete: () => {
             gsap.to(instagramRef.current, {
-              x: 10,
-              duration: 3,
+              y: -10,
+              duration: 1.8,
               repeat: -1,
               yoyo: true,
               ease: "sine.inOut",
@@ -95,270 +90,192 @@ export function HeroVisual({ isExiting = false }: { isExiting?: boolean }) {
           }
         }
       );
-
-      // Zap pulsing - Energetic heartbeat effect
-      gsap.to([zapRef.current, zapSmallRef.current], {
-        scale: 1.2,
-        duration: 0.6,
-        repeat: -1,
-        yoyo: true,
-        ease: "power2.inOut",
-        force3D: true
-      });
-
-      // Bot floating - Responsive and smooth
-      gsap.to(botRef.current, {
-        rotation: 8,
-        y: -10,
-        duration: 1.8,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        force3D: true
-      });
     });
 
-    return () => ctx.revert();
+    // Pause floating loops when hero scrolls out of viewport (saves GPU/CPU)
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          gsap.globalTimeline.resume();
+        } else {
+          // Only pause the floating tweens on the social icons, not all GSAP
+          [githubRef.current, linkedinRef.current, instagramRef.current].forEach((el) => {
+            gsap.getTweensOf(el).forEach((t) => { if (t.isActive()) t.pause(); });
+          });
+        }
+      },
+      { threshold: 0.01 }
+    );
+    if (heroSectionRef.current) observer.observe(heroSectionRef.current);
+
+    // Pause when tab is hidden
+    const handleVisibility = () => {
+      if (document.hidden) {
+        [githubRef.current, linkedinRef.current, instagramRef.current].forEach((el) => {
+          gsap.getTweensOf(el).forEach((t) => t.pause());
+        });
+      } else {
+        [githubRef.current, linkedinRef.current, instagramRef.current].forEach((el) => {
+          gsap.getTweensOf(el).forEach((t) => t.resume());
+        });
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      ctx.revert();
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, [isExiting]);
 
   return (
     <motion.div
+      ref={heroSectionRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="relative min-h-screen w-full flex flex-col bg-background text-foreground overflow-hidden selection:bg-primary/20"
+      transition={{ duration: 1.5, ease: "easeInOut" }}
+      className="relative min-h-[90vh] md:min-h-screen flex flex-col justify-between overflow-hidden bg-background"
     >
-      {/* Background Pattern */}
-      <div className="w-full absolute h-full z-0 bg-[radial-gradient(circle,_#888_0.5px,_transparent_0.5px)] dark:bg-[radial-gradient(circle,_#444_0.5px,_transparent_0.5px)] opacity-20 [background-size:24px_24px]" />
-
-      {/* Spotlight Effect - Dramatic lighting */}
-      <div className="absolute inset-0 z-[5] pointer-events-none overflow-hidden">
+      {/* Background Spotlight */}
+      <div className="absolute inset-0 pointer-events-none z-0">
         <Spotlight
+          translateY={-300}
+          width={800}
+          height={1600}
+          smallWidth={400}
           duration={10}
           xOffset={120}
-          translateY={-300}
           gradientFirst="radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(0, 0%, 100%, .15) 0, hsla(0, 0%, 100%, .05) 50%, transparent 80%)"
           gradientSecond="radial-gradient(50% 50% at 50% 50%, hsla(0, 0%, 100%, .1) 0, hsla(0, 0%, 100%, .02) 80%, transparent 100%)"
           gradientThird="radial-gradient(50% 50% at 50% 50%, hsla(0, 0%, 100%, .08) 0, hsla(0, 0%, 100%, 0) 80%, transparent 100%)"
         />
       </div>
 
-      <main className="relative flex-1 flex flex-col justify-center pt-40 pb-20 z-10 max-w-[105rem] w-full mx-auto">
+      <section aria-label="Studio Introduction" className="relative flex-1 flex flex-col justify-center pt-36 md:pt-40 pb-16 z-10 max-w-[105rem] w-full mx-auto">
+        <h1 className="sr-only">Galileo &amp; Duke — Design &amp; Development Studio</h1>
         <div className="flex relative gap-4 px-6 md:items-center w-full flex-col justify-center">
 
-          {/* Follow-Cursor Tooltip */}
-          <AnimatePresence>
-            {tooltip.show && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ type: "spring", damping: 20, stiffness: 300 }}
-                className="fixed pointer-events-none z-[100] flex items-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-black font-bold px-4 py-2.5 rounded-full shadow-2xl"
-                style={{
-                  left: tooltip.x,
-                  top: tooltip.y,
-                  x: "-50%",
-                  y: "-150%", // offset slightly above the cursor
-                }}
-              >
-                {tooltip.icon === 'zap' && <ExternalLink className="w-4 h-4" />}
-                {tooltip.icon === 'bot' && <MessageSquare className="w-4 h-4" />}
-                <span className="text-sm">{tooltip.text}</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Line 1: AI & DATA */}
+          {/* Line 1: GALILEO */}
           <div className="md:flex gap-8 items-center relative">
             <motion.p
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-[10px] md:text-xs text-muted-foreground text-start md:text-right leading-relaxed max-w-[200px] md:max-w-[220px] font-medium uppercase tracking-[0.2em]"
+              className="text-[10px] md:text-xs text-muted-foreground text-start md:text-right leading-relaxed max-w-[200px] md:max-w-[240px] font-medium uppercase tracking-[0.2em]"
             >
-              Hi, I'm {personal.name}. I build scalable systems powered by intelligence.
+              Galileo &amp; Duke — Design &amp; Development Studio by Moksh &amp; Varul.
             </motion.p>
             <div className="relative">
               <div ref={githubRef} className="absolute -top-4 right-0 md:right-2 text-primary/60 hover:text-primary z-20 opacity-0">
                 <a
                   href={personal.socialLinks.find(s => s.platform === 'GitHub')?.url}
                   target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Galileo & Duke on GitHub"
                   className="block"
                 >
                   <Github size={32} />
                 </a>
               </div>
-              <motion.h1
+              <motion.div
+                role="presentation"
+                aria-hidden="true"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isExiting ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="text-[clamp(3rem,11vw,13rem)] font-black leading-[0.85] tracking-tighter text-shiny will-change-transform px-4"
+                className="text-[clamp(3rem,11vw,13rem)] font-black leading-[0.85] tracking-tighter text-shiny will-change-transform px-4 select-none"
               >
-                AI & DATA
-              </motion.h1>
+                GALILEO
+              </motion.div>
             </div>
           </div>
 
-          {/* Line 2: SOFT [ICON] WARE */}
+          {/* Line 2: & DUKE */}
           <div className="md:flex gap-8 items-center relative">
             <div className="relative">
               <div ref={linkedinRef} className="absolute -top-8 left-4 text-primary/60 hover:text-primary z-20 opacity-0">
                 <a
                   href={personal.socialLinks.find(s => s.platform === 'LinkedIn')?.url}
                   target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Galileo & Duke on LinkedIn"
                   className="block"
                 >
                   <Linkedin size={32} />
                 </a>
               </div>
-              <div ref={instagramRef} className="absolute -bottom-12 right-24 md:right-36 text-primary/60 hover:text-primary z-20 opacity-0">
+              <div ref={instagramRef} className="absolute -bottom-10 right-12 md:right-24 text-primary/60 hover:text-primary z-20 opacity-0">
                 <a
                   href={personal.socialLinks.find(s => s.platform === 'Instagram')?.url}
                   target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Galileo & Duke on Instagram"
                   className="block"
                 >
                   <Instagram size={32} />
                 </a>
               </div>
-              <motion.h1
+              <motion.div
+                role="presentation"
+                aria-hidden="true"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isExiting ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="text-[clamp(3rem,11vw,13rem)] md:flex items-center font-black leading-[0.85] tracking-tighter text-shiny will-change-transform px-4"
+                className="text-[clamp(3rem,11vw,13rem)] font-black leading-[0.85] tracking-tighter text-shiny will-change-transform px-4 select-none"
               >
-                <span className="">SOFT</span>
-                <div
-                  ref={zapRef}
-                  className="hidden lg:block mx-[0.05em] relative cursor-pointer group"
-                  onClick={() => window.open('https://arfazrllworkspace.vercel.app/', '_blank')}
-                  onMouseEnter={(e) => setTooltip({ show: true, text: "Go to Workspace", icon: 'zap', x: e.clientX, y: e.clientY })}
-                  onMouseMove={(e) => setTooltip(prev => ({ ...prev, x: e.clientX, y: e.clientY }))}
-                  onMouseLeave={() => setTooltip(prev => ({ ...prev, show: false }))}
-                >
-                  <Zap className="w-[0.8em] h-[0.8em] text-sky-400 group-hover:text-sky-300 transition-colors" strokeWidth={1.5} />
-                </div>
-                <div
-                  ref={zapSmallRef}
-                  className="block lg:hidden mx-[0.02em] relative cursor-pointer group"
-                  onClick={() => window.open('https://arfazrllworkspace.vercel.app/', '_blank')}
-                  onMouseEnter={(e) => setTooltip({ show: true, text: "Go to Workspace", icon: 'zap', x: e.clientX, y: e.clientY })}
-                  onMouseMove={(e) => setTooltip(prev => ({ ...prev, x: e.clientX, y: e.clientY }))}
-                  onMouseLeave={() => setTooltip(prev => ({ ...prev, show: false }))}
-                >
-                  <Zap className="w-[0.8em] h-[0.8em] text-sky-400 group-hover:text-sky-300 transition-colors" strokeWidth={2} />
-                </div>
-                <span className="">WARE</span>
-              </motion.h1>
+                &amp; DUKE
+              </motion.div>
             </div>
-          </div>
-
-          {/* Line 3: EN [ICON] GINEER */}
-          <div className="md:flex gap-8 items-center relative">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={isExiting ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[clamp(3rem,11vw,13rem)] md:flex items-center font-black leading-[0.85] tracking-tighter text-shiny will-change-transform px-4"
-            >
-              <span className="">EN</span>
-              <div
-                ref={botRef}
-                className="mx-[0.05em] relative cursor-pointer group"
-                onClick={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  window.dispatchEvent(new CustomEvent('portfolio:toggle-chatbot', {
-                    detail: { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
-                  }));
-                }}
-                onMouseEnter={(e) => setTooltip({ show: true, text: "Talk to my AI Assistant", icon: 'bot', x: e.clientX, y: e.clientY })}
-                onMouseMove={(e) => setTooltip(prev => ({ ...prev, x: e.clientX, y: e.clientY }))}
-                onMouseLeave={() => setTooltip(prev => ({ ...prev, show: false }))}
-              >
-                <Bot className="w-[0.85em] h-[0.85em] text-yellow-500 fill-yellow-500/10 group-hover:text-yellow-400 group-hover:fill-yellow-400/20 transition-colors" />
-              </div>
-              <span className="">GINEER</span>
-            </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
               className="text-[10px] md:text-xs text-muted-foreground pt-4 md:pt-8 leading-relaxed max-w-[250px] md:max-w-[200px] font-medium uppercase tracking-widest"
             >
-              Open to all forms of collaboration, regardless of location and language.
+              Cinematic Motion • Spatial 3D • Bespoke Engineering
             </motion.p>
           </div>
-        </div>
 
-        {/* Separator Section */}
-        <div className="mx-auto max-w-[105rem] w-full px-8 md:px-20 mt-12 md:mt-24">
-          <div className="flex items-center gap-6">
-            <Separator className="flex-1 h-[1px] bg-foreground/10 hidden md:block" />
-            <div className="text-[10px] md:text-xs whitespace-nowrap font-bold tracking-[0.3em] text-muted-foreground uppercase">
-              JAKARTA, ID — 2026
-            </div>
-            <Link
-              href="/resume"
-              className="group flex items-center"
-            >
-              <motion.div
-                className="relative flex items-center bg-zinc-100 dark:bg-white h-12 w-12 group-hover:w-44 rounded-full transition-all duration-500 ease-[0.23,1,0.32,1] overflow-hidden shadow-xl"
-              >
-                <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 group-hover:delay-150 text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-black pl-6 pr-12">
-                  View Resume
-                </span>
-                <div className="absolute right-0 flex items-center justify-center size-12 text-zinc-900 dark:text-black group-hover:rotate-45 transition-transform duration-500">
-                  <ArrowDownRight className="w-5 h-5" />
-                </div>
-              </motion.div>
-            </Link>
-          </div>
-        </div>
-      </main>
-
-      {/* Award/Badge Vertical - MOVED TO LEFT */}
-      <div
-        className="absolute left-0 top-1/2 z-50 hidden md:flex items-center transform -translate-y-1/2 group/container"
-        onMouseEnter={() => setShowProfile(true)}
-        onMouseLeave={() => setShowProfile(false)}
-      >
-        {/* The Badge Trigger */}
-        <div className="relative z-50">
+          {/* Core Agency Value Proposition */}
           <motion.div
-            whileHover={{ x: 10 }}
-            className="bg-white text-black py-10 px-4 text-[10px] font-black uppercase tracking-[0.5em] shadow-2xl rounded-r-3xl border-r border-y border-zinc-200 cursor-pointer"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-6 md:mt-10 max-w-3xl px-4 text-start md:text-center mx-auto"
           >
-            <span className="rotate-0 [writing-mode:vertical-rl]">
-              AVAILABLE FOR OPPORTUNITY
-            </span>
+            <p className="text-base sm:text-lg md:text-2xl font-medium text-foreground/90 leading-relaxed">
+              We engineer digital flagships for ambitious brands — uniting cinematic art direction, tactile interaction, and bespoke systems that transcend the template.
+            </p>
           </motion.div>
         </div>
 
-        {/* Profile Card Sidebar/Drawer Effect - Connected to avoid gap */}
-        <AnimatePresence>
-          {showProfile && (
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -20, opacity: 0 }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="pl-4 pointer-events-auto"
-              style={{ width: 'max-content' }}
-            >
-              <ProfileCard
-                name={personal.name}
-                title="AI Engineer & Software Engineer"
-                description={`${personal.name} is a dedicated AI & Software Engineer focused on building scalable, intelligent systems and robust software architectures. He specializes in bridging technical innovation with high-performance execution to deliver meaningful and impactful digital solutions.`}
-                imageUrl={personal.avatar}
-                githubUrl={personal.socialLinks.find(s => s.platform === 'GitHub')?.url}
-                linkedinUrl={personal.socialLinks.find(s => s.platform === 'LinkedIn')?.url}
-                instagramUrl={personal.socialLinks.find(s => s.platform === 'Instagram')?.url}
-                className="!max-w-4xl scale-[0.8] origin-left"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+        {/* Separator Section with Dual Permanently Visible CTAs */}
+        <div className="mx-auto max-w-[105rem] w-full px-8 md:px-20 mt-12 md:mt-16">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="text-[10px] md:text-xs whitespace-nowrap font-bold tracking-[0.3em] text-muted-foreground uppercase">
+              KOLKATA, INDIA — 2026
+            </div>
+            <Separator className="flex-1 h-[1px] bg-foreground/10 hidden md:block" />
+            <div className="flex items-center gap-4">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-6 md:px-8 py-3.5 rounded-full bg-foreground text-background font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl"
+              >
+                <span>Start a Project</span>
+                <ArrowDownRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="#work"
+                className="inline-flex items-center gap-2 px-5 md:px-7 py-3.5 rounded-full border border-foreground/20 text-foreground font-bold text-xs uppercase tracking-widest hover:bg-foreground/5 hover:border-foreground/40 transition-all"
+              >
+                <span>View Work</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </motion.div>
   );
 }

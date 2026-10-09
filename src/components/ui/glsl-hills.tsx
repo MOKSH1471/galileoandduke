@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-const GLSLHills = ({ width = '100vw', height = '100vh', cameraZ = 125, planeSize = 256, speed = 0.5 }) => {
+const GLSLHills = ({ width = '100vw', height = '100vh', cameraZ = 125, planeSize = 256, segments = 64, speed = 0.5 }: { width?: string; height?: string; cameraZ?: number; planeSize?: number; segments?: number; speed?: number }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -26,7 +26,7 @@ const GLSLHills = ({ width = '100vw', height = '100vh', cameraZ = 125, planeSize
 
       createMesh() {
         return new THREE.Mesh(
-          new THREE.PlaneGeometry(planeSize, planeSize, planeSize, planeSize),
+          new THREE.PlaneGeometry(planeSize, planeSize, segments, segments),
           new THREE.RawShaderMaterial({
             uniforms: this.uniforms,
             vertexShader: `
@@ -182,15 +182,28 @@ const GLSLHills = ({ width = '100vw', height = '100vh', cameraZ = 125, planeSize
       renderer.setSize(width, height);
     };
 
+    let isVisible = true;
+
     const render = () => {
       plane.render(clock.getDelta());
       renderer.render(scene, camera);
     };
 
     const renderLoop = () => {
+      if (!isVisible) {
+        animationId = 0;
+        return;
+      }
       render();
       animationId = requestAnimationFrame(renderLoop);
     };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && !animationId) {
+        renderLoop();
+      }
+    }, { threshold: 0 });
 
     const init = () => {
       const container = containerRef.current;
@@ -204,6 +217,16 @@ const GLSLHills = ({ width = '100vw', height = '100vh', cameraZ = 125, planeSize
       scene.add(plane.mesh);
       window.addEventListener('resize', resize);
       resize();
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        render();
+        return;
+      }
+
+      if (container) {
+        observer.observe(container);
+      }
       renderLoop();
     };
 
@@ -211,12 +234,13 @@ const GLSLHills = ({ width = '100vw', height = '100vh', cameraZ = 125, planeSize
 
     return () => {
       window.removeEventListener('resize', resize);
+      observer.disconnect();
       if (animationId) cancelAnimationFrame(animationId);
       plane.mesh.geometry.dispose();
       (plane.mesh.material as THREE.Material).dispose();
       renderer.dispose();
     };
-  }, [cameraZ, planeSize, speed]);
+  }, [cameraZ, planeSize, segments, speed]);
 
   return (
     <div ref={containerRef} style={{ position: 'relative', width, height }}>

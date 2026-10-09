@@ -21,9 +21,17 @@ export interface Project {
     installation?: { title: string; cmd?: string; code?: string; type: 'code' | 'text' }[];
     challengesAndSolutions?: { problem: string; solution: string }[];
     galleryImages?: string[];
-    team?: string;
     customTimeline?: string;
     role?: string;
+    projectType?: string;
+    developmentStage?: string;
+    client?: string;
+    brief?: string;
+    deliverables?: string[];
+    outcomes?: string[];
+    tagline?: string;
+    architecture?: { layer: string; detail: string }[];
+    metrics?: { label: string; value: string; detail?: string }[];
 }
 
 export interface Experience {
@@ -76,8 +84,8 @@ export interface Achievement {
 
 export interface Skill {
     name: string;
-    level?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
-    category: 'frontend' | 'backend' | 'database' | 'devops' | 'mobile' | 'ai' | 'data' | 'blockchain' | 'software' | 'cloud' | 'other';
+    level?: 'beginner' | 'intermediate' | 'advanced' | 'expert' | 'Core' | 'Specialist';
+    category: 'frontend' | 'backend' | 'database' | 'devops' | 'mobile' | 'ai' | 'data' | 'blockchain' | 'software' | 'cloud' | 'motion' | 'spatial' | 'engineering' | 'other';
     description?: string;
 }
 
@@ -161,8 +169,27 @@ export interface GalleryItem {
     category: string;
 }
 
+export interface Founder {
+    id: string;
+    name: string;
+    role: string;
+    focus: string;
+    bio: string;
+    image: string;
+    heritageSymbol?: string;
+    heritageTitle?: string;
+    heritageDesc?: string;
+    social?: {
+        github?: string;
+        linkedin?: string;
+        twitter?: string;
+        instagram?: string;
+    };
+}
+
 export interface PortfolioData {
     personal: PersonalInfo;
+    founders?: Founder[];
     projects: Project[];
     experiences: Experience[];
     education: Education[];
@@ -175,3 +202,4 @@ export interface PortfolioData {
     blogs: BlogPost[];
     gallery: GalleryItem[];
 }
+

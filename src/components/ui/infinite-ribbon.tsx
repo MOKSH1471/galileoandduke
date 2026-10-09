@@ -33,11 +33,11 @@ export function InfiniteRibbon({
     const { scrollY } = useScroll();
     const scrollVelocity = useVelocity(scrollY);
     const smoothVelocity = useSpring(scrollVelocity, {
-        damping: 50,
-        stiffness: 400
+        damping: 60,
+        stiffness: 600
     });
-    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-        clamp: false
+    const velocityFactor = useTransform(smoothVelocity, [-3000, 0, 3000], [-3, 0, 3], {
+        clamp: true
     });
 
     const [isMobile, setIsMobile] = useState(false);

@@ -6,14 +6,14 @@ import { motion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
-const techStackItems = [
-    // 5 AI & Data
-    ...portfolioData.techStack.filter(s => s.name === 'TensorFlow' || s.name === 'PyTorch' || s.name === 'LangChain' || s.name === 'Scikit-learn' || s.name === 'OpenCV'),
-    // 5 Software Engineering
-    ...portfolioData.techStack.filter(s => s.name === 'TypeScript' || s.name === 'Next.js' || s.name === 'Python' || s.name === 'Node.js' || s.name === 'React')
-].slice(0, 10);
+const excluded = new Set(['TensorFlow', 'Scikit-learn', 'OpenCV', 'LangChain', 'Docker', 'Conda']);
+const techStackItems = portfolioData.techStack
+    .filter(s => !excluded.has(s.name))
+    .slice(0, 10);
 
-const toolItems = portfolioData.tools.slice(0, 10);
+const toolItems = portfolioData.tools
+    .filter(t => !excluded.has(t.name))
+    .slice(0, 10);
 
 const ScrollerItem = ({ name, icon }: { name: string; icon: string }) => (
     <div className="flex items-center gap-4 px-12 py-4 transition-all duration-300 group">

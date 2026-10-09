@@ -4,10 +4,8 @@ import React, { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { WarpBackground } from "@/components/ui/warp-background";
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
-import ImageTrail from "@/components/ImageTrail";
 import Image from "next/image";
 import InfiniteMenu from "@/components/InfiniteMenu";
 import { portfolioData } from "@/data/portfolio";
@@ -16,98 +14,63 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { Github, Linkedin, Instagram, MessageSquare, ArrowRight, ArrowUpRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useCountUp } from "@/hooks/useCountUp";
-import { SocialCorner } from "@/components/layout/SocialCorner";
 import { cn } from "@/lib/utils";
 
 import Testimonial1 from "@/components/ui/testimonial-1";
 import { IdentitySequence } from "./IdentitySequence";
 import ScrollAdventure from "@/components/ui/animated-scroll";
-import Bucket from "@/components/ui/bucket";
-import { ArgentLoopInfiniteSlider } from "@/components/ui/argent-loop-infinite-slider";
+import CapabilityMatrix from "@/components/ui/capability-matrix";
 import { HorizontalTimeline } from "@/components/ui/horizontal-timeline";
-import { CertificateShowcase } from "@/components/ui/certificate-marquee";
-import { GitHubShowcase } from "@/components/ui/github-showcase";
-import KaggleShowcase from "@/components/ui/kaggle-showcase";
-import { WakaTimeShowcase } from "@/components/ui/wakatime-showcase";
-import { ShowcaseStack } from "@/components/ui/showcase-stack";
 
 const showcaseMembers = [
-    // 1. Cyber Physical Systems Laboratory
-    ...portfolioData.experiences.filter(exp => exp.id === 'prof-7').map(exp => ({
-        id: exp.id,
-        name: "Cyber Physical Systems Laboratory",
-        role: exp.position.replace(' (Contract-Based)', ''),
-        description: exp.description,
-        period: "August 2025 - Present",
-        image: "/journey/researchassistant2.webp",
-        social: exp.externalLink ? { website: Array.isArray(exp.externalLink) ? exp.externalLink[0] : exp.externalLink } : undefined
-    })),
-    // 2. HUMIC Engineering
-    ...portfolioData.experiences.filter(exp => exp.id === 'prof-3').map(exp => ({
-        id: exp.id,
-        name: "HUMIC Engineering",
-        role: exp.position,
-        description: exp.description,
-        period: "September 2025 - December 2025",
-        image: "/journey/aideveloperintern1.webp",
-        social: exp.externalLink ? { website: Array.isArray(exp.externalLink) ? exp.externalLink[0] : exp.externalLink } : undefined
-    })),
-    // 3. Informatics Laboratory, Telkom University
-    ...portfolioData.experiences.filter(exp => exp.id === 'prof-6').map(exp => ({
-        id: exp.id,
-        name: exp.company,
-        role: exp.position.replace(' (Contract-Based)', ''),
-        description: exp.description,
-        period: "September 2025 - January 2026",
-        image: "/journey/computernetworkpracticumassistant2.webp",
-        social: exp.externalLink ? { website: Array.isArray(exp.externalLink) ? exp.externalLink[0] : exp.externalLink } : undefined
-    })),
-    // 4. Digistar Club by Telkom Indonesia
-    ...portfolioData.experiences.filter(exp => exp.id === 'lead-2').map(exp => ({
-        id: exp.id,
-        name: exp.company,
-        role: exp.position,
-        description: exp.description,
-        period: "October 2025 - December 2025",
-        image: "/journey/chiefcommittee1.webp",
-        social: exp.externalLink ? { website: Array.isArray(exp.externalLink) ? exp.externalLink[0] : exp.externalLink } : undefined
-    })),
-    // 5. Food and Agriculture Office of Bandung City
-    ...portfolioData.experiences.filter(exp => exp.id === 'prof-8').map(exp => ({
-        id: exp.id,
-        name: "Food and Agriculture Office of Bandung City",
-        role: exp.position,
-        description: exp.description,
-        period: "July - September 2025",
-        image: "/journey/dataentryassistant1.webp",
-        social: exp.externalLink ? { website: Array.isArray(exp.externalLink) ? exp.externalLink[0] : exp.externalLink } : undefined
-    })),
-    // 6. View more
+    {
+        id: 'galileo',
+        name: "Galileo — Visionary Exploration",
+        role: "Celestial Wonder & Motion",
+        description: "Inspired by the celestial discoveries of 1610, we treat the browser as a living canvas — exploring atmospheric lighting, fluid physics, and sensory wonder that elevate digital storytelling.",
+        period: "Studio Heritage",
+        image: "/about/galileo.jpg",
+        social: { website: "https://galileoduke.com" }
+    },
+    {
+        id: 'duke',
+        name: "Duke — Classical Craft",
+        role: "Engineered Pedigree & Precision",
+        description: "The patron's discipline: enduring proportions, typographic poise, and rock-solid architectural standards built to elevate world-class brands.",
+        period: "Studio Heritage",
+        image: "/about/duke.jpg",
+        social: { website: "https://galileoduke.com" }
+    },
+    {
+        id: 'moksh',
+        name: "Moksh",
+        role: "Co-Founder & Creative Technologist",
+        description: "Shapes aesthetic identity, interactive choreography, and tactile user experience. Specializes in bespoke creative coding, reactive physics, and micro-interactions that feel alive.",
+        period: "Co-Founder",
+        image: "/about/galileo.jpg",
+        social: { website: "https://github.com/MOKSH1471" }
+    },
+    {
+        id: 'varul',
+        name: "Varul",
+        role: "Co-Founder & Studio Director",
+        description: "Directs studio strategy, client vision, and technical execution. Ensures every digital flagship pairs striking visual ambition with rock-solid commercial outcomes.",
+        period: "Co-Founder",
+        image: "/about/duke.jpg",
+        social: { website: "https://linkedin.com/company/galileoduke" }
+    },
     {
         id: 'view-more',
-        name: 'View more',
-        role: 'Explore all experiences',
-        image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop',
-        social: { website: '/experience' }
+        name: "Galileo & Duke Studio",
+        role: "Experiences beyond the template",
+        image: "/about/galileo.jpg",
+        social: { website: "/contact" }
     }
 ];
 
 const GALLERY_IMAGES = [
-    "/gallery/Foto Utama.webp",
-    "/gallery/FotoSC1.webp",
-    "/gallery/FotoSC2.webp",
-    "/gallery/FotoSC3.webp",
-    "/gallery/FotoSC4.webp",
-    "/gallery/FotoSC5.webp",
-    "/gallery/academicaffairsdivision1.webp",
-    "/gallery/computernetworkpracticumassistant2.webp",
-    "/gallery/dataentryassistant1.webp",
-    "/gallery/delegateaiesecfutureleaders20241.webp",
-    "/gallery/environmentalhygieneteam1.webp",
-    "/gallery/environmentalhygieneteam2.webp",
-    "/gallery/logisticsoperatorcampusexpo20242.webp",
-    "/gallery/researchassistant1.webp",
-    "/gallery/researchassistant2.webp"
+    "/about/galileo.jpg",
+    "/about/duke.jpg",
 ];
 
 const AboutLeadInImageStack = () => {
@@ -283,14 +246,13 @@ const AboutLeadIn = () => {
 // --- Tech Stack Logos (from portfolio.ts project data) ---
 const TECH_LOGOS = [
     { name: "Python", slug: "python" },
-    { name: "TensorFlow", slug: "tensorflow" },
     { name: "Next.js", slug: "nextdotjs" },
     { name: "React", slug: "react" },
     { name: "TypeScript", slug: "typescript" },
-    { name: "Docker", slug: "docker" },
+    { name: "Tailwind CSS", slug: "tailwindcss" },
     { name: "FastAPI", slug: "fastapi" },
     { name: "PostgreSQL", slug: "postgresql" },
-    { name: "LangChain", slug: "langchain" },
+    { name: "Node.js", slug: "nodedotjs" },
     { name: "Firebase", slug: "firebase" },
     { name: "Spring Boot", slug: "springboot" },
     { name: "Solidity", slug: "solidity" },
@@ -304,8 +266,7 @@ const TECH_LOGOS = [
 const CoreEngineeringPanel = ({ scrollYProgress }: { scrollYProgress: any }) => {
     // Panel 1 exits between 0.45 and 0.65
     const opacity = useTransform(scrollYProgress, [0.45, 0.6], [1, 0]);
-    const scale = useTransform(scrollYProgress, [0.45, 0.6], [1, 0.9]);
-    const blur = useTransform(scrollYProgress, [0.45, 0.6], [0, 10]);
+    const scale = useTransform(scrollYProgress, [0.45, 0.6], [1, 0.92]);
 
     return (
         <div className="w-screen h-full flex items-center justify-center bg-background transition-colors duration-500 overflow-hidden">
@@ -313,8 +274,7 @@ const CoreEngineeringPanel = ({ scrollYProgress }: { scrollYProgress: any }) => 
                 style={{
                     opacity,
                     scale,
-                    filter: `blur(${blur}px)`,
-                    willChange: "transform, opacity, filter",
+                    willChange: "transform, opacity",
                 }}
                 className="w-full h-full flex items-center justify-center"
             >
@@ -415,65 +375,42 @@ const GhostedHeader = ({ label, part1, part2, direction = "left" }: { label: str
 
 
 
-// --- Component 5: Audit Funnel ---
+// --- Component 5: Capability Matrix / Studio Standards ---
 const AuditFunnel = () => {
-    const isMobile = useIsMobile();
     const sectionRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: sectionRef,
         offset: ["start end", "end start"]
     });
     const t = useTranslations('about');
-    const tCommon = useTranslations('common');
 
-    const scale = useTransform(scrollYProgress, [0, 0.5], [0.6, 1]);
-    const lineScaleY = useTransform(scrollYProgress, [0.3, 0.8], [0, 1]);
+    const scale = useTransform(scrollYProgress, [0, 0.4], [0.85, 1]);
 
     // Exit parallax to transition smoothly into the next section
     const { scrollYProgress: exitProgressRaw } = useScroll({
         target: sectionRef,
         offset: ["start start", "end start"]
     });
-    const exitProgress = useSpring(exitProgressRaw, { stiffness: 100, damping: 30, restDelta: 0.001 });
-    const yExit = useTransform(exitProgress, [0, 1], ["0%", "40%"]);
-    const scaleExit = useTransform(exitProgress, [0, 1], [1, 0.85]);
-    const opacityExit = useTransform(exitProgress, [0, 1], [1, 0]);
-
-    const [images, setImages] = useState<string[]>([]);
-
-    useEffect(() => {
-        const galleryItems = [
-            "/feature/icons/image1.webp",
-            "/feature/icons/image2.webp",
-            "/feature/icons/image3.webp",
-            "/feature/icons/image4.webp",
-            "/feature/icons/image5.webp",
-            "/feature/icons/image6.webp",
-            "/feature/icons/image7.webp",
-            "/feature/icons/image8.webp"
-        ];
-        // Shuffle and pick 8 random images for the trail to avoid overwhelming the DOM
-        const shuffled = [...galleryItems].sort(() => 0.5 - Math.random());
-        setImages(shuffled.slice(0, 8));
-    }, []);
+    const yExit = useTransform(exitProgressRaw, [0, 1], ["0%", "20%"]);
+    const opacityExit = useTransform(exitProgressRaw, [0.8, 1], [1, 0.2]);
 
     return (
-        <div ref={sectionRef} className="relative overflow-visible group min-h-[80vh] md:min-h-[120vh] flex items-center justify-center bg-background z-10 pb-10 md:pb-32">
-            <div className="flex flex-col items-center text-center py-20 md:py-40 space-y-12 md:space-y-16 pointer-events-none w-full origin-top">
+        <div ref={sectionRef} className="relative overflow-visible group min-h-[80vh] md:min-h-[110vh] flex items-center justify-center bg-background z-10 py-24 md:py-36">
+            <div className="flex flex-col items-center text-center space-y-12 md:space-y-16 w-full max-w-6xl mx-auto px-4 sm:px-6">
                 <motion.div
-                    style={{ y: yExit, scale: scaleExit, opacity: opacityExit }}
-                    className="space-y-6 md:space-y-10 flex flex-col items-center px-6 relative z-10 mix-blend-difference w-full"
+                    style={{ y: yExit, opacity: opacityExit }}
+                    className="space-y-4 md:space-y-6 flex flex-col items-center w-full"
                 >
                     <motion.h4
                         style={{ scale, willChange: "transform" }}
-                        className="text-4xl md:text-6xl lg:text-[7rem] font-black tracking-[-0.05em] text-white max-w-7xl tracking-tighter leading-[0.9] lg:px-6 uppercase text-center"
+                        className="text-4xl md:text-6xl lg:text-[6.5rem] font-black tracking-[-0.04em] text-foreground max-w-5xl tracking-tighter leading-[0.95] uppercase text-center"
                     >
-                        {t('architecting')} <br></br>
+                        {t('architecting')} <br />
                         <motion.span
                             initial={{ opacity: 0, y: 15 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 }}
-                            className="text-white italic font-serif-elegant font-light lowercase tracking-normal"
+                            transition={{ delay: 0.3 }}
+                            className="text-foreground italic font-serif-elegant font-light lowercase tracking-normal"
                         >
                             {t('digitalReality')}
                         </motion.span>.
@@ -481,17 +418,13 @@ const AuditFunnel = () => {
                 </motion.div>
 
                 <motion.div
-                    style={{ y: yExit, scale: scaleExit, opacity: opacityExit }}
-                    className="flex flex-col items-center gap-8 pt-12 pointer-events-auto w-full px-6"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-full"
                 >
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ delay: 0.1, duration: 0.8 }}
-                        className="w-full max-w-4xl mx-auto"
-                    >
-                        <Bucket trailImages={!isMobile ? images : undefined} />
-                    </motion.div>
+                    <CapabilityMatrix />
                 </motion.div>
             </div>
             <div className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay">
@@ -511,17 +444,17 @@ const ScrollHijackSection = () => {
     const [showBorder, setShowBorder] = React.useState(true);
 
     // Hooks moved to top level to avoid React Hook Rules violations
-    const borderOpacity = useTransform(smoothProgress, [0.1, 0.15], [1, 0]);
-    const xShift = useTransform(smoothProgress, [0, 0.1, 0.4, 1], ["0vw", "0vw", "-100vw", "-100vw"]);
+    const borderOpacity = useTransform(smoothProgress, [0.06, 0.12], [1, 0]);
+    const xShift = useTransform(smoothProgress, [0, 0.08, 0.32, 1], ["0vw", "0vw", "-100vw", "-100vw"]);
 
     useMotionValueEvent(smoothProgress, "change", (v: any) => {
         // Hard toggle for the decorative border to ensure it's GONE
-        if (v >= 0.20 && showBorder) setShowBorder(false);
-        if (v < 0.15 && !showBorder) setShowBorder(true);
+        if (v >= 0.16 && showBorder) setShowBorder(false);
+        if (v < 0.12 && !showBorder) setShowBorder(true);
 
         // Trigger precisely as the second panel begins to enter the viewport
-        if (v >= 0.30 && !isComp2Visible) setIsComp2Visible(true);
-        if (v < 0.25 && isComp2Visible) setIsComp2Visible(false);
+        if (v >= 0.25 && !isComp2Visible) setIsComp2Visible(true);
+        if (v < 0.20 && isComp2Visible) setIsComp2Visible(false);
     });
 
     const { scrollYProgress: exitProgressRaw } = useScroll({
@@ -529,17 +462,12 @@ const ScrollHijackSection = () => {
         offset: ["end end", "end start"]
     });
 
-    // Apply a spring physics wrapper to make the scale/fade exit incredibly buttery smooth
-    const exitProgress = useSpring(exitProgressRaw, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
-
-
-    const exitScale = useTransform(exitProgress, [0, 1], [1, 0.85]);
-    const exitOpacity = useTransform(exitProgress, [0, 1], [1, 0]); // Changed to 1 to ensure full fade out
-    const exitBorderRadius = useTransform(exitProgress, [0, 1], ["0px", "40px"]);
+    const exitScale = useTransform(exitProgressRaw, [0, 1], [1, 0.85]);
+    const exitOpacity = useTransform(exitProgressRaw, [0, 1], [1, 0]);
+    const exitBorderRadius = useTransform(exitProgressRaw, [0, 1], ["0px", "40px"]);
 
     return (
-        <div ref={sectionRef} className="relative h-[600vh]">
+        <div ref={sectionRef} className="relative h-[350vh]">
             <div className="sticky top-0 h-screen w-full overflow-hidden z-10">
                 <motion.div
                     style={{ scale: exitScale, opacity: exitOpacity, borderRadius: exitBorderRadius }}
@@ -581,7 +509,6 @@ const ScrollHijackSection = () => {
 };
 
 export default function AboutSection() {
-    console.log('SHOWCASE MEMBERS:', showcaseMembers.map(m => m.id));
     const containerRef = useRef<HTMLElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -619,9 +546,8 @@ export default function AboutSection() {
 
                     <ScrollHijackSection />
                     <ScrollAdventure />
-                    <ArgentLoopInfiniteSlider />
-                    {/* Seamless solid background section overlapping the slider's dead space */}
-                    <div className="-mt-[50vh] flex flex-col items-center w-full bg-background relative z-20 pt-32 pb-32">
+                    {/* Founders & Studio Timeline Showcase */}
+                    <div className="flex flex-col items-center w-full bg-background relative z-20 pt-16 pb-24">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.98, filter: "blur(10px)" }}
                             whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
@@ -685,24 +611,6 @@ export default function AboutSection() {
                                 }))} />
                             </div>
                         </motion.div>
-
-                        {/* Certificate Showcase Section */}
-                        <div className="w-full mt-8 md:mt-12">
-                            <CertificateShowcase />
-                        </div>
-
-                        {/* Stacking Card Showcases */}
-                        <ShowcaseStack>
-                            <div className="w-full">
-                                <GitHubShowcase />
-                            </div>
-                            <div className="w-full">
-                                <KaggleShowcase />
-                            </div>
-                            <div className="w-full">
-                                <WakaTimeShowcase />
-                            </div>
-                        </ShowcaseStack>
                     </div>
                     <AuditFunnel />
                 </div>

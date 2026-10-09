@@ -1,41 +1,49 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import {
-  Brain, Network, Cpu, Database, Fingerprint, Zap,
-  Server, Code, Terminal, Layers, Shield, Workflow,
-  Lightbulb, Users, MessageSquare, Target, Compass, Briefcase
+  Target, TrendingUp, Magnet, Workflow, Sparkles, Users,
+  Code, Server, Terminal, Layers, Shield, Cpu, Zap
 } from 'lucide-react';
 
-type LoaderType = 'ai' | 'software' | 'softskill' | 'default';
+type LoaderType = 'leads' | 'execution' | 'motion' | 'software' | 'default';
 
 interface LoaderProps {
   type?: LoaderType;
+  active?: boolean;
 }
 
 const config = {
-  ai: [
-    { icon: Brain, label: "AI", color: "#ef4444" },
-    { icon: Network, label: "NN", color: "#3b82f6" },
-    { icon: Cpu, label: "LLM", color: "#eab308" },
-    { icon: Database, label: "DATA", color: "#22c55e" },
-    { icon: Fingerprint, label: "VISION", color: "#a855f7" },
-    { icon: Zap, label: "ML", color: "#f97316" }
+  leads: [
+    { icon: Target, label: "LEADS", color: "#f59e0b" },
+    { icon: TrendingUp, label: "GROWTH", color: "#10b981" },
+    { icon: Magnet, label: "INBOUND", color: "#6366f1" },
+    { icon: Workflow, label: "FUNNEL", color: "#ec4899" },
+    { icon: Users, label: "CLIENTS", color: "#3b82f6" },
+    { icon: Sparkles, label: "CONVERT", color: "#8b5cf6" }
+  ],
+  execution: [
+    { icon: Code, label: "WEBSITE", color: "#3b82f6" },
+    { icon: Server, label: "NEXT.JS", color: "#6366f1" },
+    { icon: Layers, label: "DESIGN", color: "#ec4899" },
+    { icon: Terminal, label: "60 FPS", color: "#10b981" },
+    { icon: Shield, label: "RIGOR", color: "#8b5cf6" },
+    { icon: Cpu, label: "BUILD", color: "#06b6d4" }
+  ],
+  motion: [
+    { icon: Sparkles, label: "MOTION", color: "#6366f1" },
+    { icon: Layers, label: "3D / GL", color: "#06b6d4" },
+    { icon: Zap, label: "KINETIC", color: "#ec4899" },
+    { icon: Target, label: "PHYSICS", color: "#3b82f6" },
+    { icon: Workflow, label: "CANVAS", color: "#8b5cf6" },
+    { icon: Shield, label: "SHADER", color: "#a855f7" }
   ],
   software: [
-    { icon: Server, label: "BACKEND", color: "#3b82f6" },
-    { icon: Code, label: "CODE", color: "#eab308" },
-    { icon: Terminal, label: "CLI", color: "#22c55e" },
-    { icon: Layers, label: "ARCH", color: "#ef4444" },
-    { icon: Shield, label: "SECURE", color: "#8b5cf6" },
-    { icon: Workflow, label: "CI/CD", color: "#06b6d4" }
-  ],
-  softskill: [
-    { icon: Lightbulb, label: "IDEA", color: "#eab308" },
-    { icon: Users, label: "TEAM", color: "#3b82f6" },
-    { icon: MessageSquare, label: "TALK", color: "#22c55e" },
-    { icon: Target, label: "GOAL", color: "#ef4444" },
-    { icon: Compass, label: "SYSTEM", color: "#a855f7" },
-    { icon: Briefcase, label: "LEAD", color: "#f97316" }
+    { icon: Server, label: "NEXT.JS", color: "#3b82f6" },
+    { icon: Code, label: "TS", color: "#6366f1" },
+    { icon: Terminal, label: "60 FPS", color: "#10b981" },
+    { icon: Layers, label: "ARCH", color: "#ec4899" },
+    { icon: Shield, label: "RIGOR", color: "#8b5cf6" },
+    { icon: Cpu, label: "SSR", color: "#06b6d4" }
   ],
   default: [
     { icon: Zap, label: "Start", color: "#00d2ff" },
@@ -47,7 +55,7 @@ const config = {
   ]
 };
 
-const Loader = ({ type = 'default' }: LoaderProps) => {
+const Loader = ({ type = 'default', active = true }: LoaderProps) => {
   const stageRef = useRef<HTMLDivElement>(null);
   const cubeRef = useRef<HTMLDivElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
@@ -55,6 +63,8 @@ const Loader = ({ type = 'default' }: LoaderProps) => {
   const faces = config[type] || config.default;
 
   useEffect(() => {
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // Stage Jump
     gsap.set(stageRef.current, { scale: 1, rotateX: -20, rotateY: 0 });
     const stageTween = gsap.to(stageRef.current, {
@@ -64,7 +74,8 @@ const Loader = ({ type = 'default' }: LoaderProps) => {
       duration: 2,
       ease: "power1.inOut",
       yoyo: true,
-      repeat: -1
+      repeat: -1,
+      paused: prefersReducedMotion || !active
     });
 
     // Auto Rotate Cube
@@ -73,7 +84,8 @@ const Loader = ({ type = 'default' }: LoaderProps) => {
       rotateZ: 360,
       duration: 8,
       ease: "none",
-      repeat: -1
+      repeat: -1,
+      paused: prefersReducedMotion || !active
     });
 
     // Shadow Pulse
@@ -84,18 +96,38 @@ const Loader = ({ type = 'default' }: LoaderProps) => {
       duration: 2,
       ease: "power1.inOut",
       yoyo: true,
-      repeat: -1
+      repeat: -1,
+      paused: prefersReducedMotion || !active
     });
 
+    // IntersectionObserver to pause when not in viewport
+    let observer: IntersectionObserver | null = null;
+    const stageEl = stageRef.current;
+    if (typeof window !== 'undefined' && stageEl) {
+      observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && active && !prefersReducedMotion) {
+          stageTween.resume();
+          cubeTween.resume();
+          shadowTween.resume();
+        } else {
+          stageTween.pause();
+          cubeTween.pause();
+          shadowTween.pause();
+        }
+      }, { threshold: 0 });
+      observer.observe(stageEl);
+    }
+
     return () => {
+      observer?.disconnect();
       stageTween.kill();
       cubeTween.kill();
       shadowTween.kill();
     };
-  }, []);
+  }, [active]);
 
   return (
-    <div className="relative w-full h-full min-h-[400px] flex items-center justify-center overflow-hidden bg-transparent" style={{ perspective: 1500 }}>
+    <div className="relative w-full h-full min-h-[260px] sm:min-h-[320px] md:min-h-[380px] flex items-center justify-center overflow-hidden bg-transparent" style={{ perspective: 1500 }}>
       {/* Background Dots */}
       <div
         className="absolute inset-0 opacity-10 pointer-events-none hidden"

@@ -2,8 +2,14 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono, Playfair_Display, Alex_Brush } from 'next/font/google';
 import { getMessages, getLocale } from 'next-intl/server';
 import { ThemeProvider, I18nProvider, SmoothScrollProvider } from '@/providers';
+import { ThemeAwareClickSpark } from '@/components/ui/ThemeAwareClickSpark';
+import { ConditionalNavigation } from '@/components/layout/ConditionalNavigation';
+import { ArcPreloaderWrapper } from '@/components/layout/ArcPreloaderWrapper';
 
 import '@/styles/globals.css';
+import { portfolioData } from '@/data/portfolio';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://galileoduke.com';
 
 const inter = Inter({
     subsets: ['latin'],
@@ -32,44 +38,33 @@ const signature = Alex_Brush({
 
 export const metadata: Metadata = {
     title: {
-        default: 'Arfazrll | AI & Software Engineer',
-        template: '%s | Portfolio',
+        default: 'Galileo & Duke | Design & Development Studio',
+        template: '%s | Galileo & Duke',
     },
-    description: 'A passionate developer building digital experiences that inspire. Explore my projects, skills, and professional journey.',
-    keywords: ['developer', 'portfolio', 'web development', 'full stack', 'react', 'nextjs'],
-    authors: [{ name: 'Your Name' }],
-    creator: 'Your Name',
-    metadataBase: new URL('https://your-domain.com'),
+    description: 'Galileo & Duke is an independent design and development studio founded by Moksh and Varul. We build web experiences that transcend templates — scroll-driven storytelling, cinematic motion, and bespoke engineering.',
+    keywords: ['Galileo & Duke', 'design studio', 'creative technology', 'cinematic motion', 'GSAP', 'React Three Fiber', 'WebGL', 'scroll storytelling', 'bespoke engineering'],
+    authors: [{ name: 'Moksh' }, { name: 'Varul' }],
+    creator: 'Galileo & Duke',
+    metadataBase: new URL(siteUrl),
     openGraph: {
         type: 'website',
         locale: 'en_US',
-        url: 'https://your-domain.com',
-        title: 'Arfazrll | AI & Software Engineer',
-        description: 'A passionate developer building digital experiences that inspire.',
-        siteName: 'Portfolio',
+        url: siteUrl,
+        title: 'Galileo & Duke | Design & Development Studio',
+        description: 'Web experiences beyond the template — cinematic motion, scroll-driven storytelling, and bespoke engineering.',
+        siteName: 'Galileo & Duke',
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Arfazrll | AI & Software Engineer',
-        description: 'A passionate developer building digital experiences that inspire.',
-        creator: '@yourusername',
+        title: 'Galileo & Duke | Design & Development Studio',
+        description: 'Web experiences beyond the template — cinematic motion, scroll-driven storytelling, and bespoke engineering.',
     },
     robots: {
         index: true,
         follow: true,
-        googleBot: {
-            index: true,
-            follow: true,
-            'max-video-preview': -1,
-            'max-image-preview': 'large',
-            'max-snippet': -1,
-        },
     },
     icons: {
-        icon: [
-            { url: '/Arfazrll_light.svg', media: '(prefers-color-scheme: light)' },
-            { url: '/Arfazrll_dark.svg', media: '(prefers-color-scheme: dark)' },
-        ],
+        icon: [{ url: '/favicon.svg' }],
     },
 };
 
@@ -83,11 +78,6 @@ export const viewport: Viewport = {
     minimumScale: 1,
 };
 
-import { ThemeAwareClickSpark } from '@/components/ui/ThemeAwareClickSpark';
-import { ConditionalNavigation } from '@/components/layout/ConditionalNavigation';
-import { ArcPreloaderWrapper } from '@/components/layout/ArcPreloaderWrapper';
-import { ChatBot } from '@/components/layout/ChatBot';
-
 export default async function RootLayout({
     children,
 }: {
@@ -97,8 +87,8 @@ export default async function RootLayout({
     const messages = await getMessages();
 
     return (
-        <html lang={locale} data-scroll-behavior="smooth" suppressHydrationWarning>
-            <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${signature.variable} font-sans relative`}>
+        <html lang={locale} suppressHydrationWarning>
+            <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${signature.variable} font-sans relative`} suppressHydrationWarning>
                 <ThemeProvider>
                     <I18nProvider locale={locale} messages={messages}>
                         <SmoothScrollProvider>
@@ -108,7 +98,6 @@ export default async function RootLayout({
                                         {children}
                                     </ConditionalNavigation>
                                 </ArcPreloaderWrapper>
-                                <ChatBot headless />
                             </ThemeAwareClickSpark>
                         </SmoothScrollProvider>
                     </I18nProvider>

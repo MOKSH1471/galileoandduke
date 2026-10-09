@@ -21,7 +21,6 @@ import {
     X,
     Gamepad2,
     Music,
-    Bot,
     Focus
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -33,7 +32,6 @@ type SocialIconComponent = typeof Github;
 const socialIcons: { [key: string]: SocialIconComponent } = {
     github: Github,
     linkedin: Linkedin,
-    twitter: Bot, // Replaced Twitter logo with AI Bot logo
     instagram: Instagram,
     discord: Gamepad2,
     spotify: Music,
@@ -104,11 +102,11 @@ export function Footer() {
                 hour: 'numeric',
                 minute: '2-digit',
                 hour12: true,
-                timeZone: 'Asia/Jakarta'
+                timeZone: 'Asia/Kolkata'
             };
             const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
-            // Jakarta is UTC+7
-            setLocalTime(`${timeString} UTC+7`);
+            // Kolkata, India is IST (UTC+5:30)
+            setLocalTime(`${timeString} IST (UTC+5:30)`);
         };
 
         updateTime();
@@ -159,8 +157,6 @@ export function Footer() {
     };
 
     const pathname = usePathname();
-    const isBlog = pathname?.includes('/blog');
-    const isBlogDetail = pathname?.includes('/blog/') && pathname.split('/blog/')[1]?.length > 0;
     const isGallery = pathname?.includes('/gallery');
 
     const previewSocials = portfolioData.personal.socialLinks
@@ -173,15 +169,14 @@ export function Footer() {
         <>
             {/* Compact Footer - Always visible */}
             <footer className={cn(
-                isBlog ? 'absolute bottom-0 w-full border-t-0 pointer-events-none !bg-transparent z-20' :
-                    isGallery ? 'relative z-20 mt-auto !bg-transparent' :
-                        'relative z-20 mt-auto dark:bg-black',
+                isGallery ? 'relative z-20 mt-auto !bg-transparent' :
+                    'relative z-20 mt-auto dark:bg-black',
                 isExpanded && 'opacity-0 pointer-events-none'
             )}>
-                <div className={`max-w-[1600px] mx-auto relative z-10 px-6 md:px-12 lg:px-24 py-6 md:py-8 pointer-events-auto ${isBlog || isGallery ? '!bg-transparent' : ''}`}>
+                <div className={`max-w-[1600px] mx-auto relative z-10 px-6 md:px-12 lg:px-24 py-6 md:py-8 pointer-events-auto ${isGallery ? '!bg-transparent' : ''}`}>
                     <div className={`
                         px-6 md:px-8 py-4 md:py-6 transition-all duration-300
-                        ${isBlog || isGallery
+                        ${isGallery
                             ? 'bg-card dark:bg-black/40 dark:backdrop-blur-xl border-2 border-foreground/10 dark:border-white/5 rounded-[2rem] shadow-xl dark:shadow-black/20'
                             : 'glass-card'
                         }
@@ -189,7 +184,7 @@ export function Footer() {
                         <div className="flex items-center justify-between gap-4">
                             {/* Left Side - Animated Copyright */}
                             <div className="flex items-center gap-1.5 md:gap-2 pl-2 md:pl-4 z-10 overflow-hidden h-6">
-                                <span className={`text-xs md:text-sm font-bold uppercase tracking-widest ${isBlog ? 'text-muted-foreground' : 'text-gradient'}`}>
+                                <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-gradient">
                                     © {currentYear}
                                 </span>
                                 <div className="relative w-[280px] h-full flex items-center">
@@ -201,7 +196,7 @@ export function Footer() {
                                                 animate={{ y: 0, opacity: 1 }}
                                                 exit={{ y: -20, opacity: 0 }}
                                                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                                                className={`absolute left-0 text-xs md:text-sm font-bold uppercase tracking-widest whitespace-nowrap ${isBlog ? 'text-muted-foreground' : 'text-gradient'}`}
+                                                className="absolute left-0 text-xs md:text-sm font-bold uppercase tracking-widest whitespace-nowrap text-gradient"
                                             >
                                                 {copyrightIndex === 0
                                                     ? `${portfolioData.personal.name}.`
@@ -222,24 +217,18 @@ export function Footer() {
                                             <Fragment key={social.platform}>
                                                 {social.platform === 'Twitter' && (
                                                     <motion.a
-                                                        href="https://arfazrllworkspace.vercel.app/"
+                                                        href="https://galileoduke.com"
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="p-1.5 rounded-full hover:bg-foreground/5 transition-all text-muted-foreground hover:text-foreground hover:scale-110 active:scale-95"
-                                                        aria-label="Workspace"
+                                                        aria-label="Studio Flagship"
                                                     >
                                                         <Focus className="w-4 h-4" />
                                                     </motion.a>
                                                 )}
                                                 <motion.a
                                                     key={social.platform}
-                                                    href={social.platform === 'Twitter' ? undefined : social.url}
-                                                    onClick={social.platform === 'Twitter' ? (e) => {
-                                                        e.preventDefault();
-                                                        window.dispatchEvent(new CustomEvent('portfolio:toggle-chatbot', {
-                                                            detail: { x: window.innerWidth / 2, y: window.innerHeight / 2 }
-                                                        }));
-                                                    } : undefined}
+                                                    href={social.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="p-1.5 rounded-full hover:bg-foreground/5 transition-all text-muted-foreground hover:text-foreground hover:scale-110 active:scale-95"
@@ -254,13 +243,7 @@ export function Footer() {
 
                                 <motion.button
                                     onClick={toggleExpand}
-                                    className={`
-                                            flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 rounded-full transition-all text-xs font-black uppercase tracking-[0.2em]
-                                            ${isBlog
-                                            ? 'bg-muted/50 border-2 border-foreground/10 text-foreground hover:bg-muted hover:border-foreground/20'
-                                            : 'bg-muted hover:bg-muted/80 text-foreground'
-                                        }
-                                        `}
+                                    className="flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 rounded-full transition-all text-xs font-black uppercase tracking-[0.2em] bg-muted hover:bg-muted/80 text-foreground"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
@@ -310,7 +293,7 @@ export function Footer() {
                                 <Marquee />
                             </div>
 
-                            <div className="flex-1 flex flex-col px-[8vw] pt-[4vh] pb-0 justify-between relative">
+                            <div className="flex-1 flex flex-col px-[8vw] pt-[4vh] pb-8 sm:pb-12 justify-between relative">
                                 <div className="flex-1 flex flex-col justify-center max-w-[1600px] w-full mx-auto relative">
 
                                     {/* Close Button - Size-Locked with clamp */}
@@ -339,7 +322,6 @@ export function Footer() {
                                     <div className="w-full grid grid-cols-4 gap-x-[5vw] gap-y-[4vh]">
                                         <FooterColumn title={t('links')}>
                                             <FooterLink href="/">{tNav('home')}</FooterLink>
-                                            <FooterLink href="/resume">{tNav('resume')}</FooterLink>
                                             <FooterLink href="/contact">{tNav('contact')}</FooterLink>
                                             <AboutHoverMenu tNav={tNav} onExpandChange={setIsAboutExpanded} />
                                         </FooterColumn>
@@ -385,14 +367,11 @@ export function Footer() {
                                             <p className="text-zinc-900 dark:text-white text-[1.2vw] min-text-[14px] font-medium tracking-tight">
                                                 {localTime}
                                             </p>
-                                            <a
-                                                href="https://www.google.com/maps/place/Jakarta,+Indonesia"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-zinc-900 dark:text-white text-[1.2vw] min-text-[14px] font-medium tracking-tight hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors inline-block"
+                                            <span
+                                                className="text-zinc-900 dark:text-white text-[1.2vw] min-text-[14px] font-medium tracking-tight"
                                             >
-                                                Jakarta, Indonesia
-                                            </a>
+                                                Kolkata, India
+                                            </span>
                                         </FooterColumn>
 
                                         <FooterColumn title={t('version')}>
@@ -403,15 +382,15 @@ export function Footer() {
                                     </div>
                                 </div>
 
-                                {/* Bottom Brand Name - Scaled and Clipped (Top-half visible) */}
-                                <div className="mt-auto overflow-hidden flex-shrink-0 relative">
+                                {/* Bottom Brand Name - 100% visible, fully clear, not cut off vertically or horizontally */}
+                                <div className="mt-auto pt-6 flex-shrink-0 relative w-full flex justify-center items-center">
                                     <motion.h2
-                                        initial={{ opacity: 0, y: "100%" }}
-                                        animate={isAboutExpanded ? { opacity: 0, y: "120%" } : { opacity: 1, y: "38%" }}
-                                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                                        className="text-[18vw] font-black leading-none text-zinc-900 dark:text-white tracking-tighter select-none text-center"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={isAboutExpanded ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                                        className="text-[clamp(2rem,7.5vw,7.8rem)] font-black leading-none text-zinc-900 dark:text-white tracking-tight select-none text-center whitespace-nowrap px-4"
                                     >
-                                        ARFAZRLL
+                                        GALILEO & DUKE
                                     </motion.h2>
                                 </div>
                             </div>
@@ -459,11 +438,9 @@ function AboutHoverMenu({ tNav, onExpandChange }: { tNav: (key: string) => strin
     const [isOpen, setIsOpen] = useState(false);
 
     const subLinks = [
-        { href: '/achievements', label: tNav('achievements') },
         { href: '/skills', label: tNav('skills') },
         { href: '/experience', label: tNav('experience') },
         { href: '/projects', label: tNav('projects') },
-        { href: '/blog', label: tNav('blog') },
         { href: '/gallery', label: tNav('gallery') },
     ];
 
@@ -497,8 +474,8 @@ function AboutHoverMenu({ tNav, onExpandChange }: { tNav: (key: string) => strin
     };
 
     const itemVariants = {
-        open: { y: 0, opacity: 1, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
-        closed: { y: 10, opacity: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }
+        open: { y: 0, opacity: 1, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const } },
+        closed: { y: 10, opacity: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const } }
     };
 
     return (

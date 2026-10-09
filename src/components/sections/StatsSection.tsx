@@ -15,38 +15,22 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 
+const DEFAULT_GALLERY_IMAGES = [
+    { src: '/gallery/galileo-duke-01.jpeg', alt: 'Galileo & Duke Visual Study 01' },
+    { src: '/gallery/galileo-duke-02.jpeg', alt: 'Galileo & Duke Visual Study 02' },
+    { src: '/gallery/galileo-duke-03.jpeg', alt: 'Galileo & Duke Visual Study 03' },
+    { src: '/gallery/galileo-duke-04.jpeg', alt: 'Galileo & Duke Visual Study 04' },
+    { src: '/gallery/galileo-duke-05.jpeg', alt: 'Galileo & Duke Visual Study 05' },
+    { src: '/gallery/galileo-duke-06.jpeg', alt: 'Galileo & Duke Visual Study 06' },
+];
+
 export default function StatsSection({ scrollYProgress, showOnly }: { scrollYProgress?: any, showOnly?: 'top' | 'bottom' }) {
-    const [images, setImages] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const images = DEFAULT_GALLERY_IMAGES;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [direction, setDirection] = useState(0);
 
     const blogs = portfolioData.blogs.slice(0, 6);
     const visibleCount = 3;
-
-    useEffect(() => {
-        const galleryImages = [
-            { src: '/gallery/Foto Utama.webp', alt: 'Foto Utama' },
-            { src: '/gallery/FotoSC1.webp', alt: 'Foto SC1' },
-            { src: '/gallery/FotoSC2.webp', alt: 'Foto SC2' },
-            { src: '/gallery/FotoSC3.webp', alt: 'Foto SC3' },
-            { src: '/gallery/FotoSC4.webp', alt: 'Foto SC4' },
-            { src: '/gallery/FotoSC5.webp', alt: 'Foto SC5' },
-            { src: '/gallery/academicaffairsdivision1.webp', alt: 'Academic Affairs' },
-            { src: '/gallery/computernetworkpracticumassistant2.webp', alt: 'Computer Network' },
-            { src: '/gallery/dataentryassistant1.webp', alt: 'Data Entry' },
-            { src: '/gallery/delegateaiesecfutureleaders20241.webp', alt: 'AIESEC' },
-            { src: '/gallery/environmentalhygieneteam1.webp', alt: 'Hygiene Team 1' },
-            { src: '/gallery/environmentalhygieneteam2.webp', alt: 'Hygiene Team 2' },
-            { src: '/gallery/logisticsoperatorcampusexpo20242.webp', alt: 'Logistics' },
-            { src: '/gallery/researchassistant1.webp', alt: 'Research Assistant 1' },
-            { src: '/gallery/researchassistant2.webp', alt: 'Research Assistant 2' },
-        ];
-        // Shuffle images randomly
-        const shuffledImages = [...galleryImages].sort(() => 0.5 - Math.random());
-        setImages(shuffledImages);
-        setLoading(false);
-    }, []);
 
     const nextSlide = () => {
         setDirection(1);
@@ -67,12 +51,6 @@ export default function StatsSection({ scrollYProgress, showOnly }: { scrollYPro
         return result;
     };
 
-    if (loading || images.length === 0) return (
-        <div className="h-[400px] w-full flex items-center justify-center bg-background">
-            <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-        </div>
-    );
-
     return (
         <section className="relative z-20 bg-background overflow-visible flex flex-col items-center transition-colors duration-500">
             {/* Header for the Gallery Section */}
@@ -85,7 +63,7 @@ export default function StatsSection({ scrollYProgress, showOnly }: { scrollYPro
                             viewport={{ once: true }}
                             className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight"
                         >
-                            Journal & Insights
+                            Visual Archive & Gallery
                         </motion.h2>
                         <motion.p
                             initial={{ opacity: 0 }}
@@ -94,7 +72,7 @@ export default function StatsSection({ scrollYProgress, showOnly }: { scrollYPro
                             transition={{ delay: 0.2 }}
                             className="text-muted-foreground/80 text-lg md:text-xl font-medium max-w-2xl mx-auto"
                         >
-                            A curated collection of technical articles, engineering blueprints, and reflections on building intelligent systems.
+                            A curated visual collection of motion explorations, interface systems, and creative works.
                         </motion.p>
                     </div>
 
@@ -172,9 +150,9 @@ export default function StatsSection({ scrollYProgress, showOnly }: { scrollYPro
                                         <motion.div
                                             key={blog.id}
                                             layout
-                                            initial={{ opacity: 0, x: direction * 50, scale: 0.9, filter: "blur(10px)" }}
-                                            animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
-                                            exit={{ opacity: 0, x: direction * -50, scale: 0.9, filter: "blur(10px)" }}
+                                            initial={{ opacity: 0, x: direction * 50, scale: 0.9 }}
+                                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                                            exit={{ opacity: 0, x: direction * -50, scale: 0.9 }}
                                             transition={{
                                                 type: "spring",
                                                 stiffness: 260,

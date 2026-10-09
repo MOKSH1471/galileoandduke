@@ -86,16 +86,18 @@ export function BackToTop() {
                     ref={ref}
                     onMouseMove={handleMouseMove}
                     onMouseLeave={handleMouseLeave}
-                    className="fixed bottom-6 right-6 z-[100] w-32 h-32 flex items-center justify-center pointer-events-auto hide-on-modal transition-all duration-300"
+                    className="fixed bottom-6 right-6 z-[100] w-32 h-32 flex items-center justify-center pointer-events-none hide-on-modal transition-all duration-300"
                 >
                     <motion.button
+                        aria-label="Scroll to top"
+                        title="Scroll to top"
                         initial={{ opacity: 0, scale: 0.5 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.5 }}
                         transition={{ duration: 0.2 }}
                         onClick={scrollToTop}
                         style={{ x: mouseX, y: mouseY }}
-                        className="relative h-14 w-14 rounded-full bg-foreground text-background shadow-2xl flex items-center justify-center border border-background/20 backdrop-blur-md cursor-pointer group"
+                        className="relative h-14 w-14 rounded-full bg-foreground text-background shadow-2xl flex items-center justify-center border border-background/20 backdrop-blur-md cursor-pointer group pointer-events-auto"
                     >
                         <ArrowUp className="w-6 h-6 transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110" />
 

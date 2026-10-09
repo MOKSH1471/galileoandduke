@@ -3,7 +3,7 @@
 import CleanFilmGrid from "@/components/sections/gallery/CleanFilmGrid";
 import ManifestoHero from "@/components/sections/gallery/ManifestoHero";
 import dynamic from "next/dynamic";
-import ImpactSection from "@/components/ui/impact-section";
+import CreditsFooter from "@/components/sections/gallery/CreditsFooter";
 import { usePerformance } from "@/hooks/usePerformance";
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 import { DeferredMount } from '@/components/ui/DeferredMount';
@@ -30,7 +30,7 @@ export default function GalleryPage() {
                     <ErrorBoundary fallback={<div className="container mx-auto py-20 text-center">Gallery Grid Unavailable</div>}>
                         <CleanFilmGrid isLowPowerMode={isLowPowerMode} />
                     </ErrorBoundary>
-                    <ImpactSection />
+                    <CreditsFooter />
                 </DeferredMount>
             </div>
         </main>

@@ -25,19 +25,55 @@ export default function CleanFilmGrid({ isLowPowerMode }: { isLowPowerMode?: boo
     const [galleryItems, setGalleryItems] = useState<any[]>([]);
 
     useEffect(() => {
+        const studioMetadata: Record<string, { title: string; category: string; description: string }> = {
+            'galileo-duke-01.jpeg': {
+                title: 'Celestial Exploration // Frame 01',
+                category: 'Motion & Spatial',
+                description: 'Visual identity and motion study exploring spatial lighting, texture, and kinetic depth.'
+            },
+            'galileo-duke-02.jpeg': {
+                title: 'Architectural Pedigree // Frame 02',
+                category: 'Studio Craft',
+                description: 'Classical composition and restrained precision engineered for modern digital flagships.'
+            },
+            'galileo-duke-03.jpeg': {
+                title: 'Kinetic Choreography // Frame 03',
+                category: 'Motion & Spatial',
+                description: 'Atmospheric fluid dynamics, light dispersion, and velocity-linked interaction models.'
+            },
+            'galileo-duke-04.jpeg': {
+                title: 'Brand Flagship Direction // Frame 04',
+                category: 'Creative Direction',
+                description: 'Sensory design systems and typographic hierarchy crafted for discerning brands.'
+            },
+            'galileo-duke-05.jpeg': {
+                title: 'Spatial Canvas Simulation // Frame 05',
+                category: 'Motion & Spatial',
+                description: 'Real-time 3D depth, material reflectivity, and camera staging on the browser canvas.'
+            },
+            'galileo-duke-06.jpeg': {
+                title: 'Monochrome Discipline // Frame 06',
+                category: 'Studio Craft',
+                description: 'High-contrast typography and uncompromising architectural layout structured to endure.'
+            }
+        };
+
         const fetchImages = async () => {
             try {
                 const images = await getAllGalleryImages();
-                const formattedItems = images.map((img, index) => ({
-                    id: `gallery-${index}`,
-                    title: img.filename.split('.')[0].replace(/-/g, ' '),
-                    type: 'image',
-                    category: 'Gallery',
-                    date: '2024',
-                    thumbnail: img.src,
-                    url: img.src,
-                    description: 'Gallery Image'
-                }));
+                const formattedItems = images.map((img, index) => {
+                    const meta = studioMetadata[img.filename];
+                    return {
+                        id: `gallery-${index}`,
+                        title: meta?.title || img.filename.split('.')[0].replace(/-/g, ' ').toUpperCase(),
+                        type: 'image',
+                        category: meta?.category || 'Studio Archive',
+                        date: '2026',
+                        thumbnail: img.src,
+                        url: img.src,
+                        description: meta?.description || 'Galileo & Duke Studio Archive'
+                    };
+                });
                 setGalleryItems(formattedItems);
             } catch (error) {
                 console.error("Failed to load gallery images", error);

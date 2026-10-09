@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
@@ -15,16 +15,18 @@ if (typeof window !== "undefined") {
 
 export default function CTASection() {
     const sectionRef = useRef<HTMLElement>(null);
+    const isInView = useInView(sectionRef, { margin: "200px" });
     const t = useTranslations('ctaSection');
     const words = [t('words.amazing'), t('words.innovative'), t('words.intelligent'), t('words.creative')];
     const [currentWord, setCurrentWord] = useState(0);
 
     useEffect(() => {
+        if (!isInView) return;
         const interval = setInterval(() => {
             setCurrentWord((prev) => (prev + 1) % words.length);
         }, 2500);
         return () => clearInterval(interval);
-    }, [words.length]);
+    }, [isInView, words.length]);
 
     useEffect(() => {
         if (!sectionRef.current) return;
@@ -101,7 +103,7 @@ export default function CTASection() {
                         <Mail className="w-5 h-5" />
                         <span>{t('start')}</span>
                     </MagneticButton>
-                    <MagneticButton href="/resume" variant="outline" className="text-lg px-10 py-5">
+                    <MagneticButton href="/projects" variant="outline" className="text-lg px-10 py-5">
                         <Layers className="w-5 h-5" />
                         <span>{t('work')}</span>
                     </MagneticButton>
