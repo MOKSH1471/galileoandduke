@@ -593,10 +593,12 @@ export default function AboutSection() {
                                             )}
 
                                             <div className="w-full mt-4 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden relative group/card h-32">
-                                                <img
+                                                <Image
                                                     src={member.image}
                                                     alt={member.name}
-                                                    className="w-full h-full object-cover opacity-90 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, 360px"
+                                                    className="object-cover opacity-90 group-hover/card:opacity-100 transition-opacity duration-500 group-hover/card:scale-105"
                                                 />
                                                 {member.social?.website && (
                                                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">

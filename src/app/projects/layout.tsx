@@ -1,8 +1,16 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Projects',
-    description: 'Explore my portfolio of projects and work.',
+    title: 'Selected Works',
+    description: 'Flagship digital experiences, interactive web applications, and creative engineering builds crafted by Galileo & Duke.',
+    alternates: {
+        canonical: '/projects',
+    },
+    openGraph: {
+        title: 'Selected Works | Galileo & Duke',
+        description: 'Flagship digital experiences, interactive web applications, and creative engineering builds crafted by Galileo & Duke.',
+        url: '/projects',
+    },
 };
 
 export default function ProjectsLayout({

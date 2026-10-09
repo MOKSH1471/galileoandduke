@@ -9,7 +9,7 @@ import { ArcPreloaderWrapper } from '@/components/layout/ArcPreloaderWrapper';
 import '@/styles/globals.css';
 import { portfolioData } from '@/data/portfolio';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://galileoduke.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://galileoandduke.com';
 
 const inter = Inter({
     subsets: ['latin'],
@@ -46,6 +46,9 @@ export const metadata: Metadata = {
     authors: [{ name: 'Moksh' }, { name: 'Varul' }],
     creator: 'Galileo & Duke',
     metadataBase: new URL(siteUrl),
+    alternates: {
+        canonical: siteUrl,
+    },
     openGraph: {
         type: 'website',
         locale: 'en_US',
@@ -53,15 +56,31 @@ export const metadata: Metadata = {
         title: 'Galileo & Duke | Design & Development Studio',
         description: 'Web experiences beyond the template — cinematic motion, scroll-driven storytelling, and bespoke engineering.',
         siteName: 'Galileo & Duke',
+        images: [
+            {
+                url: '/og-image.png',
+                width: 1200,
+                height: 630,
+                alt: 'Galileo & Duke | Design & Development Studio',
+            },
+        ],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Galileo & Duke | Design & Development Studio',
         description: 'Web experiences beyond the template — cinematic motion, scroll-driven storytelling, and bespoke engineering.',
+        images: ['/og-image.png'],
     },
     robots: {
         index: true,
         follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
     },
     icons: {
         icon: [
@@ -93,9 +112,46 @@ export default async function RootLayout({
     const locale = await getLocale();
     const messages = await getMessages();
 
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'Organization',
+                '@id': `${siteUrl}/#organization`,
+                name: 'Galileo & Duke',
+                url: siteUrl,
+                logo: `${siteUrl}/icon.png`,
+                email: 'hello@galileoduke.com',
+                description: 'Galileo & Duke is an independent design and development studio founded by Moksh and Varul. We build web experiences that transcend templates — scroll-driven storytelling, cinematic motion, and bespoke engineering.',
+                founders: [
+                    { '@type': 'Person', name: 'Moksh' },
+                    { '@type': 'Person', name: 'Varul' },
+                ],
+                sameAs: [
+                    'https://github.com/MOKSH1471',
+                    'https://www.instagram.com/galileoandduke/',
+                ],
+            },
+            {
+                '@type': 'WebSite',
+                '@id': `${siteUrl}/#website`,
+                url: siteUrl,
+                name: 'Galileo & Duke',
+                description: 'Bespoke web experiences, cinematic motion, and creative engineering studio.',
+                publisher: {
+                    '@id': `${siteUrl}/#organization`,
+                },
+            },
+        ],
+    };
+
     return (
         <html lang={locale} suppressHydrationWarning>
             <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} ${signature.variable} font-sans relative`} suppressHydrationWarning>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                />
                 <ThemeProvider>
                     <I18nProvider locale={locale} messages={messages}>
                         <SmoothScrollProvider>

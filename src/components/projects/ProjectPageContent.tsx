@@ -22,6 +22,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Project } from '@/types';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { portfolioData } from '@/data/portfolio';
 
@@ -65,17 +66,20 @@ const ProjectGallery = ({
                     >
                         <div className="relative aspect-[16/10] overflow-hidden bg-neutral-950 flex items-center justify-center">
                             {/* Ambient backdrop */}
-                            <img
+                            <Image
                                 src={img}
                                 alt=""
                                 aria-hidden="true"
-                                className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-20 scale-110 pointer-events-none"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                className="absolute inset-0 object-cover blur-2xl opacity-20 scale-110 pointer-events-none"
                             />
-                            <img
+                            <Image
                                 src={img}
                                 alt={`Showcase Visual ${idx + 1}`}
-                                loading="lazy"
-                                className="relative z-10 w-full h-full object-contain md:object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                className="relative z-10 object-contain md:object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                             />
                             <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                             
@@ -187,16 +191,22 @@ export function ProjectPageContent({ project }: { project: Project; isLowPowerMo
                     onClick={() => project.image && setSelectedImage(project.image)}
                 >
                     {/* Ambient blurred backdrop to frame aspect variances */}
-                    <img 
+                    <Image 
                         src={project.image || `/project/${project.slug}/hero.jpg`}
                         alt=""
                         aria-hidden="true"
-                        className="absolute inset-0 w-full h-full object-cover blur-3xl opacity-30 scale-110 pointer-events-none"
+                        fill
+                        sizes="100vw"
+                        priority
+                        className="absolute inset-0 object-cover blur-3xl opacity-30 scale-110 pointer-events-none"
                     />
-                    <img
+                    <Image
                         src={project.image || `/project/${project.slug}/hero.jpg`}
                         alt={project.title}
-                        className="relative z-10 w-full h-full object-contain md:object-cover object-center transition-transform duration-700 group-hover:scale-[1.01]"
+                        fill
+                        sizes="(max-width: 1280px) 100vw, 1200px"
+                        priority
+                        className="relative z-10 object-contain md:object-cover object-center transition-transform duration-700 group-hover:scale-[1.01]"
                     />
                     <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                     
