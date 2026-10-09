@@ -515,9 +515,15 @@ html, body, * {
 ::-webkit-scrollbar-corner {
   background: transparent !important;
 }
-::view-transition-old(root), ::view-transition-new(root) {
+::view-transition-old(root) {
     animation: none;
     mix-blend-mode: normal;
+    z-index: 1;
+}
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+    z-index: 9999;
 }
 
 @keyframes move-x {

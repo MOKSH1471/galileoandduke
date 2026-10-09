@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Moon, Sun } from "lucide-react"
-import { flushSync } from "react-dom"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 
@@ -12,12 +11,13 @@ interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"butt
 
 export const AnimatedThemeToggler = ({
   className,
-  duration = 500,
+  duration = 350,
   ...props
 }: AnimatedThemeTogglerProps) => {
-  const { theme, setTheme, resolvedTheme } = useTheme()
+  const { setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const isTransitioningRef = useRef(false)
 
   const isDark = resolvedTheme === "dark"
 
@@ -25,42 +25,60 @@ export const AnimatedThemeToggler = ({
     setMounted(true)
   }, [])
 
-  const toggleTheme = useCallback(async () => {
-    if (!buttonRef.current || !mounted) return
+  const toggleTheme = useCallback(() => {
+    if (!mounted || isTransitioningRef.current) return
 
-    // Fallback if View Transitions API is not supported
-    if (!document.startViewTransition) {
-      setTheme(isDark ? "light" : "dark")
+    const nextTheme = isDark ? "light" : "dark"
+
+    // If View Transitions API is not available or reduced motion is preferred, switch instantly
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (!document.startViewTransition || prefersReducedMotion) {
+      setTheme(nextTheme)
       return
     }
 
-    await document.startViewTransition(() => {
-      flushSync(() => {
-        setTheme(isDark ? "light" : "dark")
-      })
-    }).ready
-
-    const { top, left, width, height } = buttonRef.current.getBoundingClientRect()
-    const x = left + width / 2
-    const y = top + height / 2
+    // Read button coordinates BEFORE starting the transition to prevent forced layout reflow
+    const rect = buttonRef.current?.getBoundingClientRect()
+    const x = rect ? rect.left + rect.width / 2 : window.innerWidth / 2
+    const y = rect ? rect.top + rect.height / 2 : 0
     const maxRadius = Math.hypot(
-      Math.max(left, window.innerWidth - left),
-      Math.max(top, window.innerHeight - top)
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
     )
 
-    document.documentElement.animate(
-      {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${maxRadius}px at ${x}px ${y}px)`,
-        ],
-      },
-      {
-        duration,
-        easing: "ease-in-out",
-        pseudoElement: "::view-transition-new(root)",
-      }
-    )
+    isTransitioningRef.current = true
+
+    // Non-blocking transition (no flushSync main-thread freeze)
+    const transition = document.startViewTransition(() => {
+      setTheme(nextTheme)
+    })
+
+    transition.ready
+      .then(() => {
+        const animation = document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${maxRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration,
+            easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+            pseudoElement: "::view-transition-new(root)",
+          }
+        )
+
+        animation.finished.finally(() => {
+          isTransitioningRef.current = false
+        })
+      })
+      .catch(() => {
+        isTransitioningRef.current = false
+      })
   }, [isDark, duration, setTheme, mounted])
 
   if (!mounted) return null
@@ -70,7 +88,7 @@ export const AnimatedThemeToggler = ({
       ref={buttonRef}
       onClick={toggleTheme}
       className={cn(
-        "p-2 md:p-2.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/10 transition-all duration-300 text-foreground hover:scale-110 hover:rotate-12",
+        "p-2 md:p-2.5 rounded-full bg-transparent hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-200 text-foreground hover:scale-105 active:scale-95",
         className
       )}
       {...props}
