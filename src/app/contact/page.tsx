@@ -55,7 +55,7 @@ function ContactForm() {
         setErrorMessage(null);
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
 
         try {
             const response = await fetch('/api/contact', {
@@ -83,7 +83,7 @@ function ContactForm() {
             console.error('Error submitting form:', error);
             setStatus('error');
             if (error?.name === 'AbortError') {
-                setErrorMessage('Request timed out after 10 seconds. Please check your connection.');
+                setErrorMessage('Request timed out after 30 seconds. Please check your connection.');
             } else {
                 setErrorMessage('Network or server error encountered.');
             }
