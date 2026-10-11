@@ -30,7 +30,7 @@ const showcaseMembers = [
         description: "Inspired by the celestial discoveries of 1610, we treat the browser as a living canvas — exploring atmospheric lighting, fluid physics, and sensory wonder that elevate digital storytelling.",
         period: "Studio Heritage",
         image: "/about/galileo.jpg",
-        social: { website: "https://galileoduke.com" }
+        social: { website: "https://galileoandduke.com" }
     },
     {
         id: 'duke',
@@ -39,7 +39,7 @@ const showcaseMembers = [
         description: "The patron's discipline: enduring proportions, typographic poise, and rock-solid architectural standards built to elevate world-class brands.",
         period: "Studio Heritage",
         image: "/about/duke.jpg",
-        social: { website: "https://galileoduke.com" }
+        social: { website: "https://galileoandduke.com" }
     },
     {
         id: 'moksh',

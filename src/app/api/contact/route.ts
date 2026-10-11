@@ -43,7 +43,7 @@ export async function POST(req: Request) {
         // Email options
         const mailOptions = {
             from: process.env.EMAIL_USER || '',
-            to: process.env.CONTACT_EMAIL || process.env.EMAIL_USER,
+            to: process.env.CONTACT_EMAIL || 'studio@galileoandduke.com',
             replyTo: email,
             subject: `New Message: ${subject}`,
             text: `Name: ${name}\nEmail: ${email}\n\n${message}`,

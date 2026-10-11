@@ -8,10 +8,10 @@ export const portfolioData: PortfolioData = {
         "bio": "Galileo & Duke is an independent design and development studio founded by Moksh and Varul. We build web experiences that transcend templates — scroll-driven storytelling, cinematic motion, and interfaces engineered with as much care as the brands they represent.",
         "avatar": "/about/galileo.jpg",
         "location": "Kolkata, India",
-        "email": "hello@galileoduke.com",
+        "email": "studio@galileoandduke.com",
         "phone": "",
         "resumeUrl": "/contact",
-        "website": "https://galileoduke.com",
+        "website": "https://galileoandduke.com",
         "languages": [
             {
                 "name": "English",
@@ -577,7 +577,7 @@ export const portfolioData: PortfolioData = {
         },
         {
             "question": "Are you available for new client partnerships?",
-            "answer": "Yes. We partner selectively with ambitious brands and visionary founders. Reach out to discuss your project via our contact page or directly at hello@galileoduke.com."
+            "answer": "Yes. We partner selectively with ambitious brands and visionary founders. Reach out to discuss your project via our contact page or directly at studio@galileoandduke.com."
         }
     ],
     "blogs": [

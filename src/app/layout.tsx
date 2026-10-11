@@ -124,7 +124,7 @@ export default async function RootLayout({
                 name: 'Galileo & Duke',
                 url: siteUrl,
                 logo: `${siteUrl}/icon.png`,
-                email: 'hello@galileoduke.com',
+                email: 'studio@galileoandduke.com',
                 description: 'Galileo & Duke is an independent design and development studio founded by Moksh and Varul. We build web experiences that transcend templates — scroll-driven storytelling, cinematic motion, and bespoke engineering.',
                 founders: [
                     { '@type': 'Person', name: 'Moksh' },

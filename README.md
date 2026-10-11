@@ -11,9 +11,9 @@
 [![Three.js](https://img.shields.io/badge/Three.js-0.170-000000?style=for-the-badge&logo=threedotjs&logoColor=white)](https://threejs.org/)
 [![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 
-[![Live Studio](https://img.shields.io/badge/Live_Studio-galileoduke.com-6366f1?style=for-the-badge)](https://galileoduke.com)
+[![Live Studio](https://img.shields.io/badge/Live_Studio-galileoandduke.com-6366f1?style=for-the-badge)](https://galileoandduke.com)
 [![GitHub](https://img.shields.io/badge/GitHub-galileoduke-181717?style=for-the-badge&logo=github)](https://github.com/galileoduke)
-[![Email](https://img.shields.io/badge/Email-hello@galileoduke.com-0A66C2?style=for-the-badge)](mailto:hello@galileoduke.com)
+[![Email](https://img.shields.io/badge/Email-studio@galileoandduke.com-0A66C2?style=for-the-badge)](mailto:studio@galileoandduke.com)
 
 ---
 

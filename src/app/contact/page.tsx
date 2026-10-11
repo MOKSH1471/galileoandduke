@@ -153,8 +153,8 @@ function ContactForm() {
                                 <p className="font-semibold">Unable to deliver your message.</p>
                                 <p className="mt-1 text-xs opacity-90">
                                     {errorMessage || 'Something went wrong.'} Your form inputs have been saved. You can try again, or write directly to{' '}
-                                    <a href="mailto:hello@galileoduke.com" className="underline font-bold hover:opacity-100">
-                                        hello@galileoduke.com
+                                    <a href="mailto:studio@galileoandduke.com" className="underline font-bold hover:opacity-100">
+                                        studio@galileoandduke.com
                                     </a>.
                                 </p>
                             </div>
