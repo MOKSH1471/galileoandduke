@@ -30,7 +30,13 @@ export function limitRequest(req: Request, endpoint: 'contact'): Response | null
     const limit = identity ? 5 : 60;
     const result = consume(`${endpoint}:${key}`, limit, 60_000);
     return result.allowed ? null : Response.json(
-        { error: 'Too many requests. Please try again shortly.' },
+        {
+            success: false,
+            error: {
+                code: 'RATE_LIMIT_EXCEEDED',
+                message: 'Too many requests. Please try again shortly.',
+            },
+        },
         { status: 429, headers: { 'Retry-After': String(result.retryAfter) } },
     );
 }

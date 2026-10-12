@@ -282,6 +282,7 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start">
                             {/* Header Left */}
                             <div className="md:col-span-7">
+                                {/* Security: t.raw('profile.title') loads static i18n translation strings only (no user input) */}
                                 <h3
                                     className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-snug text-black dark:text-white"
                                     dangerouslySetInnerHTML={{ __html: t.raw("profile.title") }}

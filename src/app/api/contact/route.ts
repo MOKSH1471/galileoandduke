@@ -22,7 +22,13 @@ export async function POST(req: Request) {
         const rawPass = (process.env.EMAIL_APP_PASSWORD || process.env.EMAIL_PASS || process.env.EMAIL_PASSWORD || '').trim();
 
         if (!emailUser || !rawPass) {
-            return NextResponse.json({ error: 'Contact delivery is temporarily unavailable.' }, { status: 503 });
+            return NextResponse.json({
+                success: false,
+                error: {
+                    code: 'SERVICE_UNAVAILABLE',
+                    message: 'Contact delivery is temporarily unavailable.',
+                },
+            }, { status: 503 });
         }
 
         // Determine SMTP host, port, and security
@@ -92,20 +98,41 @@ export async function POST(req: Request) {
         // Send the email
         await transporter.sendMail(mailOptions);
 
-        return NextResponse.json({ message: 'Email sent successfully!' }, { status: 200 });
-    } catch (error: any) {
+        return NextResponse.json({
+            success: true,
+            data: { message: 'Email sent successfully!' },
+        }, { status: 200 });
+    } catch (error: unknown) {
         if (error instanceof RequestError) {
-            return NextResponse.json({ error: error.message }, { status: error.status });
+            const code = error.status === 413 ? 'PAYLOAD_TOO_LARGE' : error.status === 415 ? 'UNSUPPORTED_MEDIA_TYPE' : 'VALIDATION_ERROR';
+            return NextResponse.json({
+                success: false,
+                error: {
+                    code,
+                    message: error.message,
+                },
+            }, { status: error.status });
         }
         console.error('Error sending email:', error);
 
+        const err = error as { code?: string; responseCode?: number; command?: string } | undefined;
         let clientMessage = 'Unable to send your message. Please try again later.';
-        if (error?.code === 'EAUTH' || error?.responseCode === 535) {
+        let errCode = 'INTERNAL_ERROR';
+
+        if (err?.code === 'EAUTH' || err?.responseCode === 535) {
             clientMessage = 'Email authentication failed. Please check your credentials in settings.';
-        } else if (error?.code === 'ETIMEDOUT' || error?.command === 'CONN') {
+            errCode = 'AUTH_ERROR';
+        } else if (err?.code === 'ETIMEDOUT' || err?.command === 'CONN') {
             clientMessage = 'Connection to mail server timed out. Please try again shortly.';
+            errCode = 'TIMEOUT_ERROR';
         }
 
-        return NextResponse.json({ error: clientMessage }, { status: 500 });
+        return NextResponse.json({
+            success: false,
+            error: {
+                code: errCode,
+                message: clientMessage,
+            },
+        }, { status: 500 });
     }
 }

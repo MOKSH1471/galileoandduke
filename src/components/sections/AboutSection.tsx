@@ -209,6 +209,7 @@ const AboutLeadIn = () => {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 border-t border-zinc-100 dark:border-zinc-900 pt-8 md:pt-12">
                         {/* Left narrative */}
                         <div className="md:col-span-5">
+                            {/* Security: t.raw('leadIn.thesis') loads static i18n translation strings only (no user input) */}
                             <p
                                 className="text-base md:text-lg lg:text-xl font-medium text-zinc-600 dark:text-zinc-400 leading-relaxed tracking-tight"
                                 dangerouslySetInnerHTML={{ __html: t.raw('leadIn.thesis') }}

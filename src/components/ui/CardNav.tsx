@@ -97,7 +97,16 @@ function ActiveDot({ theme }: { theme: string }) {
     );
 }
 
-function MegaBoxBig({ href, icon: Icon, title, desc, theme, pathname }: any) {
+interface MegaBoxProps {
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    title: string;
+    desc: string;
+    theme: string;
+    pathname?: string;
+}
+
+function MegaBoxBig({ href, icon: Icon, title, desc, theme, pathname }: MegaBoxProps) {
     const isActive = pathname === href || pathname?.startsWith(`${href}/`);
     
     return (
@@ -132,7 +141,7 @@ function MegaBoxBig({ href, icon: Icon, title, desc, theme, pathname }: any) {
     )
 }
 
-function MegaBoxSmall({ href, icon: Icon, title, desc, theme, pathname }: any) {
+function MegaBoxSmall({ href, icon: Icon, title, desc, theme, pathname }: MegaBoxProps) {
     const isActive = pathname === href || pathname?.startsWith(`${href}/`);
     
     return (

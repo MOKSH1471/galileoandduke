@@ -8,7 +8,16 @@ import { cn } from '@/lib/utils';
 import { usePerformance } from '@/hooks/usePerformance';
 import SovereignBondSection from '@/components/sections/SovereignBondSection';
 
-const InputGroup = ({ label, name, type = "text", value, onChange, required = false }: any) => {
+interface InputGroupProps {
+    label: string;
+    name: string;
+    type?: 'text' | 'email' | 'textarea';
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    required?: boolean;
+}
+
+const InputGroup = ({ label, name, type = "text", value, onChange, required = false }: InputGroupProps) => {
     return (
         <div className="group relative z-0 w-full mb-10">
             {type === 'textarea' ? (
