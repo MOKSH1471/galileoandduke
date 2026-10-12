@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Send, CheckCircle, AlertCircle, Loader2, ArrowUpRight, Sparkles, HelpCircle, MessageSquare, ChevronDown } from 'lucide-react';
+import { Send, CheckCircle, ArrowUpRight, Sparkles, HelpCircle, MessageSquare, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { usePerformance } from '@/hooks/usePerformance';
 import SovereignBondSection from '@/components/sections/SovereignBondSection';
@@ -45,49 +45,33 @@ const InputGroup = ({ label, name, type = "text", value, onChange, required = fa
 
 function ContactForm() {
     const t = useTranslations('contact');
-    const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [formData, setFormData] = useState({ name: '', subject: '', message: '' });
+    const [status, setStatus] = useState<'idle' | 'success'>('idle');
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setStatus('loading');
-        setErrorMessage(null);
 
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
-
-        try {
-            const response = await fetch('/api/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-                signal: controller.signal,
-            });
-
-            clearTimeout(timeoutId);
-
-            if (response.ok) {
-                setStatus('success');
-                setFormData({ name: '', email: '', subject: '', message: '' });
-                setTimeout(() => setStatus('idle'), 6000);
-            } else {
-                const data = await response.json().catch(() => ({}));
-                setStatus('error');
-                setErrorMessage(data?.error || 'Unable to deliver message right now.');
-            }
-        } catch (error: any) {
-            clearTimeout(timeoutId);
-            console.error('Error submitting form:', error);
-            setStatus('error');
-            if (error?.name === 'AbortError') {
-                setErrorMessage('Request timed out after 30 seconds. Please check your connection.');
-            } else {
-                setErrorMessage('Network or server error encountered.');
-            }
+        const subject = formData.subject.trim() || (formData.name.trim() ? `Project Inquiry from ${formData.name.trim()}` : 'Project Inquiry');
+        const bodyParts: string[] = [];
+        if (formData.name.trim()) {
+            bodyParts.push(`Name: ${formData.name.trim()}`);
         }
+        if (formData.message.trim()) {
+            bodyParts.push(formData.message.trim());
+        }
+        const bodyText = bodyParts.join('\n\n');
+
+        const recipient = 'studio@galileoandduke.com';
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+        const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+
+        // Open Gmail compose in a new tab; fall back to mailto if blocked
+        const win = window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+            window.location.href = mailtoUrl;
+        }
+
+        setStatus('success');
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -108,7 +92,6 @@ function ContactForm() {
 
             <form onSubmit={handleSubmit} className="w-full relative z-10">
                 <InputGroup label={t('form.name')} name="name" value={formData.name} onChange={handleChange} required />
-                <InputGroup label={t('form.email')} name="email" type="email" value={formData.email} onChange={handleChange} required />
                 <InputGroup label={t('form.subject')} name="subject" value={formData.subject} onChange={handleChange} required />
                 <InputGroup
                     label={t('form.messagePlaceholder')}
@@ -122,42 +105,36 @@ function ContactForm() {
                 {/* Creative Large Button */}
                 <motion.button
                     type="submit"
-                    disabled={status === 'loading'}
-                    className="group relative w-full flex items-center justify-between border-b-2 border-foreground py-8 text-left hover:bg-foreground/5 transition-colors disabled:opacity-50"
+                    className="group relative w-full flex items-center justify-between border-b-2 border-foreground py-8 text-left hover:bg-foreground/5 transition-colors"
                     whileTap={{ scale: 0.98 }}
                 >
                     <span className="text-3xl md:text-4xl font-bold tracking-tight text-foreground group-hover:pl-4 transition-all duration-300">
-                        {status === 'loading' ? t('form.sending') : status === 'success' ? t('form.sent') : t('form.submit')}
+                        {status === 'success' ? 'OPENED IN GMAIL' : t('form.submit')}
                     </span>
 
                     <div className="relative overflow-hidden w-12 h-12 flex items-center justify-center rounded-full bg-foreground text-background group-hover:scale-110 transition-transform duration-500">
-                        {status === 'loading' ? <Loader2 className="w-6 h-6 animate-spin" /> :
-                            status === 'success' ? <CheckCircle className="w-6 h-6" /> :
-                                <ArrowUpRight className="w-6 h-6 group-hover:rotate-45 transition-transform duration-300" />
-                        }
+                        {status === 'success' ? (
+                            <CheckCircle className="w-6 h-6" />
+                        ) : (
+                            <ArrowUpRight className="w-6 h-6 group-hover:rotate-45 transition-transform duration-300" />
+                        )}
                     </div>
                 </motion.button>
 
                 {/* Accessible Status Message Banner */}
                 <div aria-live="polite" className="mt-6 min-h-[24px]">
                     {status === 'success' && (
-                        <div className="flex items-center gap-3 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
-                            <CheckCircle className="w-5 h-5 flex-shrink-0" />
-                            <span>Your message was sent successfully. We will reply shortly.</span>
-                        </div>
-                    )}
-                    {status === 'error' && (
-                        <div className="flex items-start gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium">
-                            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                            <div className="flex-1">
-                                <p className="font-semibold">Unable to deliver your message.</p>
-                                <p className="mt-1 text-xs opacity-90">
-                                    {errorMessage || 'Something went wrong.'} Your form inputs have been saved. You can try again, or write directly to{' '}
-                                    <a href="mailto:studio@galileoandduke.com" className="underline font-bold hover:opacity-100">
-                                        studio@galileoandduke.com
-                                    </a>.
-                                </p>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-sm font-medium">
+                            <div className="flex items-center gap-3">
+                                <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                                <span>Gmail opened with your pre-filled message to <strong>studio@galileoandduke.com</strong>.</span>
                             </div>
+                            <a
+                                href={`mailto:studio@galileoandduke.com?subject=${encodeURIComponent(formData.subject || 'Project Inquiry')}&body=${encodeURIComponent(formData.message)}`}
+                                className="text-xs underline opacity-80 hover:opacity-100"
+                            >
+                                Not using Gmail? Open mail client
+                            </a>
                         </div>
                     )}
                 </div>
