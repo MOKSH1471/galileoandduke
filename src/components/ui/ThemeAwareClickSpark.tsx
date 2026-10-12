@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
-import ClickSpark from '@/components/ClickSpark';
+import ClickSpark from '@/components/effects/ClickSpark';
 
 export const ThemeAwareClickSpark = ({ children }: { children: React.ReactNode }) => {
     const { resolvedTheme } = useTheme();
