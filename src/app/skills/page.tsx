@@ -97,12 +97,12 @@ export default function SkillsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                    {/* Case Study 1: NX Elit */}
+                    {/* Case Study 1: Elite Hotels */}
                     <div className="group rounded-3xl border border-border/60 bg-card/50 overflow-hidden flex flex-col hover:border-primary/40 transition-all duration-500 shadow-sm">
                         <div className="relative h-60 w-full overflow-hidden bg-muted">
                             <Image
                                 src="/project/nx-elit/hero.jpg"
-                                alt="NX Elit Case Study"
+                                alt="Elite Hotels Case Study"
                                 fill
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -116,7 +116,7 @@ export default function SkillsPage() {
                         </div>
                         <div className="p-6 flex flex-col flex-grow">
                             <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                                NX Elit
+                                Elite Hotels
                             </h3>
                             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6 flex-grow">
                                 Boutique hospitality digital flagship with custom room curation, atmospheric dining presentation, and a direct reservation inquiry workflow.

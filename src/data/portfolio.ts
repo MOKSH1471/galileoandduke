@@ -85,13 +85,13 @@ export const portfolioData: PortfolioData = {
         {
             "id": "nx-elit",
             "slug": "nx-elit",
-            "title": "NX Elit",
+            "title": "Elite Hotels",
             "tagline": "Boutique Hospitality Web Flagship & Reservation Inquiry Architecture",
             "description": "Boutique hotel design MVP and frontend inquiry interface for luxury hospitality, showcasing sensory visual presentation and bespoke room curation.",
-            "longDescription": "NX Elit was designed and engineered as a modern luxury hospitality digital showcase. The experience translates the physical serenity and architectural elegance of an upscale boutique hotel into a responsive web presence with bespoke room catalogs, dining lounge atmosphere, and a direct reservation inquiry pipeline.",
+            "longDescription": "Elite Hotels was designed and engineered as a modern luxury hospitality digital showcase. The experience translates the physical serenity and architectural elegance of an upscale boutique hotel into a responsive web presence with bespoke room catalogs, dining lounge atmosphere, and a direct reservation inquiry pipeline.",
             "projectType": "Hospitality / Website Design & Development",
-            "developmentStage": "Concept & Interactive Frontend MVP",
-            "client": "Boutique Hospitality Showcase",
+            "developmentStage": "Live Interactive Showcase & Booking Architecture",
+            "client": "Elite Hotels & Residences",
             "role": "Design Direction & Frontend Engineering",
             "customTimeline": "2024",
             "startDate": "2024-01-15",
@@ -110,7 +110,7 @@ export const portfolioData: PortfolioData = {
                 "Git",
                 "Vercel"
             ],
-            "demoUrl": "#",
+            "demoUrl": "https://elit-hotels.vercel.app/",
             "repoUrl": "https://github.com/MOKSH1471/NX_Elit_MVP",
             "image": "/project/nx-elit/hero.jpg",
             "galleryImages": [

@@ -33,7 +33,7 @@ export const capabilityOfferings: CapabilityOffering[] = [
             'Scoped production handover with performance verification'
         ],
         relatedProjectSlug: 'nx-elit',
-        relatedProjectTitle: 'NX Elit — Boutique Hospitality Web Flagship',
+        relatedProjectTitle: 'Elite Hotels — Boutique Hospitality Web Flagship',
         technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'React'],
         contactSubject: 'Website Design & Development'
     },
@@ -57,7 +57,7 @@ export const capabilityOfferings: CapabilityOffering[] = [
             'Reduced-motion alternatives for complete accessibility'
         ],
         relatedProjectSlug: 'nx-elit',
-        relatedProjectTitle: 'NX Elit — Cinematic Interaction System',
+        relatedProjectTitle: 'Elite Hotels — Cinematic Interaction System',
         technologies: ['GSAP', 'Framer Motion', 'WebGL', 'Lenis'],
         contactSubject: 'Motion & Interactive Experiences'
     },

@@ -13,7 +13,8 @@ import {
     X,
     Sparkles,
     Layers,
-    Globe
+    Globe,
+    ExternalLink
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { portfolioData } from '@/data/portfolio';
@@ -42,6 +43,7 @@ export interface CelestialBody {
     projectImage?: string;
     projectTechStack?: string[];
     projectDescription: string;
+    projectDemoUrl?: string;
 }
 
 export function OrbitalWorkSection({ isFullPage = false }: { isFullPage?: boolean }) {
@@ -115,15 +117,16 @@ export function OrbitalWorkSection({ isFullPage = false }: { isFullPage?: boolea
                 { name: 'Luna', distanceVmin: 2.2, speed: 4.8, color: '#f1f5f9', sizeVmin: 0.6 }
             ],
             projectSlug: nxElit?.slug || 'nx-elit',
-            projectTitle: nxElit?.title || 'NX Elit',
+            projectTitle: nxElit?.title || 'Elite Hotels',
             projectRole: nxElit?.role || 'Boutique Hospitality Flagship',
             projectTagline: nxElit?.tagline || 'Boutique Hospitality Flagship & Reservation Inquiry Architecture',
             projectCategory: nxElit?.category || 'Hospitality & Luxury',
-            projectClient: nxElit?.client || 'Boutique Luxury Hospitality',
+            projectClient: nxElit?.client || 'Elite Hotels & Residences',
             projectYear: nxElit?.customTimeline || '2024',
             projectImage: nxElit?.image || '/project/nx-elit/hero.jpg',
             projectTechStack: nxElit?.techStack || ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-            projectDescription: nxElit?.description || 'Boutique hotel design MVP and frontend inquiry interface for luxury hospitality, showcasing sensory visual presentation and bespoke room curation.'
+            projectDescription: nxElit?.description || 'Boutique hotel design MVP and frontend inquiry interface for luxury hospitality, showcasing sensory visual presentation and bespoke room curation.',
+            projectDemoUrl: nxElit?.demoUrl || 'https://elit-hotels.vercel.app/'
         },
         {
             id: 'mars',
@@ -681,15 +684,40 @@ function LuxuryProjectDossier({ body, onClose }: LuxuryProjectDossierProps) {
 
                     {/* Image Preview with constrained height */}
                     {body.projectImage && (
-                        <div className="relative w-full h-40 sm:h-48 md:h-52 rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 bg-black/60 flex-shrink-0">
-                            <Image
-                                src={body.projectImage}
-                                alt={body.projectTitle}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 600px"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                        <div className="relative w-full h-40 sm:h-48 md:h-52 rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 bg-black/60 flex-shrink-0 group">
+                            {body.projectDemoUrl && body.projectDemoUrl !== '#' ? (
+                                <a
+                                    href={body.projectDemoUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block relative w-full h-full cursor-pointer"
+                                    title="Open live site"
+                                >
+                                    <Image
+                                        src={body.projectImage}
+                                        alt={body.projectTitle}
+                                        fill
+                                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                        sizes="(max-width: 768px) 100vw, 600px"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
+                                    <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-[10px] font-mono text-white/90 group-hover:border-white/40 group-hover:text-white transition-all shadow-lg pointer-events-none">
+                                        <ExternalLink className="w-3 h-3 text-[#d4af37]" />
+                                        <span>elit-hotels.vercel.app</span>
+                                    </div>
+                                </a>
+                            ) : (
+                                <>
+                                    <Image
+                                        src={body.projectImage}
+                                        alt={body.projectTitle}
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 100vw, 600px"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                                </>
+                            )}
                         </div>
                     )}
 
@@ -727,23 +755,37 @@ function LuxuryProjectDossier({ body, onClose }: LuxuryProjectDossierProps) {
                         ← Return to Orrery
                     </button>
 
-                    {body.projectSlug ? (
-                        <Link
-                            href={`/projects/${body.projectSlug}`}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-md"
-                        >
-                            <span>Explore Case Study</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
-                    ) : (
-                        <Link
-                            href="/contact"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-md"
-                        >
-                            <span>Inquire Capability</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
-                    )}
+                    <div className="flex items-center gap-2">
+                        {body.projectDemoUrl && body.projectDemoUrl !== '#' && (
+                            <a
+                                href={body.projectDemoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full border border-white/20 bg-white/5 hover:bg-white/15 text-white font-mono text-xs font-semibold uppercase tracking-wider hover:border-white/40 transition-all shadow-sm"
+                            >
+                                <span>Live Site</span>
+                                <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                        )}
+
+                        {body.projectSlug ? (
+                            <Link
+                                href={`/projects/${body.projectSlug}`}
+                                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-md"
+                            >
+                                <span>Explore Case Study</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                            </Link>
+                        ) : (
+                            <Link
+                                href="/contact"
+                                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-colors shadow-md"
+                            >
+                                <span>Inquire Capability</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                            </Link>
+                        )}
+                    </div>
                 </div>
             </motion.div>
         </div>
