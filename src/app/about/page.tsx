@@ -34,7 +34,7 @@ export default function StudioPage() {
     return (
         <main className="min-h-screen bg-background text-foreground selection:bg-primary/20">
             {/* 1. HERO SECTION */}
-            <section className="relative pt-44 pb-28 md:pt-56 md:pb-36 px-6 md:px-12 max-w-[1400px] mx-auto border-b border-border/40">
+            <section className="relative pt-32 pb-20 sm:pt-44 sm:pb-28 md:pt-56 md:pb-36 px-5 sm:px-6 md:px-12 max-w-[1400px] mx-auto border-b border-border/40">
                 <div className="flex flex-col gap-6 max-w-4xl">
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
@@ -49,7 +49,7 @@ export default function StudioPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.1 }}
-                        className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95]"
+                        className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.08] sm:leading-[0.98] md:leading-[0.95]"
                     >
                         Engineering digital experiences that command attention.
                     </motion.h1>

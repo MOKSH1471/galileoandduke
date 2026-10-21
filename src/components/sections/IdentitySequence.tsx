@@ -123,11 +123,11 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
     const vaultGradientUp = useTransform(cardBgValue, (color: string) => getGradient(color, 'to top'));
 
     const marqueeItems = [
-        <span key="1" className="text-[10rem] md:text-[16rem] font-black uppercase tracking-tighter mx-12 text-black dark:text-white leading-none">
+        <span key="1" className="text-6xl sm:text-8xl md:text-[14rem] lg:text-[16rem] font-black uppercase tracking-tighter mx-6 sm:mx-10 md:mx-12 text-black dark:text-white leading-none">
             {portfolioData.personal.title}
         </span>,
-        <div key="icon" className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-[#D1FF4D] flex items-center justify-center mx-12">
-            <svg viewBox="0 0 100 100" className="w-20 h-20 md:w-32 md:h-32 fill-black dark:fill-zinc-900">
+        <div key="icon" className="w-20 h-20 sm:w-28 sm:h-28 md:w-48 md:h-48 rounded-full bg-[#D1FF4D] flex items-center justify-center mx-6 sm:mx-10 md:mx-12">
+            <svg viewBox="0 0 100 100" className="w-12 h-12 sm:w-16 sm:h-16 md:w-32 md:h-32 fill-black dark:fill-zinc-900">
                 <path d="M50 0 C60 30 100 40 100 50 C100 60 60 70 50 100 C40 70 0 60 0 50 C0 40 40 30 50 0" />
             </svg>
         </div>
@@ -170,7 +170,7 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
                 </div>
 
                 {/* Unified Bottom Labels Layer */}
-                <div className="w-full max-w-[1200px] flex items-center justify-between px-12">
+                <div className="w-full max-w-[1200px] flex items-center justify-between px-6 sm:px-12">
                     <div className="flex items-center gap-3 text-zinc-500 dark:text-white/60 text-sm font-medium tracking-tight">
                         <motion.span
                             animate={{ y: [0, 5, 0] }}
@@ -252,7 +252,7 @@ export const IdentitySequence = ({ scrollYProgress, isVisible }: IdentitySequenc
                                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                                                     priority
                                                 />
-                                                <div className="absolute bottom-6 left-6 z-30 px-4 py-2 rounded-full glass-strong text-xs font-bold tracking-wider uppercase text-white shadow-lg pointer-events-none">
+                                                <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 z-30 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full glass-strong text-[10px] sm:text-xs font-bold tracking-wider uppercase text-white shadow-lg pointer-events-none">
                                                     {isHovered ? "Duke — Classical Craft & Pedigree" : "Galileo — Visionary Wonder & Motion"}
                                                 </div>
                                             </motion.div>

@@ -3,8 +3,10 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function ManifestoHero({ isLowPowerMode }: { isLowPowerMode?: boolean }) {
+    const isMobile = useIsMobile();
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -16,10 +18,10 @@ export default function ManifestoHero({ isLowPowerMode }: { isLowPowerMode?: boo
 
     // Move text upwards (negative y) at different speeds to avoid overlap with the next section
     // Top elements move faster to create an elegant "stretching" effect
-    const yTitle1Transform = useTransform(scrollYProgress, [0, 1], [0, -300]);
-    const ySubtitleTransform = useTransform(scrollYProgress, [0, 1], [0, -225]);
-    const yTitle2Transform = useTransform(scrollYProgress, [0, 1], [0, -150]);
-    const yParagraphTransform = useTransform(scrollYProgress, [0, 1], [0, -75]);
+    const yTitle1Transform = useTransform(scrollYProgress, [0, 1], isMobile ? [0, -75] : [0, -300]);
+    const ySubtitleTransform = useTransform(scrollYProgress, [0, 1], isMobile ? [0, -55] : [0, -225]);
+    const yTitle2Transform = useTransform(scrollYProgress, [0, 1], isMobile ? [0, -35] : [0, -150]);
+    const yParagraphTransform = useTransform(scrollYProgress, [0, 1], isMobile ? [0, -15] : [0, -75]);
     
     // The prompt fades out quickly
     const opacityPromptTransform = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
@@ -50,7 +52,7 @@ export default function ManifestoHero({ isLowPowerMode }: { isLowPowerMode?: boo
                                 initial={isLowPowerMode ? { opacity: 0 } : { y: 100, opacity: 0 }}
                                 animate={isLowPowerMode ? { opacity: 1 } : { y: 0, opacity: 1 }}
                                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-6xl md:text-9xl font-black tracking-tighter uppercase leading-[0.8] text-transparent bg-clip-text bg-gradient-to-br from-foreground/80 to-foreground/20 [-webkit-text-stroke:1px_rgba(0,0,0,0.1)] dark:[-webkit-text-stroke:1px_rgba(255,255,255,0.1)]"
+                                className="text-4xl sm:text-6xl md:text-9xl font-black tracking-tighter uppercase leading-[1.05] sm:leading-[0.95] md:leading-[0.8] text-transparent bg-clip-text bg-gradient-to-br from-foreground/80 to-foreground/20 [-webkit-text-stroke:1px_rgba(0,0,0,0.1)] dark:[-webkit-text-stroke:1px_rgba(255,255,255,0.1)]"
                             >
                                 <span className="font-serif italic font-light opacity-80 text-foreground/60">The</span> Code
                             </motion.h1>
@@ -84,7 +86,7 @@ export default function ManifestoHero({ isLowPowerMode }: { isLowPowerMode?: boo
                                 initial={isLowPowerMode ? { opacity: 0 } : { y: -100, opacity: 0 }}
                                 animate={isLowPowerMode ? { opacity: 1 } : { y: 0, opacity: 1 }}
                                 transition={{ duration: 1, delay: isLowPowerMode ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
-                                className="text-6xl md:text-9xl font-black tracking-tighter uppercase leading-[0.8] text-transparent bg-clip-text bg-gradient-to-br from-foreground/80 to-foreground/20 [-webkit-text-stroke:1px_rgba(0,0,0,0.1)] dark:[-webkit-text-stroke:1px_rgba(255,255,255,0.1)]"
+                                className="text-4xl sm:text-6xl md:text-9xl font-black tracking-tighter uppercase leading-[1.05] sm:leading-[0.95] md:leading-[0.8] text-transparent bg-clip-text bg-gradient-to-br from-foreground/80 to-foreground/20 [-webkit-text-stroke:1px_rgba(0,0,0,0.1)] dark:[-webkit-text-stroke:1px_rgba(255,255,255,0.1)]"
                             >
                                 Human <span className="font-serif italic font-light text-primary/80">Emotion.</span>
                             </motion.h1>

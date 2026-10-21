@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Send, CheckCircle, ArrowUpRight, Sparkles, HelpCircle, MessageSquare, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { usePerformance } from '@/hooks/usePerformance';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import SovereignBondSection from '@/components/sections/SovereignBondSection';
 
 interface InputGroupProps {
@@ -234,6 +235,7 @@ function FAQSection() {
 export default function ContactPage() {
     const t = useTranslations('contact');
     const { isLowPowerMode } = usePerformance();
+    const isMobile = useIsMobile();
 
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
@@ -260,15 +262,15 @@ export default function ContactPage() {
             {/* Main Content: (Header + Form + Lanyard) */}
             <motion.div
                 className="relative z-10"
-                style={{
+                style={isMobile ? undefined : {
                     opacity: headerOpacity,
                     scale: isLowPowerMode ? 1 : headerScale,
                     filter: isLowPowerMode ? "none" : headerFilter,
                 }}
             >
                 {/* Interaction Section (Bond + Form) */}
-                <div className="container-creative px-4 md:px-8 max-w-[1200px] mx-auto pt-28 md:pt-36 pb-40">
-                    <div className="flex flex-col gap-16 relative z-10">
+                <div className="container-creative px-4 md:px-8 max-w-[1200px] mx-auto pt-24 sm:pt-28 md:pt-36 pb-16 md:pb-40">
+                    <div className="flex flex-col gap-12 sm:gap-16 relative z-10">
                         {/* Sovereign Treasury Bond Underwriting */}
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
@@ -291,13 +293,13 @@ export default function ContactPage() {
                 </div>
 
                 {/* FAQ TRIGGER ZONE */}
-                <div ref={faqTriggerRef} className="h-[100vh] w-full pointer-events-none" />
+                <div ref={faqTriggerRef} className={cn("w-full pointer-events-none", isMobile ? "h-0" : "h-[100vh]")} />
             </motion.div>
 
             {/* FAQ SECTION */}
             <motion.section
                 className="relative z-50 bg-background overflow-hidden"
-                style={{
+                style={isMobile ? undefined : {
                     y: useTransform(showFAQ, [0, 1], ["100vh", "0vh"]),
                     marginTop: "-100vh",
                 }}
@@ -309,7 +311,7 @@ export default function ContactPage() {
                 <div className="absolute top-0 left-0 right-0 h-[40rem] bg-gradient-to-t from-background via-background/95 to-transparent -translate-y-full pointer-events-none" />
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
-                <div className="container-creative px-4 md:px-8 max-w-[1700px] mx-auto py-32 pb-32 relative z-10">
+                <div className="container-creative px-4 md:px-8 max-w-[1700px] mx-auto py-16 sm:py-24 md:py-32 pb-24 md:pb-32 relative z-10">
                     <FAQSection />
                 </div>
             </motion.section>

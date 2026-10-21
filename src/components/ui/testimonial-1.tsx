@@ -111,7 +111,7 @@ export default function Testimonial1() {
                   delay: line.delay + 0.35,
                   duration: 0.01
                 }}
-                className="text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tighter"
+                className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tighter"
               >
                 {line.text}
               </motion.h1>
@@ -139,7 +139,7 @@ export default function Testimonial1() {
         </div>
 
         {/* Glassmorphic Stats Bar */}
-        <div className="sm:flex grid grid-cols-2 gap-8 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-xl mt-12 w-full mx-auto px-8 py-10 border rounded-2xl border-white/20 dark:border-white/5 shadow-2xl relative overflow-hidden">
+        <div className="sm:flex grid grid-cols-2 gap-4 sm:gap-8 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-xl mt-8 sm:mt-12 w-full mx-auto px-4 sm:px-8 py-6 sm:py-10 border rounded-2xl border-white/20 dark:border-white/5 shadow-2xl relative overflow-hidden">
           {/* Subtle Background Glow inside the bar */}
           <div className="absolute top-0 left-1/4 w-1/2 h-full bg-blue-500/5 blur-[100px] pointer-events-none" />
 
@@ -157,12 +157,12 @@ export default function Testimonial1() {
                 )}
 
                 <div className="flex flex-col items-center text-center transition-all duration-300 group-hover:opacity-40">
-                  <span className="text-[10px] sm:text-xs font-medium text-neutral-500 dark:text-zinc-400 uppercase tracking-wider mb-2">
+                  <span className="text-[10px] sm:text-xs font-medium text-neutral-500 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
                     {stat.label}
                   </span>
-                  <div className="text-2xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tighter flex items-baseline">
+                  <div className="text-xl sm:text-3xl font-black text-neutral-900 dark:text-white tracking-tighter flex items-baseline">
                     <Counter value={stat.value} decimals={stat.decimals} />
-                    <span className="text-lg sm:text-2xl ml-0.5">{stat.suffix}</span>
+                    <span className="text-base sm:text-2xl ml-0.5">{stat.suffix}</span>
                   </div>
                 </div>
 

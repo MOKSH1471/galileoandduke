@@ -184,14 +184,14 @@ export default function ApproachPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="rounded-[2.5rem] border border-foreground/10 bg-card/60 dark:bg-zinc-900/40 p-8 sm:p-12 md:p-16 relative overflow-hidden shadow-2xl"
+                    className="rounded-3xl sm:rounded-[2.5rem] border border-foreground/10 bg-card/60 dark:bg-zinc-900/40 p-5 sm:p-10 md:p-16 relative overflow-hidden shadow-2xl"
                 >
                     {/* Glow Accent */}
                     <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 relative z-10">
                         {/* Left Overview Column */}
-                        <div className="lg:col-span-7 space-y-8">
+                        <div className="lg:col-span-7 space-y-6 md:space-y-8">
                             <div className="flex items-center gap-3">
                                 <div className="p-3.5 rounded-2xl bg-foreground/5 text-foreground">
                                     <Icon className="w-7 h-7 text-primary" />
@@ -206,7 +206,7 @@ export default function ApproachPage() {
                                 </div>
                             </div>
 
-                            <p className="text-lg md:text-xl font-medium text-foreground/90 leading-relaxed">
+                            <p className="text-base sm:text-lg md:text-xl font-medium text-foreground/90 leading-relaxed">
                                 {current.subtitle}
                             </p>
 
@@ -215,7 +215,7 @@ export default function ApproachPage() {
                             </p>
 
                             {/* Client Participation Callout */}
-                            <div className="p-6 rounded-2xl bg-foreground/5 border border-foreground/10 space-y-2">
+                            <div className="p-5 sm:p-6 rounded-2xl bg-foreground/5 border border-foreground/10 space-y-2">
                                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-foreground">
                                     <Users className="w-4 h-4 text-primary" />
                                     <span>Client Collaboration &amp; Input</span>
@@ -244,7 +244,7 @@ export default function ApproachPage() {
                         </div>
 
                         {/* Right Deliverables Column */}
-                        <div className="lg:col-span-5 p-8 rounded-3xl bg-background/80 dark:bg-black/60 border border-foreground/10 flex flex-col justify-between">
+                        <div className="lg:col-span-5 p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-background/80 dark:bg-black/60 border border-foreground/10 flex flex-col justify-between">
                             <div>
                                 <div className="flex items-center gap-2 mb-6">
                                     <FileText className="w-5 h-5 text-primary" />
@@ -271,7 +271,7 @@ export default function ApproachPage() {
                 </motion.div>
 
                 {/* Bottom CTA Strip */}
-                <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-6 p-8 md:p-10 rounded-3xl bg-foreground text-background">
+                <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-6 p-6 sm:p-8 md:p-10 rounded-3xl bg-foreground text-background">
                     <div className="space-y-1 text-center sm:text-left">
                         <h3 className="text-xl md:text-2xl font-black">
                             Ready to start your 8-week flagship build?

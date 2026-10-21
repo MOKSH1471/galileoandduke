@@ -49,11 +49,12 @@ export function BackToTop() {
 
             timeoutRef.current = setTimeout(() => {
                 const scrolledEnough = window.scrollY > 450;
+                const isNearBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 160);
 
-                if (scrolledEnough && !isVisibleRef.current) {
+                if (scrolledEnough && !isNearBottom && !isVisibleRef.current) {
                     setIsVisible(true);
                     isVisibleRef.current = true;
-                } else if (!scrolledEnough && isVisibleRef.current) {
+                } else if ((!scrolledEnough || isNearBottom) && isVisibleRef.current) {
                     setIsVisible(false);
                     isVisibleRef.current = false;
                 }

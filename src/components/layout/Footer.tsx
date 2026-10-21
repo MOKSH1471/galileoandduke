@@ -173,42 +173,44 @@ export function Footer() {
                     'relative z-20 mt-auto dark:bg-black',
                 isExpanded && 'opacity-0 pointer-events-none'
             )}>
-                <div className={`max-w-[1600px] mx-auto relative z-10 px-6 md:px-12 lg:px-24 py-6 md:py-8 pointer-events-auto ${isGallery ? '!bg-transparent' : ''}`}>
+                <div className={`max-w-[1600px] mx-auto relative z-10 px-4 sm:px-6 md:px-12 lg:px-24 py-4 sm:py-6 md:py-8 pointer-events-auto ${isGallery ? '!bg-transparent' : ''}`}>
                     <div className={`
-                        px-6 md:px-8 py-4 md:py-6 transition-all duration-300
+                        px-4 sm:px-8 py-3.5 sm:py-6 transition-all duration-300
                         ${isGallery
                             ? 'bg-card dark:bg-black/40 dark:backdrop-blur-xl border-2 border-foreground/10 dark:border-white/5 rounded-[2rem] shadow-xl dark:shadow-black/20'
                             : 'glass-card'
                         }
                     `}>
-                        <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                             {/* Left Side - Animated Copyright */}
-                            <div className="flex items-center gap-1.5 md:gap-2 pl-2 md:pl-4 z-10 overflow-hidden h-6">
-                                <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-gradient">
-                                    © {currentYear}
-                                </span>
-                                <div className="relative w-[280px] h-full flex items-center">
-                                    <AnimatePresence mode="popLayout">
-                                        {mounted && (
-                                            <motion.span
-                                                key={copyrightIndex}
-                                                initial={{ y: 20, opacity: 0 }}
-                                                animate={{ y: 0, opacity: 1 }}
-                                                exit={{ y: -20, opacity: 0 }}
-                                                transition={{ duration: 0.5, ease: "easeInOut" }}
-                                                className="absolute left-0 text-xs md:text-sm font-bold uppercase tracking-widest whitespace-nowrap text-gradient"
-                                            >
-                                                {copyrightIndex === 0
-                                                    ? `${portfolioData.personal.name}.`
-                                                    : "All rights reserved."}
-                                            </motion.span>
-                                        )}
-                                    </AnimatePresence>
+                            <div className="flex items-center gap-2 z-10 w-full sm:w-auto justify-between sm:justify-start">
+                                <div className="flex items-center gap-1.5 md:gap-2">
+                                    <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-gradient flex-shrink-0">
+                                        © {currentYear}
+                                    </span>
+                                    <div className="relative min-w-[160px] sm:w-[260px] h-6 flex items-center overflow-hidden">
+                                        <AnimatePresence mode="popLayout">
+                                            {mounted && (
+                                                <motion.span
+                                                    key={copyrightIndex}
+                                                    initial={{ y: 16, opacity: 0 }}
+                                                    animate={{ y: 0, opacity: 1 }}
+                                                    exit={{ y: -16, opacity: 0 }}
+                                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                                    className="absolute left-0 text-xs md:text-sm font-bold uppercase tracking-widest whitespace-nowrap text-gradient"
+                                                >
+                                                    {copyrightIndex === 0
+                                                        ? `${portfolioData.personal.name}.`
+                                                        : "All rights reserved."}
+                                                </motion.span>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Right Side - Socials & More Button */}
-                            <div className="flex items-center justify-end gap-4 md:gap-8 z-10 ml-auto">
+                            <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-6 z-10 w-full sm:w-auto border-t sm:border-t-0 border-neutral-200/50 dark:border-white/10 pt-2.5 sm:pt-0">
                                 <div className="flex items-center gap-1.5 sm:gap-2">
                                     {/* Social Icons */}
                                     {previewSocials.map((social: SocialLink) => {
@@ -243,11 +245,11 @@ export function Footer() {
 
                                 <motion.button
                                     onClick={toggleExpand}
-                                    className="flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 rounded-full transition-all text-xs font-black uppercase tracking-[0.2em] bg-muted hover:bg-muted/80 text-foreground"
+                                    className="flex items-center gap-1.5 sm:gap-2 px-3 md:px-5 py-1.5 sm:py-2 md:py-2.5 rounded-full transition-all text-xs font-black uppercase tracking-[0.2em] bg-muted hover:bg-muted/80 text-foreground"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
-                                    <span className="hidden sm:inline">{t('more')}</span>
+                                    <span className="inline text-[11px] font-bold">{t('more')}</span>
                                     <motion.span
                                         animate={{ rotate: isExpanded ? 180 : 0 }}
                                         transition={{ duration: 0.3 }}
@@ -318,8 +320,8 @@ export function Footer() {
                                         </motion.button>
                                     </div>
 
-                                    {/* Main Grid - Forced 4-column layout regardless of zoom/screen */}
-                                    <div className="w-full grid grid-cols-4 gap-x-[5vw] gap-y-[4vh]">
+                                    {/* Main Grid - 2 columns on mobile, 4 columns on desktop */}
+                                    <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-x-[5vw] sm:gap-y-[4vh]">
                                         <FooterColumn title={t('links')}>
                                             <FooterLink href="/">{tNav('home')}</FooterLink>
                                             <FooterLink href="/contact">{tNav('contact')}</FooterLink>
@@ -388,7 +390,7 @@ export function Footer() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={isAboutExpanded ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                                         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                                        className="text-[clamp(2rem,7.5vw,7.8rem)] font-black leading-none text-zinc-900 dark:text-white tracking-tight select-none text-center whitespace-nowrap px-4"
+                                        className="text-[clamp(1.75rem,7.5vw,7.8rem)] font-black leading-none text-zinc-900 dark:text-white tracking-tight select-none text-center whitespace-nowrap px-2"
                                     >
                                         GALILEO & DUKE
                                     </motion.h2>

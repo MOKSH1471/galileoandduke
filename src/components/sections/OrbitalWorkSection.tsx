@@ -618,7 +618,7 @@ function LuxuryProjectDossier({ body, onClose }: LuxuryProjectDossierProps) {
 
     const modalContent = (
         <div 
-            className="fixed inset-0 z-[150] flex items-center justify-center p-3 sm:p-5 md:p-6 bg-black/80 backdrop-blur-xl pointer-events-auto"
+            className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-5 md:p-6 bg-black/80 backdrop-blur-xl pointer-events-auto"
             data-lenis-prevent
             onWheel={(e) => e.stopPropagation()}
             onTouchMove={(e) => e.stopPropagation()}
@@ -633,7 +633,7 @@ function LuxuryProjectDossier({ body, onClose }: LuxuryProjectDossierProps) {
                 exit={{ opacity: 0, scale: 0.94, y: 16 }}
                 transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
                 data-lenis-prevent
-                className="relative w-full max-w-lg md:max-w-xl max-h-[85vh] flex flex-col bg-zinc-950/95 dark:bg-black/95 border border-white/20 rounded-2xl sm:rounded-3xl shadow-[0_25px_80px_rgba(0,0,0,0.95)] text-white overflow-hidden z-10"
+                className="relative w-full max-w-lg md:max-w-xl max-h-[85dvh] sm:max-h-[85vh] flex flex-col bg-zinc-950/95 dark:bg-black/95 border border-white/20 rounded-2xl sm:rounded-3xl shadow-[0_25px_80px_rgba(0,0,0,0.95)] text-white overflow-hidden z-10"
                 onWheel={(e) => e.stopPropagation()}
                 onTouchMove={(e) => e.stopPropagation()}
             >
@@ -747,15 +747,15 @@ function LuxuryProjectDossier({ body, onClose }: LuxuryProjectDossierProps) {
                 </div>
 
                 {/* Fixed Bottom Action Footer */}
-                <div className="flex items-center justify-between px-5 sm:px-6 py-3 sm:py-3.5 bg-zinc-950/90 border-t border-white/10 backdrop-blur-md">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-3.5 bg-zinc-950/90 border-t border-white/10 backdrop-blur-md">
                     <button
                         onClick={onClose}
-                        className="text-xs font-mono text-white/50 hover:text-white transition-colors"
+                        className="text-xs font-mono text-white/50 hover:text-white transition-colors text-left"
                     >
                         ← Return to Orrery
                     </button>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         {body.projectDemoUrl && body.projectDemoUrl !== '#' && (
                             <a
                                 href={body.projectDemoUrl}

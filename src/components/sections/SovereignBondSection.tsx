@@ -185,7 +185,7 @@ export function SovereignBondSection() {
     return (
         <section
             id="sovereign-bond"
-            className="relative bg-black text-white py-16 sm:py-24 px-4 sm:px-8 md:px-12 rounded-3xl border border-white/10 overflow-hidden selection:bg-white/20 my-8 shadow-2xl"
+            className="relative bg-black text-white py-12 sm:py-24 px-3 sm:px-8 md:px-12 rounded-2xl sm:rounded-3xl border border-white/10 overflow-hidden selection:bg-white/20 my-6 sm:my-8 shadow-2xl"
         >
             {/* 1. BACKGROUND MONOCHROME WATERMARK GRID */}
             <div className="absolute inset-0 pointer-events-none z-0">
@@ -198,7 +198,7 @@ export function SovereignBondSection() {
 
             <div className="relative z-10 max-w-6xl mx-auto">
                 {/* 2. SECTION HEADER */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 pb-8 border-b border-white/10">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 sm:mb-16 pb-8 border-b border-white/10">
                     <div className="max-w-2xl">
                         <div className="flex items-center gap-2.5 mb-3">
                             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
@@ -222,22 +222,22 @@ export function SovereignBondSection() {
                 <div
                     ref={bondRef}
                     onMouseMove={handleMouseMove}
-                    className="relative rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/15 p-6 sm:p-10 md:p-14 shadow-[0_30px_100px_rgba(0,0,0,0.9)] overflow-hidden transition-all duration-300 group"
+                    className="relative rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/15 p-3.5 sm:p-10 md:p-14 shadow-[0_30px_100px_rgba(0,0,0,0.9)] overflow-hidden transition-all duration-300 group"
                     style={{
                         backgroundImage: `radial-gradient(circle 500px at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.04), transparent 80%)`
                     }}
                 >
                     {/* Guilloche Corner Brackets */}
-                    <div className="absolute top-4 left-4 text-white pointer-events-none">
+                    <div className="absolute top-2 left-2 sm:top-4 sm:left-4 text-white pointer-events-none scale-75 sm:scale-100 origin-top-left">
                         <GuillocheCorner />
                     </div>
-                    <div className="absolute top-4 right-4 text-white pointer-events-none rotate-90">
+                    <div className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white pointer-events-none rotate-90 scale-75 sm:scale-100 origin-top-right">
                         <GuillocheCorner />
                     </div>
-                    <div className="absolute bottom-4 left-4 text-white pointer-events-none -rotate-90">
+                    <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 text-white pointer-events-none -rotate-90 scale-75 sm:scale-100 origin-bottom-left">
                         <GuillocheCorner />
                     </div>
-                    <div className="absolute bottom-4 right-4 text-white pointer-events-none rotate-180">
+                    <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 text-white pointer-events-none rotate-180 scale-75 sm:scale-100 origin-bottom-right">
                         <GuillocheCorner />
                     </div>
 
@@ -247,7 +247,7 @@ export function SovereignBondSection() {
                     </div>
 
                     {/* Inner Security Border Frame */}
-                    <div className="relative border border-white/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 z-10">
+                    <div className="relative border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-8 md:p-10 z-10">
                         {/* Certificate Header Bar */}
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-white/10 font-mono text-[9px] sm:text-[10px] text-zinc-500 uppercase tracking-widest">
                             <div className="flex items-center gap-2">
@@ -403,9 +403,9 @@ export function SovereignBondSection() {
                         {/* 6. FOUNDERS UNDERWRITING ENDORSEMENT & CTA */}
                         <div className="mt-10 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
                             {/* Signatures */}
-                            <div className="flex items-center gap-8 text-left">
+                            <div className="flex flex-wrap items-center justify-between sm:justify-start gap-6 sm:gap-8 text-left w-full sm:w-auto">
                                 <div>
-                                    <div className="font-signature text-2xl sm:text-3xl text-white/95 pb-1 border-b border-white/25 w-32 tracking-wider leading-none">
+                                    <div className="font-signature text-2xl sm:text-3xl text-white/95 pb-1 border-b border-white/25 w-28 sm:w-32 tracking-wider leading-none">
                                         Moksh
                                     </div>
                                     <span className="font-mono text-[8px] uppercase tracking-widest text-zinc-500 block mt-1">
@@ -414,7 +414,7 @@ export function SovereignBondSection() {
                                 </div>
 
                                 <div>
-                                    <div className="font-signature text-2xl sm:text-3xl text-white/95 pb-1 border-b border-white/25 w-32 tracking-wider leading-none">
+                                    <div className="font-signature text-2xl sm:text-3xl text-white/95 pb-1 border-b border-white/25 w-28 sm:w-32 tracking-wider leading-none">
                                         Varul
                                     </div>
                                     <span className="font-mono text-[8px] uppercase tracking-widest text-zinc-500 block mt-1">
@@ -427,7 +427,7 @@ export function SovereignBondSection() {
                             <div className="flex items-center gap-4 w-full md:w-auto justify-end">
                                 <a
                                     href="#contact-form"
-                                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group/btn cursor-pointer"
+                                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-full bg-white text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-neutral-200 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.15)] group/btn cursor-pointer"
                                 >
                                     <span>Begin Sovereign Inquiry</span>
                                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />

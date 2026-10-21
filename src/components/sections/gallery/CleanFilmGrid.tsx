@@ -514,14 +514,14 @@ export default function CleanFilmGrid({ isLowPowerMode }: { isLowPowerMode?: boo
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className={cn(
-                            "fixed inset-0 z-[100] bg-background/95 flex flex-col items-center justify-center transition-all duration-300",
+                            "fixed inset-0 z-[200] bg-background/95 flex flex-col items-center justify-center transition-all duration-300",
                             !isLowPowerMode && "backdrop-blur-xl",
                             isLightboxMaximized ? "bg-black" : ""
                         )}
                         onClick={closeLightbox}
                     >
                         {/* Toolbar */}
-                        <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-[110]" onClick={(e) => e.stopPropagation()}>
+                        <div className="absolute top-0 left-0 w-full p-4 sm:p-6 pt-5 sm:pt-6 flex justify-between items-center z-[210]" onClick={(e) => e.stopPropagation()}>
                             {/* Counter / Title */}
                             <div className="text-sm font-mono text-foreground/70">
                                 {currentIndex + 1} / {flattenedFilteredItems.length}
@@ -566,7 +566,7 @@ export default function CleanFilmGrid({ isLowPowerMode }: { isLowPowerMode?: boo
                                 "relative w-full transition-all duration-500",
                                 isLightboxMaximized
                                     ? "h-screen w-screen px-0 py-0"
-                                    : "max-w-5xl px-6 h-[70vh] aspect-video"
+                                    : "max-w-5xl px-4 sm:px-6 h-[55vh] sm:h-[70vh] aspect-video"
                             )}
                             onClick={(e) => e.stopPropagation()}
                         >

@@ -366,7 +366,7 @@ const GhostedHeader = ({ label, part1, part2, direction = "left" }: { label: str
                 {label}
             </span>
         </div>
-        <h3 className={`text-4xl md:text-5xl lg:text-5xl xl:text-[54px] font-black uppercase tracking-tighter leading-none flex items-center gap-x-3 gap-y-1 ${direction === 'right' ? 'flex-row-reverse flex-wrap-reverse justify-start' : 'flex-wrap'}`}>
+        <h3 className={`text-2xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-[54px] font-black uppercase tracking-tighter leading-tight md:leading-none flex items-center gap-x-3 gap-y-1 ${direction === 'right' ? 'flex-row-reverse flex-wrap-reverse justify-start' : 'flex-wrap'}`}>
             <span className="text-foreground drop-shadow-sm">{part1}</span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground/20 to-transparent dark:from-white/20 dark:to-transparent">{part2}</span>
         </h3>
@@ -396,15 +396,15 @@ const AuditFunnel = () => {
     const opacityExit = useTransform(exitProgressRaw, [0.8, 1], [1, 0.2]);
 
     return (
-        <div ref={sectionRef} className="relative overflow-visible group min-h-[80vh] md:min-h-[110vh] flex items-center justify-center bg-background z-10 py-24 md:py-36">
-            <div className="flex flex-col items-center text-center space-y-12 md:space-y-16 w-full max-w-6xl mx-auto px-4 sm:px-6">
+        <div ref={sectionRef} className="relative overflow-visible group min-h-[80vh] md:min-h-[110vh] flex items-center justify-center bg-background z-10 py-16 sm:py-24 md:py-36">
+            <div className="flex flex-col items-center text-center space-y-10 md:space-y-16 w-full max-w-6xl mx-auto px-4 sm:px-6">
                 <motion.div
                     style={{ y: yExit, opacity: opacityExit }}
                     className="space-y-4 md:space-y-6 flex flex-col items-center w-full"
                 >
                     <motion.h4
                         style={{ scale, willChange: "transform" }}
-                        className="text-4xl md:text-6xl lg:text-[6.5rem] font-black tracking-[-0.04em] text-foreground max-w-5xl tracking-tighter leading-[0.95] uppercase text-center"
+                        className="text-3xl sm:text-5xl md:text-6xl lg:text-[6.5rem] font-black tracking-[-0.04em] text-foreground max-w-5xl tracking-tighter leading-[1.05] sm:leading-[0.95] uppercase text-center"
                     >
                         {t('architecting')} <br />
                         <motion.span
