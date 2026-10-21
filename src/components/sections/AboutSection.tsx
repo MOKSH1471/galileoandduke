@@ -189,16 +189,16 @@ const AboutLeadIn = () => {
                 {/* 4. Content Layer */}
                 <div className="relative z-10">
                     {/* Top Tagline */}
-                    <div className="flex justify-between items-start mb-6 md:mb-10">
+                    <div className="flex justify-between items-start mb-4 md:mb-10">
                         <span className="text-red-600 dark:text-red-500 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em]">{t('leadIn.tagline')}</span>
                         <span className="text-zinc-400 dark:text-zinc-600 text-[9px] font-mono tracking-widest uppercase hidden md:block">{t('leadIn.role')}</span>
                     </div>
 
                     {/* Massive Typography - Quote Style */}
-                    <div className="mb-8 md:mb-14 relative cursor-default">
+                    <div className="mb-6 md:mb-14 relative cursor-default">
                         {/* Original Text with glow */}
-                        <h2 className="text-[32px] sm:text-[48px] md:text-[64px] lg:text-[76px] xl:text-[88px] font-bold tracking-tight leading-[0.92] text-zinc-900 dark:text-white transition-all duration-700 group-hover:drop-shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                            <span className="text-zinc-300 dark:text-zinc-700 mr-2 transition-colors duration-700 group-hover:text-zinc-400 dark:group-hover:text-zinc-500">"</span>
+                        <h2 className="text-[26px] sm:text-[38px] md:text-[64px] lg:text-[76px] xl:text-[88px] font-bold tracking-tight leading-[1.05] md:leading-[0.92] text-zinc-900 dark:text-white transition-all duration-700 group-hover:drop-shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                            <span className="text-zinc-300 dark:text-zinc-700 mr-1 sm:mr-2 transition-colors duration-700 group-hover:text-zinc-400 dark:group-hover:text-zinc-500">"</span>
                             {t('leadIn.headlineAI')} <span className="text-zinc-400 dark:text-zinc-500 font-medium transition-colors duration-700 group-hover:text-zinc-600 dark:group-hover:text-zinc-300">{t('leadIn.headlineData')}</span> <br className="hidden md:block" />
                             <span className="font-serif italic font-normal text-zinc-900 dark:text-white lowercase opacity-90 transition-opacity duration-700 group-hover:opacity-100">{t('leadIn.headlineSoftware')}</span>
                             <span className="text-zinc-300 dark:text-zinc-700 ml-1 transition-colors duration-700 group-hover:text-zinc-400 dark:group-hover:text-zinc-500">."</span>
@@ -206,7 +206,7 @@ const AboutLeadIn = () => {
                     </div>
 
                     {/* Detail Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 border-t border-zinc-100 dark:border-zinc-900 pt-8 md:pt-12">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 border-t border-zinc-100 dark:border-zinc-900 pt-6 md:pt-12">
                         {/* Left narrative */}
                         <div className="md:col-span-5">
                             {/* Security: t.raw('leadIn.thesis') loads static i18n translation strings only (no user input) */}
@@ -511,6 +511,7 @@ const ScrollHijackSection = () => {
 
 export default function AboutSection() {
     const containerRef = useRef<HTMLElement>(null);
+    const isMobile = useIsMobile();
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
@@ -529,10 +530,10 @@ export default function AboutSection() {
             ref={containerRef}
             className="relative bg-background text-foreground dark:bg-black dark:text-white transition-colors duration-500"
         >
-            {/* 1. STICKY PLANE - Lead-in */}
-            <div className="sticky top-0 h-screen w-full flex items-center justify-center z-0 overflow-hidden pointer-events-none">
+            {/* 1. STICKY PLANE - Lead-in: natural flow on mobile, sticky parallax on desktop */}
+            <div className="relative md:sticky md:top-0 w-full min-h-screen md:h-screen flex items-center justify-center z-0 overflow-visible md:overflow-hidden pointer-events-auto md:pointer-events-none py-10 md:py-0">
                 <motion.div
-                    style={{ scale, opacity, y: yLeadIn }}
+                    style={isMobile ? undefined : { scale, opacity, y: yLeadIn }}
                     className="relative px-4 md:px-6 w-full max-w-[1700px] mx-auto"
                     ref={leadInTriggerRef}
                 >
@@ -541,8 +542,8 @@ export default function AboutSection() {
             </div>
 
             {/* 2. OVERLAY LAYER - Hijack Zone & Footer */}
-            <div className="relative pointer-events-none mt-[20vh] md:mt-[20vh]">
-                {/* Content wrapper with background - rounded corners removed to allow animated border to control the shape */}
+            <div className="relative pointer-events-none mt-0 md:mt-[20vh]">
+                {/* Content wrapper with background */}
                 <div className="bg-background dark:bg-black transition-colors duration-500 pointer-events-auto relative">
 
                     <ScrollHijackSection />
