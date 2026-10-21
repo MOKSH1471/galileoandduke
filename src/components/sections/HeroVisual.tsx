@@ -219,12 +219,12 @@ export function HeroVisual({ isExiting = false }: { isExiting?: boolean }) {
               </div>
 
               {/* Instagram Floating Icon:
-                  On mobile: Positioned at the bottom-right of "& DUKE" in the open pocket above subtitle.
+                  On mobile: Positioned comfortably below "& DUKE" with generous margin so float animation never overlaps.
                   On desktop: md:-bottom-10 md:right-24.
               */}
               <div
                 ref={instagramRef}
-                className="absolute -bottom-5 right-0 sm:right-2 md:-bottom-10 md:right-24 text-primary/70 hover:text-primary z-20 opacity-0"
+                className="absolute -bottom-9 -right-1 sm:right-2 md:-bottom-10 md:right-24 text-primary/70 hover:text-primary z-20 opacity-0"
               >
                 <a
                   href={personal.socialLinks.find(s => s.platform === 'Instagram')?.url}
@@ -253,7 +253,7 @@ export function HeroVisual({ isExiting = false }: { isExiting?: boolean }) {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-[10px] md:text-xs text-muted-foreground text-center md:text-left pt-6 sm:pt-7 md:pt-8 leading-relaxed max-w-[260px] md:max-w-[200px] font-medium uppercase tracking-widest"
+              className="text-[10px] md:text-xs text-muted-foreground text-center md:text-left pt-10 sm:pt-11 md:pt-8 leading-relaxed max-w-[260px] md:max-w-[200px] font-medium uppercase tracking-widest"
             >
               Cinematic Motion • Spatial 3D • Bespoke Engineering
             </motion.p>

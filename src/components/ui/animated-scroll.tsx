@@ -137,8 +137,14 @@ function PageSlide({ page, isActive, scrollProgress, index }: { page: any, isAct
         [10, 20, 20, 10]
     );
 
+    const opacity = useTransform(
+        scrollProgress,
+        [enterStart, enterEnd, exitStart, exitEnd],
+        [0, 1, 1, 0]
+    );
+
     return (
-        <motion.div style={{ zIndex }} className="absolute inset-0 flex items-center justify-center pointer-events-none p-3 sm:p-4 md:p-6 lg:p-8">
+        <motion.div style={{ zIndex, opacity }} className="absolute inset-0 flex items-center justify-center pointer-events-none pt-20 pb-4 px-3 sm:pt-24 sm:px-4 md:p-6 lg:p-8">
             {/* Unified Card Container */}
             <div className="relative w-full h-full max-w-[1600px] flex flex-col md:flex-row pointer-events-auto overflow-hidden rounded-2xl md:rounded-3xl border border-border/10 dark:border-white/10">
 
@@ -258,7 +264,7 @@ function BlendedVisual({ src, component, side }: { src?: string, component?: Rea
                 <motion.div
                     className="absolute inset-0 flex items-center justify-center pointer-events-none"
                 >
-                    <div className="w-full h-full flex items-center justify-center transform scale-[1.4] sm:scale-[1.7] lg:scale-[2.0]">
+                    <div className="w-full h-full flex items-center justify-center transform scale-[0.9] sm:scale-[1.15] md:scale-[1.6] lg:scale-[2.0]">
                         {component}
                     </div>
                 </motion.div>
@@ -289,15 +295,15 @@ function BlendedVisual({ src, component, side }: { src?: string, component?: Rea
 
 function EditorialContent({ content, index }: { content: any, index: number }) {
     return (
-        <div className="flex flex-col items-start text-left space-y-6 md:space-y-8 max-w-xl xl:max-w-2xl w-full relative z-10">
-            <div className="space-y-3 sm:space-y-4">
+        <div className="flex flex-col items-start text-left space-y-4 sm:space-y-6 md:space-y-8 max-w-xl xl:max-w-2xl w-full relative z-10">
+            <div className="space-y-2 sm:space-y-4">
                 <div className="flex items-center gap-4 sm:gap-6">
                     <span className="text-[10px] sm:text-[11px] font-mono font-black tracking-[0.3em] sm:tracking-[0.4em] text-primary uppercase opacity-75">
                         {content.tag || `FEATURE — 0${index + 1}`}
                     </span>
                     <div className="h-[1px] w-8 sm:w-12 bg-primary/20" />
                 </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[54px] font-bold uppercase tracking-tighter leading-[1.08] text-foreground font-sans transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:translate-x-4 sm:hover:translate-x-6 hover:text-foreground/50 pointer-events-auto cursor-default origin-left">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[54px] font-bold uppercase tracking-tighter leading-[1.08] text-foreground font-sans transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:translate-x-4 sm:hover:translate-x-6 hover:text-foreground/50 pointer-events-auto cursor-default origin-left">
                     {content.heading}
                 </h2>
                 <p className="text-sm sm:text-base lg:text-lg text-muted-foreground font-medium leading-relaxed max-w-lg">
