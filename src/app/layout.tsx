@@ -9,7 +9,7 @@ import { ArcPreloaderWrapper } from '@/components/layout/ArcPreloaderWrapper';
 import '@/styles/globals.css';
 import { portfolioData } from '@/data/portfolio';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://galileoandduke.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.galileoandduke.com';
 
 const inter = Inter({
     subsets: ['latin'],
