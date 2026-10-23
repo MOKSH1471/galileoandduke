@@ -108,8 +108,8 @@ The application implements a `usePerformance` hook to evaluate client hardware c
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Arfazrll/PersonalBlog.git
-   cd PersonalBlog
+   git clone https://github.com/MOKSH1471/galileoandduke.git
+   cd galileoandduke
    ```
 
 2. **Install dependencies:**
