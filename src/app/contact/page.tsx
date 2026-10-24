@@ -252,6 +252,7 @@ export default function ContactPage() {
     const headerOpacity = useTransform(showFAQ, [0, 0.4], [1, 0.6]);
     const headerScale = useTransform(showFAQ, [0, 0.4], [1, 0.98]);
     const headerFilter = useTransform(showFAQ, [0, 0.4], ["blur(0px)", "blur(2px)"]);
+    const faqY = useTransform(showFAQ, [0, 1], ["100vh", "0vh"]);
 
     return (
         <div ref={containerRef} className="relative bg-background selection:bg-primary/20">
@@ -300,7 +301,7 @@ export default function ContactPage() {
             <motion.section
                 className="relative z-50 bg-background overflow-hidden"
                 style={isMobile ? undefined : {
-                    y: useTransform(showFAQ, [0, 1], ["100vh", "0vh"]),
+                    y: faqY,
                     marginTop: "-100vh",
                 }}
             >
