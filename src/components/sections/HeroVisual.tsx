@@ -201,11 +201,11 @@ export function HeroVisual({ isExiting = false }: { isExiting?: boolean }) {
             <div className="relative inline-block w-fit">
               {/* LinkedIn Floating Icon:
                   On mobile: Centered vertically on the right flank of "& DUKE".
-                  On desktop: Positioned at md:-top-8 md:left-4.
+                  On desktop: Positioned comfortably on the left flank of "& DUKE" (md:-left-10 lg:-left-12 xl:-left-14) to prevent any overlap with the ampersand glyph.
               */}
               <div
                 ref={linkedinRef}
-                className="absolute top-1/2 -translate-y-1/2 -right-7 sm:-right-8 md:translate-y-0 md:top-auto md:-top-8 md:left-4 md:right-auto text-primary/70 hover:text-primary z-20 opacity-0"
+                className="absolute top-1/2 -translate-y-1/2 -right-7 sm:-right-8 md:translate-y-0 md:top-2 md:-left-10 lg:-left-12 xl:-left-14 md:right-auto text-primary/70 hover:text-primary z-20 opacity-0"
               >
                 <a
                   href={personal.socialLinks.find(s => s.platform === 'LinkedIn')?.url}
