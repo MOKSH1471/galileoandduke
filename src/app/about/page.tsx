@@ -70,9 +70,16 @@ export default function StudioPage() {
                         transition={{ duration: 0.7, delay: 0.3 }}
                         className="flex flex-wrap items-center gap-4 pt-4 font-mono text-xs text-muted-foreground"
                     >
-                        <span className="flex items-center gap-1.5 bg-secondary/30 px-3 py-1.5 rounded-lg border border-border">
+                        <a
+                            href="https://www.google.com/maps/search/?api=1&query=Galileo+%26+Duke&query_place_id=ChIJiWgaBx-1VYIRHPidPtw135M"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 bg-secondary/30 hover:bg-secondary/60 hover:text-foreground transition-all px-3 py-1.5 rounded-lg border border-border group"
+                            title="Find Galileo & Duke on Google Maps"
+                        >
                             <MapPin className="w-3.5 h-3.5 text-primary" /> Kolkata, India — Operating Globally
-                        </span>
+                            <span className="text-[10px] opacity-60 group-hover:opacity-100 transition-opacity">↗</span>
+                        </a>
                         <span className="flex items-center gap-1.5 bg-secondary/30 px-3 py-1.5 rounded-lg border border-border">
                             <Globe className="w-3.5 h-3.5 text-primary" /> UTC+5:30 (IST)
                         </span>

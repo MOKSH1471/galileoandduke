@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Send, CheckCircle, ArrowUpRight, Sparkles, HelpCircle, MessageSquare, ChevronDown } from 'lucide-react';
+import { Send, CheckCircle, ArrowUpRight, Sparkles, HelpCircle, MessageSquare, ChevronDown, MapPin, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { usePerformance } from '@/hooks/usePerformance';
 import { useIsMobile } from '@/hooks/useIsMobile';
@@ -98,6 +98,33 @@ function ContactForm() {
                 <p className="text-lg text-muted-foreground mt-4 font-light max-w-md">
                     {t('hero.subtitle')}
                 </p>
+
+                {/* Local Studio Verification & Google Profile Badge */}
+                <div className="flex flex-wrap items-center gap-3 mt-6">
+                    <a
+                        href="https://www.google.com/maps/search/?api=1&query=Galileo+%26+Duke&query_place_id=ChIJiWgaBx-1VYIRHPidPtw135M"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all group"
+                        title="View Galileo & Duke Studio on Google Maps"
+                    >
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>Kolkata, India</span>
+                        <ArrowUpRight className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
+                    </a>
+
+                    <a
+                        href="https://g.page/r/CRz4nT7cNd-TEBM/review"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider bg-foreground/5 text-foreground/80 border border-border hover:border-foreground/30 hover:text-foreground transition-all group"
+                        title="Review Galileo & Duke on Google"
+                    >
+                        <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                        <span>Google Verified Agency</span>
+                        <ArrowUpRight className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                </div>
             </div>
 
             <form onSubmit={handleSubmit} className="w-full relative z-10">

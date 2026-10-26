@@ -250,11 +250,16 @@ export default async function RootLayout({
                     { '@type': 'Person', name: 'Moksh', jobTitle: 'Co-Founder & Creative Technologist' },
                     { '@type': 'Person', name: 'Varul', jobTitle: 'Co-Founder & Studio Director' },
                 ],
+                hasMap: 'https://www.google.com/maps/search/?api=1&query=Galileo+%26+Duke&query_place_id=ChIJiWgaBx-1VYIRHPidPtw135M',
                 sameAs: [
                     'https://github.com/MOKSH1471',
                     'https://www.instagram.com/galileoandduke/',
                     'https://linkedin.com/company/galileo-duke',
                     'https://twitter.com/galileoduke',
+                    'https://g.page/r/CRz4nT7cNd-TEBM',
+                    'https://g.page/r/CRz4nT7cNd-TEBM/review',
+                    'https://search.google.com/local/writereview?placeid=ChIJiWgaBx-1VYIRHPidPtw135M',
+                    'https://www.google.com/maps/search/?api=1&query=Galileo+%26+Duke&query_place_id=ChIJiWgaBx-1VYIRHPidPtw135M',
                 ],
                 hasOfferCatalog: {
                     '@type': 'OfferCatalog',

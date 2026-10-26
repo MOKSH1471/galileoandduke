@@ -363,17 +363,23 @@ export function Footer() {
                                             <FooterLink href={portfolioData.personal.socialLinks.find(s => s.platform === 'LinkedIn')?.url || '#'} target="_blank">LinkedIn</FooterLink>
                                             <FooterLink href={portfolioData.personal.socialLinks.find(s => s.platform === 'Instagram')?.url || '#'} target="_blank">Instagram</FooterLink>
                                             <FooterLink href={portfolioData.personal.socialLinks.find(s => s.platform === 'GitHub')?.url || '#'} target="_blank">GitHub</FooterLink>
+                                            <FooterLink href="https://g.page/r/CRz4nT7cNd-TEBM/review" target="_blank">Google Reviews</FooterLink>
                                         </FooterColumn>
 
                                         <FooterColumn title={t('localTime')}>
                                             <p className="text-zinc-900 dark:text-white text-[1.2vw] min-text-[14px] font-medium tracking-tight">
                                                 {localTime}
                                             </p>
-                                            <span
-                                                className="text-zinc-900 dark:text-white text-[1.2vw] min-text-[14px] font-medium tracking-tight"
+                                            <a
+                                                href="https://www.google.com/maps/search/?api=1&query=Galileo+%26+Duke&query_place_id=ChIJiWgaBx-1VYIRHPidPtw135M"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-zinc-900 dark:text-white hover:text-primary transition-colors text-[1.2vw] min-text-[14px] font-medium tracking-tight inline-flex items-center gap-1 group"
+                                                title="View Galileo & Duke on Google Maps"
                                             >
                                                 Kolkata, India
-                                            </span>
+                                                <span className="text-[10px] opacity-60 group-hover:opacity-100 transition-opacity">↗</span>
+                                            </a>
                                         </FooterColumn>
 
                                         <FooterColumn title={t('version')}>
